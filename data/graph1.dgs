@@ -1,7 +1,7 @@
 DGS004
 null 0 0
 an "0"
-cn "0"  "waste":["household":7]
+cn "0"  "waste":[]
 an "1"
 cn "1"  "waste":["glass":4, "household":2]
 an "2"
@@ -24,6 +24,8 @@ an "10"
 cn "10"  "waste":0.981737
 ae "0_1" "0" > "1"
 ce "0_1"  "weight":0.071324
+ae "1_0" "1" > "0"
+ce "1_0"  "weight":0.071324
 ae "0_2" "2" > "0"
 ce "0_2"  "weight":0.802777
 ae "1_2" "2" > "1"

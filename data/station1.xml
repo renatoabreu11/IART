@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<station location="0">
+    <truck>
+        <category>Paper</category>
+        <capacity>2500</capacity>
+    </truck>
+    <truck>
+        <category>Glass</category>
+        <capacity>2500</capacity>
+    </truck>
+    <truck>
+        <category>Household</category>
+        <capacity>2500</capacity>
+    </truck>
+    <truck>
+        <category>Plastic</category>
+        <capacity>2500</capacity>
+    </truck>
+</station>
