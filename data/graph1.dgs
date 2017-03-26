@@ -1,0 +1,48 @@
+DGS004
+null 0 0
+an "0"
+cn "0"  "waste":["household":7]
+an "1"
+cn "1"  "waste":["glass":4, "household":2]
+an "2"
+cn "2"  "waste":[]
+an "3"
+cn "3"  "waste":["paper":5, "plastic":2, "glass":4, "household":2]
+an "4"
+cn "4"  "waste":["household":7]
+an "5"
+cn "5"  "waste":["paper":5, "plastic":2, "glass":4, "household":2]
+an "6"
+cn "6"  "waste":[]
+an "7"
+cn "7"  "waste":["glass":4, "household":2]
+an "8"
+cn "8"  "waste":["paper":5, "plastic":2, "glass":4, "household":2]
+an "9"
+cn "9"  "waste":["glass":4, "household":2]
+an "10"
+cn "10"  "waste":0.981737
+ae "0_1" "0" > "1"
+ce "0_1"  "weight":0.071324
+ae "0_2" "2" > "0"
+ce "0_2"  "weight":0.802777
+ae "1_2" "2" > "1"
+ce "1_2"  "weight":0.414359
+ae "2_3" "3" > "2"
+ce "2_3"  "weight":0.642399
+ae "0_4" "4" > "0"
+ce "0_4"  "weight":0.729654
+ae "1_4" "4" > "1"
+ce "1_4"  "weight":0.506187
+ae "0_5" "5" > "0"
+ce "0_5"  "weight":0.239257
+ae "7_5" "5" > "7"
+ce "7_5"  "weight":0.239257
+ae "6_8" "6" > "8"
+ce "6_8"  "weight":0.240337
+ae "7_8" "8" > "7"
+ce "7_8"  "weight":0.240337
+ae "4_10" "10" > "4"
+ce "4_10"  "weight":0.540124
+ae "9_10" "9" > "10"
+ce "9_10"  "weight":0.803461

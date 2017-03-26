@@ -1,0 +1,15 @@
+graph {
+    fill-color: white;
+}
+
+node {
+    size: 10px, 15px;
+    shape: circle;
+    fill-color: blue, green;
+    fill-mode: gradient-radial;
+    arrow-shape: arrow;
+}
+
+node:clicked {
+    fill-color: red;
+}
