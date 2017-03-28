@@ -1,3 +1,4 @@
+import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -13,10 +14,12 @@ import java.util.ArrayList;
 
 public class Station {
     private ArrayList<Truck> trucks;
+    private ArrayList<Container> containers;
     private Node location;
 
-    public Station(String filename) throws ParserConfigurationException, IOException, SAXException {
+    public Station(String filename, Graph graph) throws ParserConfigurationException, IOException, SAXException {
         trucks = new ArrayList<>();
+        containers = new ArrayList<>();
 
         File fXmlFile = new File("data/" + filename + ".xml");
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -26,6 +29,7 @@ public class Station {
         doc.getDocumentElement().normalize();
 
         String locationId = doc.getDocumentElement().getAttribute("location");
+        location = graph.getNode(locationId);
 
         NodeList trucksList = doc.getElementsByTagName("truck");
         for (int i = 0; i < trucksList.getLength(); i++) {
@@ -38,6 +42,13 @@ public class Station {
             Truck t = new Truck(category, capacity);
             trucks.add(t);
         }
+
+        for (Node node : graph) {
+            if(node.hasAttribute("waste")){
+                Container container = new Container(node);
+                containers.add(container);
+            }
+        }
     }
 
     public ArrayList<Truck> getTrucks() {
@@ -48,12 +59,31 @@ public class Station {
         this.trucks = trucks;
     }
 
-
     public Node getLocation() {
         return location;
     }
 
     public void setLocation(Node location) {
         this.location = location;
+    }
+
+    public ArrayList<Container> getContainers() {
+        return containers;
+    }
+
+    public void setContainers(ArrayList<Container> containers) {
+        this.containers = containers;
+    }
+
+    public void printStationDetails(){
+        System.out.println("Station location: Node " + location.getId());
+
+        for(Truck t : trucks){
+            t.printTruckDetails();
+        }
+
+        for(Container c : containers){
+            c.printContainerDetails();
+        }
     }
 }

@@ -3,6 +3,7 @@ import org.graphstream.algorithm.generator.DorogovtsevMendesGenerator;
 import org.graphstream.algorithm.generator.Generator;
 import org.graphstream.algorithm.generator.RandomGenerator;
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.stream.file.FileSinkDGS;
 import org.graphstream.ui.view.Viewer;
@@ -99,14 +100,16 @@ public class CityGraph implements ViewerListener {
     @Override
     public void buttonPushed(String id) {
         System.out.println("Button pushed on node "+id);
-        Map waste = graph.getNode(id).getAttribute("waste");
-        Iterator entries = waste.entrySet().iterator();
-        while (entries.hasNext()) {
-            Map.Entry thisEntry = (Map.Entry) entries.next();
-            Object key = thisEntry.getKey();
-            Object value = thisEntry.getValue();
-            System.out.println(key);
-            System.out.println(value);
+        Node node = graph.getNode(id);
+        if(node.hasAttribute("waste")){
+            Map waste = node.getAttribute("waste");
+            Iterator entries = waste.entrySet().iterator();
+            while (entries.hasNext()) {
+                Map.Entry thisEntry = (Map.Entry) entries.next();
+                Object key = thisEntry.getKey();
+                Object value = thisEntry.getValue();
+                System.out.println("Type of residue: " + key +" ->" + value + " kg");
+            }
         }
     }
 
