@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<station location="0">
+<station>
+    <central>0</central>
+    <wasteStation>15</wasteStation>
     <truck>
         <category>Paper</category>
         <capacity>2500</capacity>

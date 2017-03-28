@@ -25,19 +25,26 @@ public class Container {
     public void addResidue(String type, Integer value){
         Waste residue;
         switch (type){
-            case "Plastic":
+            case "plastic":
                 residue = Waste.PLASTIC; break;
-            case "Paper":
+            case "paper":
                 residue = Waste.PAPER; break;
-            case "Glass":
+            case "glass":
                 residue = Waste.GLASS; break;
-            case "Household":
+            case "household":
                 residue = Waste.HOUSEHOLD; break;
             default: residue = Waste.HOUSEHOLD; break;
         }
         residues.add(new AbstractMap.SimpleEntry<>(residue, value));
     }
 
+    public ArrayList<Map.Entry<Waste, Integer>> getResidues() {
+        return residues;
+    }
+
+    public void setResidues(ArrayList<Map.Entry<Waste, Integer>> residues) {
+        this.residues = residues;
+    }
     public Node getLocation() {
         return location;
     }
@@ -49,12 +56,10 @@ public class Container {
     public void printContainerDetails() {
         System.out.println("Container location: Node " + location.getId() + ".");
         System.out.println("    Residues:");
-        Map waste = location.getAttribute("waste");
-        Iterator entries = waste.entrySet().iterator();
-        while (entries.hasNext()) {
-            Map.Entry thisEntry = (Map.Entry) entries.next();
-            Object key = thisEntry.getKey();
-            Object value = thisEntry.getValue();
+        for(int i = 0; i < residues.size(); i++){
+            Map.Entry<Waste, Integer> entry = residues.get(i);
+            Object key = entry.getKey();
+            Object value = entry.getValue();
             System.out.println("        " + key + " -> " + value + "kg");
         }
         System.out.println();

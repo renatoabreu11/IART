@@ -108,7 +108,7 @@ public class CityGraph implements ViewerListener {
                 Map.Entry thisEntry = (Map.Entry) entries.next();
                 Object key = thisEntry.getKey();
                 Object value = thisEntry.getValue();
-                System.out.println("Type of residue: " + key +" ->" + value + " kg");
+                System.out.println("Type of residue: " + key +" -> " + value + " kg");
             }
         }
     }
