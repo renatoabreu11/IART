@@ -17,9 +17,10 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class WasteManagement {
+
     private ArrayList<Truck> trucks;
     private ArrayList<Container> containers;
-    private ArrayList<Map.Entry<Waste, Integer>> residueBuildup;
+    private ArrayList<Map.Entry<Waste, Double>> residueBuildup;
     private Node central;
     private Node wasteStation;
     private double distCentralStation;
@@ -29,10 +30,10 @@ public class WasteManagement {
         containers = new ArrayList<>();
 
         residueBuildup = new ArrayList<>();
-        residueBuildup.add(new AbstractMap.SimpleEntry<>(Waste.HOUSEHOLD, 0));
-        residueBuildup.add(new AbstractMap.SimpleEntry<>(Waste.PAPER, 0));
-        residueBuildup.add(new AbstractMap.SimpleEntry<>(Waste.PLASTIC, 0));
-        residueBuildup.add(new AbstractMap.SimpleEntry<>(Waste.GLASS, 0));
+        residueBuildup.add(new AbstractMap.SimpleEntry<>(Waste.HOUSEHOLD, 0.0));
+        residueBuildup.add(new AbstractMap.SimpleEntry<>(Waste.PAPER, 0.0));
+        residueBuildup.add(new AbstractMap.SimpleEntry<>(Waste.PLASTIC, 0.0));
+        residueBuildup.add(new AbstractMap.SimpleEntry<>(Waste.GLASS, 0.0));
 
         parseDocument("data/" + filename + ".xml", graph);
     }
@@ -73,18 +74,18 @@ public class WasteManagement {
         for (Node node : graph) {
             if(node.hasAttribute("waste")){
                 Container container = new Container(node);
-                ArrayList<Map.Entry<Waste, Integer>> residues = container.getResidues();
+                ArrayList<Map.Entry<Waste, Double>> residues = container.getResidues();
                 addResiduesToBuildup(residues);
                 containers.add(container);
             }
         }
     }
 
-    private void addResiduesToBuildup(ArrayList<Map.Entry<Waste, Integer>> residues) {
+    private void addResiduesToBuildup(ArrayList<Map.Entry<Waste, Double>> residues) {
         for(int i = 0; i < residues.size(); i++){
-            Map.Entry<Waste, Integer> entry = residues.get(i);
+            Map.Entry<Waste, Double> entry = residues.get(i);
             Waste key = entry.getKey();
-            int value = entry.getValue();
+            double value = entry.getValue();
             int index = -1;
             switch (key){
                 case HOUSEHOLD:
@@ -100,7 +101,7 @@ public class WasteManagement {
                     index = 3;
                     break;
             }
-            int currValue = residueBuildup.get(index).getValue();
+            double currValue = residueBuildup.get(index).getValue();
             residueBuildup.get(index).setValue(currValue + value);
         }
     }
@@ -122,8 +123,8 @@ public class WasteManagement {
     }
 
     public void printManagementDetails(){
-        System.out.println("Central location: Node " + central.getId());
-        System.out.println("Waste station location: Node " + wasteStation.getId());
+        System.out.println("Central location: MyNode " + central.getId());
+        System.out.println("Waste station location: MyNode " + wasteStation.getId());
         System.out.println("Distance between central and waste station: " + distCentralStation);
 
         System.out.println("\nCompany trucks");
@@ -138,9 +139,9 @@ public class WasteManagement {
 
         System.out.println("Residue buildup");
         for(int i = 0; i < residueBuildup.size(); i++) {
-            Map.Entry<Waste, Integer> entry = residueBuildup.get(i);
+            Map.Entry<Waste, Double> entry = residueBuildup.get(i);
             Waste key = entry.getKey();
-            int value = entry.getValue();
+            double value = entry.getValue();
             System.out.println(key + ": " + value + "kg.");
         }
     }
@@ -153,11 +154,19 @@ public class WasteManagement {
         this.distCentralStation = distCentralStation;
     }
 
-    public ArrayList<Map.Entry<Waste, Integer>> getResidueBuildup(){
+    public ArrayList<Map.Entry<Waste, Double>> getResidueBuildup(){
        return residueBuildup;
     }
 
-    public void setResidueBuildup(ArrayList<Map.Entry<Waste, Integer>> residueBuildup) {
+    public void setResidueBuildup(ArrayList<Map.Entry<Waste, Double>> residueBuildup) {
         this.residueBuildup = residueBuildup;
+    }
+
+    public Node getCentral() {
+        return central;
+    }
+
+    public Node getWasteStation() {
+        return wasteStation;
     }
 }

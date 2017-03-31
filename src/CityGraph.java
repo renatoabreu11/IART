@@ -1,7 +1,9 @@
+import org.graphstream.algorithm.AStar;
 import org.graphstream.algorithm.generator.BarabasiAlbertGenerator;
 import org.graphstream.algorithm.generator.DorogovtsevMendesGenerator;
 import org.graphstream.algorithm.generator.Generator;
 import org.graphstream.algorithm.generator.RandomGenerator;
+import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
@@ -117,4 +119,5 @@ public class CityGraph implements ViewerListener {
     public void buttonReleased(String id) {
         System.out.println("Button released on node "+id);
     }
+
 }

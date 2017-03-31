@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class Container {
     private Node location;
-    private ArrayList<Map.Entry<Waste, Integer>> residues;
+    private ArrayList<Map.Entry<Waste, Double>> residues;
 
     public Container(Node n){
         residues = new ArrayList<>();
@@ -18,11 +18,11 @@ public class Container {
             Map.Entry thisEntry = (Map.Entry) entries.next();
             Object key = thisEntry.getKey();
             Object value = thisEntry.getValue();
-            addResidue(key.toString(), (int)value);
+            addResidue(key.toString(), (double)value);
         }
     }
 
-    public void addResidue(String type, Integer value){
+    public void addResidue(String type, Double value){
         Waste residue;
         switch (type){
             case "plastic":
@@ -38,11 +38,11 @@ public class Container {
         residues.add(new AbstractMap.SimpleEntry<>(residue, value));
     }
 
-    public ArrayList<Map.Entry<Waste, Integer>> getResidues() {
+    public ArrayList<Map.Entry<Waste, Double>> getResidues() {
         return residues;
     }
 
-    public void setResidues(ArrayList<Map.Entry<Waste, Integer>> residues) {
+    public void setResidues(ArrayList<Map.Entry<Waste, Double>> residues) {
         this.residues = residues;
     }
     public Node getLocation() {
@@ -54,10 +54,10 @@ public class Container {
     }
 
     public void printContainerDetails() {
-        System.out.println("Container location: Node " + location.getId() + ".");
+        System.out.println("Container location: MyNode " + location.getId() + ".");
         System.out.println("    Residues:");
         for(int i = 0; i < residues.size(); i++){
-            Map.Entry<Waste, Integer> entry = residues.get(i);
+            Map.Entry<Waste, Double> entry = residues.get(i);
             Object key = entry.getKey();
             Object value = entry.getValue();
             System.out.println("        " + key + " -> " + value + "kg");
