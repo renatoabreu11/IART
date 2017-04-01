@@ -4,6 +4,7 @@ package MyGraph;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
+import wasteManagement.Waste;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -103,8 +104,9 @@ public class MyGraph {
         return sb.toString();
     }
 
-    /*
-    public final List<MyNode> findPath(MyNode from, MyNode to) {
+    public final List<MyNode> findPath(MyNode from, MyNode to, double spaceTruck, Waste wasteType) {
+
+        from.setState(0, spaceTruck);
 
         LinkedList<MyNode> openList = new LinkedList<MyNode>();
         LinkedList<MyNode> closedList = new LinkedList<MyNode>();
@@ -113,47 +115,73 @@ public class MyGraph {
         boolean done = false;
         MyNode current = null;
         while (!done) {
-            current = lowestFInOpen(); // get node with lowest fCosts from openList
+            current = getLowestF(openList, spaceTruck); // get node with lowest fCosts from openList
             closedList.add(current); // add current node to closed list
             openList.remove(current); // delete current node from open list
 
-            if ((current.getxPosition() == newX)
-                    && (current.getyPosition() == newY)) { // found goal
-                return calcPath(nodes[oldX][oldY], current);
+            if (current.getId() == to.getId()) { // found goal
+                return calcPath(from, to);
             }
 
+            double distAtNow = current.getDistAtNow();
+            double emptySpace = current.getEmptySpace();
+
             // for all adjacent nodes:
-            List<T> adjacentNodes = getAdjacent(current);
-            for (int i = 0; i < adjacentNodes.size(); i++) {
-                T currentAdj = adjacentNodes.get(i);
-                if (!openList.contains(currentAdj)) { // node is not in openList
-                    currentAdj.setPrevious(current); // set current node as previous for this node
-                    currentAdj.sethCosts(nodes[newX][newY]); // set h costs of this node (estimated costs to goal)
-                    currentAdj.setgCosts(current); // set g costs of this node (costs from start to this node)
-                    openList.add(currentAdj); // add node to openList
-                } else { // node is in openList
-                    if (currentAdj.getgCosts() > currentAdj.calculategCosts(current)) { // costs from current node are cheaper than previous costs
-                        currentAdj.setPrevious(current); // set current node as previous for this node
-                        currentAdj.setgCosts(current); // set g costs of this node (costs from start to this node)
+            ArrayList<MyEdge> adjList = current.getAdjList();
+            for (int i = 0; i < adjList.size(); i++) {
+
+                MyEdge edge = adjList.get(i);
+                MyNode nodeTo = edge.getNodeTo();
+                double weiht = edge.getWeight();
+                double wasteSize = nodeTo.getWasteReq(wasteType);
+                double newEmptySpace = wasteSize >= emptySpace? 0:emptySpace-wasteSize;
+
+                if (!openList.contains(nodeTo)) { // node is not in openList
+                    nodeTo.setParent(current); // set current node as previous for this node
+                    nodeTo.setState(distAtNow + weiht, newEmptySpace);
+                    openList.add(nodeTo); // add node to openList
+                }
+                else { // node is in openList
+                    MyNode newNode = new MyNode(-1, -1, -1, -1, -1);
+                    newNode.setState(distAtNow + weiht, newEmptySpace);
+
+                    if (newNode.getF(0.5, 0.5, spaceTruck) < nodeTo.getF(0.5, 0.5, spaceTruck)) { // costs from current node are cheaper than previous costs
+                        nodeTo.setParent(current); // set current node as previous for this node
+                        nodeTo.setState(distAtNow + weiht, newEmptySpace);
                     }
                 }
             }
 
             if (openList.isEmpty()) { // no path exists
-                return new LinkedList<T>(); // return empty list
+                return new LinkedList<MyNode>(); // return empty list
             }
         }
         return null; // unreachable
     }
 
-    private MyNode getLowestNode(LinkedList<MyNode> list) {
-        // TODO currently, this is done by going through the whole openList!
+    private MyNode getLowestF(LinkedList<MyNode> list, double spaceTruck) {
         MyNode cheapest = list.get(0);
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getfCosts() < cheapest.getfCosts()) {
+        for (int i = 1; i < list.size(); i++) {
+            if (list.get(i).getF(0.5, 0.5, spaceTruck) < cheapest.getF(0.5, 0.5, spaceTruck)) {
                 cheapest = list.get(i);
             }
         }
         return cheapest;
-    }*/
+    }
+
+    private List<MyNode> calcPath(MyNode start, MyNode goal) {
+        LinkedList<MyNode> path = new LinkedList<MyNode>();
+
+        MyNode curr = goal;
+        boolean done = false;
+        while (!done) {
+            path.addFirst(curr);
+            curr = curr.getParent();
+
+            if (curr.equals(start)) {
+                done = true;
+            }
+        }
+        return path;
+    }
 }

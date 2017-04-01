@@ -1,3 +1,5 @@
+package wasteManagement;
+
 import org.graphstream.algorithm.AStar;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Node;

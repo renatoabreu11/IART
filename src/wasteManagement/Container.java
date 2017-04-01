@@ -1,3 +1,5 @@
+package wasteManagement;
+
 import org.graphstream.graph.Node;
 
 import java.util.AbstractMap;
@@ -54,7 +56,7 @@ public class Container {
     }
 
     public void printContainerDetails() {
-        System.out.println("Container location: MyNode " + location.getId() + ".");
+        System.out.println("wasteManagement.Container location: MyNode " + location.getId() + ".");
         System.out.println("    Residues:");
         for(int i = 0; i < residues.size(); i++){
             Map.Entry<Waste, Double> entry = residues.get(i);

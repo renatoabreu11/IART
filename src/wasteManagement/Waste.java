@@ -1,3 +1,5 @@
+package wasteManagement;
+
 public enum Waste {
     HOUSEHOLD,
     PAPER,

@@ -1,3 +1,5 @@
+package wasteManagement;
+
 public class Truck {
     private Waste residue;
     private int maxCapacity;
@@ -47,4 +49,5 @@ public class Truck {
     public void printTruckDetails() {
         System.out.println(residue.toString() + " truck; Maximum capacity: " + maxCapacity + "kg; Current load: " + load+"kg.");
     }
+
 }

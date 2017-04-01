@@ -1,3 +1,5 @@
+package wasteManagement;
+
 import org.graphstream.algorithm.AStar;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
@@ -6,6 +8,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import wasteManagement.Container;
+import wasteManagement.Truck;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -124,7 +128,7 @@ public class WasteManagement {
 
     public void printManagementDetails(){
         System.out.println("Central location: MyNode " + central.getId());
-        System.out.println("Waste station location: MyNode " + wasteStation.getId());
+        System.out.println("wasteManagement.Truck.Waste station location: MyNode " + wasteStation.getId());
         System.out.println("Distance between central and waste station: " + distCentralStation);
 
         System.out.println("\nCompany trucks");

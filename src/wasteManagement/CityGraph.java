@@ -1,3 +1,5 @@
+package wasteManagement;
+
 import org.graphstream.algorithm.AStar;
 import org.graphstream.algorithm.generator.BarabasiAlbertGenerator;
 import org.graphstream.algorithm.generator.DorogovtsevMendesGenerator;

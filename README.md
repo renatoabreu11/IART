@@ -7,7 +7,7 @@ IART is a course given at FEUP in the third year of the Master in Informatics an
 The goal of this project is to, in a given city, identify the best route to be followed by a group of waste collection trucks, minimizing the route taken and maximizing the load transported
 
 ## Description
-Waste collection is a daily task in a city that must be performed as efficiently as possible, either to keep the city clean or to minimize the associated costs. In order to transport waste to the treatment plants, the city services maintain a fleet of specialized trucks which carry out collection routes, which are defined a priori and carried out systematically at a given frequency.
+wasteManagement.Truck.Waste collection is a daily task in a city that must be performed as efficiently as possible, either to keep the city clean or to minimize the associated costs. In order to transport waste to the treatment plants, the city services maintain a fleet of specialized trucks which carry out collection routes, which are defined a priori and carried out systematically at a given frequency.
 
 This collection is intended to be extremely optimized. In fact, the containers scattered in various parts of the city, where the residents deposit the garbage, may not be full enough to justify emptying them by the collection truck, which would make some trips unnecessary. With sensor networks technology developing rapidly, a more effective monitoring of the level of waste accumulation in each container is already possible.
 
