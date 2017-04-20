@@ -7,10 +7,7 @@ import org.graphstream.graph.Node;
 import wasteManagement.Waste;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MyGraph {
 
@@ -97,6 +94,7 @@ public class MyGraph {
     }
 
     public String toString() {
+
         StringBuilder sb = new StringBuilder("");
 
         for (int i = 0; i < nodes.size(); i++) {
@@ -129,31 +127,25 @@ public class MyGraph {
         double sumWaste = this.getTotalWasteOfAType(wasteType);
 
         State iniState = new State(from, 0, edgesCostSum, sumWaste, spaceTruck, spaceTruck, distsWasteStation, wasteType);
-        openList.add(iniState); // add starting node to open list
+        openList.add(iniState);
 
-        boolean done = false;
         State current = null;
         while (!openList.isEmpty()) {
-            current = getLowestF(openList, alfa, beta); // get node with lowest fCosts from openList
-            closedList.add(current); // add current node to closed list
-            openList.remove(current); // delete current node from open list
 
-            if (current.getIdOfNode() == to.getId()) // found goal
+            current = getLowestF(openList, alfa, beta);
+            closedList.add(current);
+            openList.remove(current);
+
+            if (current.getIdOfNode() == to.getId())
                 return calcPath(iniState, current);
 
-            double distAtNow = current.getDistAtNow();
-            double emptySpace = current.getEmptySpace();
-
-            // for all adjacent nodes:
             List<State> adjList = current.getAdjList();
             for (int i = 0; i < adjList.size(); i++) {
                 State newState = adjList.get(i);
-
-                if (!openList.contains(newState)) { // node is not in openList
-                    newState.setParent(current); // set current node as previous for this node
-                    openList.add(newState); // add node to openList
+                if (!openList.contains(newState)) {
+                    newState.setParent(current);
+                    openList.add(newState);
                 }
-
             }
 
         }
@@ -161,19 +153,81 @@ public class MyGraph {
     }
 
     private State getLowestF(List<State> list, double alfa, double beta) {
+
         State cheapest = list.get(0);
-        System.out.println(cheapest);
         for (int i = 1; i < list.size(); i++) {
             State node = list.get(i);
-            System.out.println(node);
-            if (node.getF(alfa, beta) < cheapest.getF(alfa, beta)) {
+            if (node.getF(alfa, beta) < cheapest.getF(alfa, beta))
                 cheapest = list.get(i);
-            }
         }
         return cheapest;
     }
 
+    public final List<MyNode> findPath_dfs(MyNode from, MyNode to) {
+
+        this.unvisitNodes();
+        Stack<MyNode> s = new Stack<MyNode>();
+        s.push(from);
+        from.setVisited(true);
+        while (!s.isEmpty()) {
+            MyNode u = s.pop();
+            List<MyEdge> adjList = u.getAdjList();
+            for (MyEdge v: adjList) {
+                if (v.getNodeTo().getVisited())
+                    continue;
+                v.getNodeTo().setParent(u);
+                v.getNodeTo().setVisited(true);
+                if (v.getNodeTo().getId() == to.getId()) {
+                    return this.calcPath(from, to);
+                }
+                s.push(v.getNodeTo());
+            }
+        }
+
+        return null;
+    }
+
+    public final List<MyNode> findPath_bfs(MyNode from, MyNode to) {
+
+        this.unvisitNodes();
+        Queue<MyNode> q = new LinkedList<MyNode>();
+        q.add(from);
+        from.setVisited(true);
+        while (!q.isEmpty()) {
+            MyNode u = q.remove();
+            List<MyEdge> adjList = u.getAdjList();
+            for (MyEdge v: adjList) {
+                if (v.getNodeTo().getVisited())
+                    continue;
+                v.getNodeTo().setParent(u);
+                v.getNodeTo().setVisited(true);
+                if (v.getNodeTo().getId() == to.getId()) {
+                    return this.calcPath(from, to);
+                }
+                q.add(v.getNodeTo());
+            }
+        }
+
+        return null;
+    }
+
+    private List<MyNode> calcPath(MyNode start, MyNode goal) {
+
+        LinkedList<MyNode> path = new LinkedList<MyNode>();
+
+        MyNode curr = goal;
+        boolean done = false;
+        while (!done) {
+            path.addFirst(curr);
+            curr = curr.getParent();
+            if (curr.equals(start))
+                done = true;
+        }
+        return path;
+    }
+
     private List<MyNode> calcPath(State start, State goal) {
+
         LinkedList<MyNode> path = new LinkedList<MyNode>();
 
         State curr = goal;
@@ -190,8 +244,9 @@ public class MyGraph {
     }
 
     public void printPath(List<MyNode> path) {
+
         double glassCollected = 0;
-        System.out.println("\n\n\nPath size: " + path.size());
+        System.out.println("Number of nodes of path: " + path.size());
         for (int i = 0; i < path.size(); i++) {
             MyNode node = path.get(i);
             glassCollected += node.getGlass();
@@ -236,12 +291,6 @@ public class MyGraph {
         return revGraph;
     }
 
-    /**
-     * Get the distances of nodes of graph to node start, using dijkstra algorithm - O(n^2) version.
-     * @param start
-     * @param graph
-     * @return array of distances
-     */
     public ArrayList<Double> dijkstra (MyNode start) {
 
         ArrayList<Double> dist = new ArrayList<Double>(this.getNumNodes());
@@ -288,6 +337,13 @@ public class MyGraph {
         for (MyNode node: nodes)
             sum += node.getWasteReq(wasteType);
         return sum;
+    }
+
+    private void unvisitNodes() {
+        for (MyNode node: nodes) {
+            node.setVisited(false);
+            node.setParent(null);
+        }
     }
 
 }

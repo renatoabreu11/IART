@@ -15,6 +15,9 @@ public class MyNode {
 
     private ArrayList<MyEdge> adjList = new ArrayList<MyEdge>();
 
+    private boolean visited = false;
+    private MyNode parent = null;
+
     public MyNode(int id, double paper, double plastic, double glass, double household) {
         this.id = id;
         this.paper = paper;
@@ -61,5 +64,21 @@ public class MyNode {
                 return plastic;
         }
         return 0;
+    }
+
+    public void setVisited(boolean visited) {
+        this.visited = visited;
+    }
+
+    public void setParent(MyNode parent) {
+        this.parent = parent;
+    }
+
+    public MyNode getParent() {
+        return parent;
+    }
+
+    public boolean getVisited() {
+        return visited;
     }
 }

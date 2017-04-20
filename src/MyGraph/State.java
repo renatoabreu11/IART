@@ -33,8 +33,9 @@ public class State {
     }
 
     public double getF(double alfa, double beta) {
-        double g = alfa * (distAtNow / edgesCostSum) + beta * (-(spaceTruck-emptySpace) / wasteSum);
-        double h = distToStation / edgesCostSum * alfa;
+        double collected = spaceTruck - emptySpace;
+        double g = alfa * (distAtNow / edgesCostSum) - beta * collected / wasteSum;
+        double h = distToStation / edgesCostSum * alfa/2;
         return g + h;
     }
 
@@ -96,13 +97,7 @@ public class State {
     @Override
     public String toString() {
         String res = "";
-        res += "node: " + node.getId() + "\n";
-        res += "dist at now: " + distAtNow + "\n";
-        res += "empty space: " + emptySpace + "\n";
-        res += "dist to station:" + distToStation + "\n";
-        res += "edges sum:" + edgesCostSum + "\n";
-        res += "space truck:" + spaceTruck + "\n";
-        res += "f* = " + this.getF(0.5, 0.5) + "\n";
+        res += "node: " + node.getId() + " f* = " + this.getF(0.5, 0.5) + ";;;";
         return res;
     }
 
