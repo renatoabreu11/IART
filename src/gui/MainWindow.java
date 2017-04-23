@@ -47,7 +47,7 @@ public class MainWindow extends JFrame{
         wasteOptions = new WasteOptions();
         wasteOptions.setVisible(true);
 
-        wasteManagement = new WasteManagement();
+        wasteManagement = new WasteManagement(this);
         wasteManagement.setVisible(true);
 
         contentPane.add(mainOptions.getPane(), "Main Options");
