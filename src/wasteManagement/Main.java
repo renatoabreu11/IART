@@ -20,33 +20,24 @@ public class Main {
         System.out.println();
 
         Graph graph = cg.getGraph();
-        MyGraph myGraph = new MyGraph(graph);
+        MyGraph myGraph = new MyGraph(graph, management, Waste.GLASS, 0.5, 0.5);
 
-        Node central = management.getCentral();
-        Node wasteStation = management.getWasteStation();
-        MyNode central_ = myGraph.getNode(central.getIndex());
-        MyNode wasteStation_ = myGraph.getNode(wasteStation.getIndex());
-        double truckCap = management.getTrucks().get(0).getMaxCapacity();
-        List<Double> distsToStation = myGraph.getDistsToNode(wasteStation_);
-
-        double alfa = 0.5, beta = 0.5;
-        List<MyNode> path_astar = myGraph.findPath_AStar(central_, wasteStation_, truckCap, Waste.GLASS, distsToStation, alfa, beta);
+        MyPath path_astar = myGraph.findPath_AStar();
         System.out.println("A*");
-        myGraph.printPath(path_astar);
+        path_astar.printPath();
         System.out.println("\n");
 
         System.out.println("dfs");
-        List<MyNode> path_dfs = myGraph.findPath_dfs(central_, wasteStation_);
-        myGraph.printPath(path_dfs);
+        MyPath path_dfs = myGraph.findPath_dfs();
+        path_dfs.printPath();
         System.out.println("\n");
 
         System.out.println("bfs");
-        List<MyNode> path_bfs = myGraph.findPath_bfs(central_, wasteStation_);
-        myGraph.printPath(path_bfs);
+        MyPath path_bfs = myGraph.findPath_bfs();
+        path_bfs.printPath();
         System.out.println("\n");
 
-        List<MyEdge> edgesOfPath = myGraph.getEdgesOfPath(path_astar);
-        myGraph.printEdgesOfGraph(graph, edgesOfPath);
+        path_astar.printEdgesOfPath(graph);
         //myGraph.resetColorEdgeOfGraph(graph);
         cg.display();
     }
