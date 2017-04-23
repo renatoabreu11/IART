@@ -6,6 +6,7 @@ import wasteManagement.WasteManagement;
 
 import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -118,6 +119,7 @@ public class App {
         management.printManagementDetails();
         System.out.println();
 
+        frame.setSize(600, 600);
         /*
         final DefaultGraph g = new DefaultGraph("my beautiful graph");
         g.setStrict(false);

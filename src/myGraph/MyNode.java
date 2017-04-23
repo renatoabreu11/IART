@@ -4,14 +4,14 @@ import wasteManagement.Waste;
 
 import java.util.ArrayList;
 
-public class MyNode {
+public class MyNode implements Comparable {
 
     private final int id;
 
-    private final double paper;
-    private final double plastic;
-    private final double glass;
-    private final double household;
+    private double paper;
+    private double plastic;
+    private double glass;
+    private double household;
 
     private ArrayList<MyEdge> adjList = new ArrayList<MyEdge>();
 
@@ -66,6 +66,19 @@ public class MyNode {
         return 0;
     }
 
+    public void updateWaste(Waste typeWaste, double wasteCollected) {
+        switch (typeWaste) {
+            case GLASS:
+                glass -= wasteCollected;
+            case HOUSEHOLD:
+                household -= wasteCollected;
+            case PAPER:
+                paper -= wasteCollected;
+            case PLASTIC:
+                plastic -= wasteCollected;
+        }
+    }
+
     public void setVisited(boolean visited) {
         this.visited = visited;
     }
@@ -80,5 +93,17 @@ public class MyNode {
 
     public boolean getVisited() {
         return visited;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        int id1 = this.id;
+        int id2 = ((MyNode)o).getId();
+        if (id1 < id2)
+            return -1;
+        else if (id1 > id2)
+            return 1;
+        else
+            return 0;
     }
 }

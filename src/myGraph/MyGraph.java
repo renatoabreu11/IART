@@ -5,46 +5,41 @@ import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import wasteManagement.Waste;
+import wasteManagement.WasteManagement;
 
 import java.util.*;
 
 public class MyGraph {
 
     private ArrayList<MyNode> nodes = new ArrayList<MyNode>();
+    private List<Double> distsWasteStation;
 
     private double edgesCostSum = 0;
+    private double maxCapacityTruck;
+    private double alfa;
+    private double beta;
+    private Waste typeWaste;
+
+    private MyNode from;
+    private MyNode to;
 
     public MyGraph() {}
 
-    public MyGraph(Graph g) {
+    public MyGraph(Graph g, WasteManagement management, Waste typeWaste, double alfa, double beta) {
+
         this.importGS(g);
-    }
+        Node central = management.getCentral();
+        Node wasteStation = management.getWasteStation();
+        MyNode central_ = this.getNode(central.getIndex());
+        MyNode wasteStation_ = this.getNode(wasteStation.getIndex());
+        maxCapacityTruck = management.getTrucks().get(0).getMaxCapacity();
+        distsWasteStation = this.getDistsToNode(wasteStation_);
+        this.typeWaste = typeWaste;
+        this.alfa = alfa;
+        this.beta = beta;
+        this.from = central_;
+        this.to = wasteStation_;
 
-    public MyNode getNode(int id) {
-        return nodes.get(id);
-    }
-
-    public double getEdgesCostSum() {return edgesCostSum;}
-
-    public int getNumNodes() {
-        return nodes.size();
-    }
-
-    public void addNode(MyNode node) {
-        nodes.add(node);
-    }
-
-    public void addEdge(MyNode nodeFrom, MyEdge edge) {
-        int idFrom = nodeFrom.getId();
-        nodes.get(idFrom).addEdge(edge);
-    }
-
-    public ArrayList<MyNode> getNodes() {
-        return nodes;
-    }
-
-    public void setNodes(ArrayList<MyNode> nodes) {
-        this.nodes = nodes;
     }
 
     public void importGS(Graph graph) {
@@ -92,6 +87,33 @@ public class MyGraph {
 
     }
 
+    public MyNode getNode(int id) {
+        return nodes.get(id);
+    }
+
+    public double getEdgesCostSum() {return edgesCostSum;}
+
+    public int getNumNodes() {
+        return nodes.size();
+    }
+
+    public void addNode(MyNode node) {
+        nodes.add(node);
+    }
+
+    public void addEdge(MyNode nodeFrom, MyEdge edge) {
+        int idFrom = nodeFrom.getId();
+        nodes.get(idFrom).addEdge(edge);
+    }
+
+    public ArrayList<MyNode> getNodes() {
+        return nodes;
+    }
+
+    public void setNodes(ArrayList<MyNode> nodes) {
+        this.nodes = nodes;
+    }
+
     public String toString() {
 
         StringBuilder sb = new StringBuilder("");
@@ -119,19 +141,19 @@ public class MyGraph {
         return sb.toString();
     }
 
-    public final List<MyNode> findPath_AStar(MyNode from, MyNode to, double spaceTruck, Waste wasteType, List<Double> distsWasteStation, double alfa, double beta) {
+    public final MyPath findPath_AStar() {
 
         LinkedList<State> openList = new LinkedList<State>();
         LinkedList<State> closedList = new LinkedList<State>();
-        double sumWaste = this.getTotalWasteOfAType(wasteType);
+        double sumWaste = this.getTotalWasteOfAType(typeWaste);
 
-        State iniState = new State(from, 0, edgesCostSum, sumWaste, spaceTruck, spaceTruck, distsWasteStation, wasteType);
+        State iniState = new State(from, 0, edgesCostSum, sumWaste, maxCapacityTruck, maxCapacityTruck, distsWasteStation, typeWaste);
         openList.add(iniState);
 
         State current = null;
         while (!openList.isEmpty()) {
 
-            current = getLowestF(openList, alfa, beta);
+            current = getLowestF(openList);
             closedList.add(current);
             openList.remove(current);
 
@@ -151,7 +173,7 @@ public class MyGraph {
         return null; // unreachable
     }
 
-    private State getLowestF(List<State> list, double alfa, double beta) {
+    private State getLowestF(List<State> list) {
 
         State cheapest = list.get(0);
         for (int i = 1; i < list.size(); i++) {
@@ -162,7 +184,7 @@ public class MyGraph {
         return cheapest;
     }
 
-    public final List<MyNode> findPath_dfs(MyNode from, MyNode to) {
+    public final MyPath findPath_dfs() {
 
         this.unvisitNodes();
         Stack<MyNode> s = new Stack<MyNode>();
@@ -186,7 +208,7 @@ public class MyGraph {
         return null;
     }
 
-    public final List<MyNode> findPath_bfs(MyNode from, MyNode to) {
+    public final MyPath findPath_bfs() {
 
         this.unvisitNodes();
         Queue<MyNode> q = new LinkedList<MyNode>();
@@ -210,7 +232,7 @@ public class MyGraph {
         return null;
     }
 
-    private List<MyNode> calcPath(MyNode start, MyNode goal) {
+    private MyPath calcPath(MyNode start, MyNode goal) {
 
         LinkedList<MyNode> path = new LinkedList<MyNode>();
 
@@ -222,10 +244,10 @@ public class MyGraph {
             if (curr.equals(start))
                 done = true;
         }
-        return path;
+        return new MyPath(path, maxCapacityTruck, typeWaste);
     }
 
-    private List<MyNode> calcPath(State start, State goal) {
+    private MyPath calcPath(State start, State goal) {
 
         LinkedList<MyNode> path = new LinkedList<MyNode>();
 
@@ -239,25 +261,7 @@ public class MyGraph {
                 done = true;
             }
         }
-        return path;
-    }
-
-    public void printPath(List<MyNode> path) {
-
-        double glassCollected = 0;
-        System.out.println("Number of nodes of path: " + path.size());
-        for (int i = 0; i < path.size(); i++) {
-            MyNode node = path.get(i);
-            glassCollected += node.getGlass();
-            System.out.print(node.getId());
-            if (i < path.size()-1) {
-                System.out.print(" -> ");
-            }
-            else {
-                System.out.println();
-            }
-        }
-        System.out.println("Glass collected: " + glassCollected);
+        return new MyPath(path, maxCapacityTruck, typeWaste);
     }
 
     public List<Double> getDistsToNode(MyNode node) {
@@ -345,29 +349,13 @@ public class MyGraph {
         }
     }
 
-    public List<MyEdge> getEdgesOfPath(List<MyNode> path) {
-        List<MyEdge> edges = new ArrayList<MyEdge>();
-        for (int i = 0; i < path.size()-1; i++) {
-            MyNode u = path.get(i);
-            MyNode v = path.get(i+1);
-            List<MyEdge> adjList = u.getAdjList();
-            for (MyEdge e: adjList)
-                if (e.getNodeTo().getId() == v.getId()) {
-                    edges.add(e);
-                    break;
-                }
-        }
-        return edges;
-    }
-
-    public void printEdgesOfGraph(Graph g, List<MyEdge> edgesOfPath) {
-        for (MyEdge e: edgesOfPath)
-            g.getEdge(e.getIndex()).addAttribute("ui.color", 1); // 1 = green, 0 = black (see fill-color in stylesheet.css)
-    }
-
     public void resetColorEdgeOfGraph(Graph g) {
         for(Edge e: g.getEachEdge())
             e.addAttribute("ui.color", 0); // 0 = black (see fill-color in stylesheet.css)
+    }
+
+    public List<MyPath> solve(int numTrucks) {
+        return new ArrayList<MyPath>();
     }
 
 }
