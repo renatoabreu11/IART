@@ -46,8 +46,12 @@ public class Truck {
         this.load = load;
     }
 
+    public String getTruckDetails(){
+        return residue.toString() + " truck; Maximum capacity: " + maxCapacity + "kg; Current load: " + load+"kg.";
+    }
+
     public void printTruckDetails() {
-        System.out.println(residue.toString() + " truck; Maximum capacity: " + maxCapacity + "kg; Current load: " + load+"kg.");
+        System.out.println(getTruckDetails());
     }
 
 }

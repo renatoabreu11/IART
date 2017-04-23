@@ -7,6 +7,7 @@ public class MainWindow extends JFrame{
     private MainOptions mainOptions;
     private WasteOptions wasteOptions;
     private WasteManagement wasteManagement;
+    private Statistics statistics;
     private JPanel contentPane;
 
     /**
@@ -28,7 +29,7 @@ public class MainWindow extends JFrame{
      */
     public MainWindow() {
         setTitle("Waste Management");
-        setSize(512, 512);
+        setSize(1024, 1024);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         contentPane = new JPanel(new CardLayout());
@@ -50,9 +51,13 @@ public class MainWindow extends JFrame{
         wasteManagement = new WasteManagement(this);
         wasteManagement.setVisible(true);
 
+        statistics = new Statistics();
+        statistics.setVisible(true);
+
         contentPane.add(mainOptions.getPane(), "Main Options");
         contentPane.add(wasteOptions.getPane(), "Waste Options");
         contentPane.add(wasteManagement.getPane(), "Waste Management");
+        contentPane.add(statistics.getPane(), "Statistics");
 
         addListeners();
 
@@ -61,24 +66,23 @@ public class MainWindow extends JFrame{
     }
 
     private void addListeners(){
-        mainOptions.getOptionsButton().addActionListener(e ->{
-            CardLayout cardLayout = (CardLayout) contentPane.getLayout();
-            cardLayout.show(contentPane, "Waste Options");
-        });
+        mainOptions.getOptionsButton().addActionListener(e -> showLayout("Waste Options"));
 
-        mainOptions.getWasteRecoveryButton().addActionListener(e ->{
-            CardLayout cardLayout = (CardLayout) contentPane.getLayout();
-            cardLayout.show(contentPane, "Waste Management");
-        });
+        mainOptions.getWasteRecoveryButton().addActionListener(e -> showLayout("Waste Management"));
 
-        wasteOptions.getBackButton().addActionListener(e -> {
-            CardLayout cardLayout = (CardLayout) contentPane.getLayout();
-            cardLayout.show(contentPane, "Main Options");
-        });
+        wasteOptions.getBackButton().addActionListener(e -> showLayout("Main Options"));
 
-        wasteManagement.getBackButton().addActionListener(e -> {
-            CardLayout cardLayout = (CardLayout) contentPane.getLayout();
-            cardLayout.show(contentPane, "Main Options");
-        });
+        wasteManagement.getBackButton().addActionListener(e -> showLayout("Main Options"));
+
+        statistics.getBackButton().addActionListener(e -> showLayout("Waste Management"));
+    }
+
+    public void showLayout(String layout){
+        CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+        cardLayout.show(contentPane, layout);
+    }
+
+    public Statistics getStatistics(){
+        return statistics;
     }
 }

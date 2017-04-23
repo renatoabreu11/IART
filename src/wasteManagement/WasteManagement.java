@@ -128,7 +128,7 @@ public class WasteManagement {
 
     public void printManagementDetails(){
         System.out.println("Central location: MyNode " + central.getId());
-        System.out.println("wasteManagement.Truck.Waste station location: MyNode " + wasteStation.getId());
+        System.out.println("Waste station location: MyNode " + wasteStation.getId());
         System.out.println("Distance between central and waste station: " + distCentralStation);
 
         System.out.println("\nCompany trucks");
@@ -172,5 +172,21 @@ public class WasteManagement {
 
     public Node getWasteStation() {
         return wasteStation;
+    }
+
+    public ArrayList<String> getGeneralInfo(){
+        ArrayList<String> ret = new ArrayList<>();
+        ret.add("Central location: Node " + central.getId());
+        ret.add("Waste station location: Node " + wasteStation.getId());
+        ret.add("Central and waste station distance: " + distCentralStation + "km");
+        return ret;
+    }
+
+    public ArrayList<String> getTrucksInfo(){
+        ArrayList<String> ret = new ArrayList<>();
+        for(Truck t : trucks){
+            ret.add(t.getTruckDetails());
+        }
+        return ret;
     }
 }
