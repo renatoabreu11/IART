@@ -3,11 +3,15 @@ graph {
 }
 
 node {
-    size: 10px, 15px;
+    size: 10px, 10px;
     shape: circle;
-    fill-color: blue, green;
-    fill-mode: gradient-radial;
     arrow-shape: arrow;
+    fill-color: white;
+}
+
+edge {
+    fill-mode: dyn-plain;
+    fill-color: black, green;
 }
 
 node:clicked {

@@ -1,4 +1,4 @@
-package MyGraph;
+package myGraph;
 
 
 import org.graphstream.graph.Edge;
@@ -6,7 +6,6 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import wasteManagement.Waste;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class MyGraph {
@@ -85,7 +84,7 @@ public class MyGraph {
 
             MyNode myFrom = this.getNode(from.getIndex());
             MyNode myTo = this.getNode(to.getIndex());
-            MyEdge myEdge = new MyEdge(myFrom, myTo, weight);
+            MyEdge myEdge = new MyEdge(myFrom, myTo, weight, edge.getIndex());
 
             this.addEdge(myFrom, myEdge);
             this.edgesCostSum += weight;
@@ -283,7 +282,7 @@ public class MyGraph {
                 MyNode from = revGraph.getNode(edge.getNodeFrom().getId());
                 MyNode to = revGraph.getNode(edge.getNodeTo().getId());
                 double weight = edge.getWeight();
-                MyEdge revEdge = new MyEdge(to, from, weight);
+                MyEdge revEdge = new MyEdge(to, from, weight, edge.getIndex());
                 revGraph.addEdge(to, revEdge);
             }
         }
@@ -344,6 +343,31 @@ public class MyGraph {
             node.setVisited(false);
             node.setParent(null);
         }
+    }
+
+    public List<MyEdge> getEdgesOfPath(List<MyNode> path) {
+        List<MyEdge> edges = new ArrayList<MyEdge>();
+        for (int i = 0; i < path.size()-1; i++) {
+            MyNode u = path.get(i);
+            MyNode v = path.get(i+1);
+            List<MyEdge> adjList = u.getAdjList();
+            for (MyEdge e: adjList)
+                if (e.getNodeTo().getId() == v.getId()) {
+                    edges.add(e);
+                    break;
+                }
+        }
+        return edges;
+    }
+
+    public void printEdgesOfGraph(Graph g, List<MyEdge> edgesOfPath) {
+        for (MyEdge e: edgesOfPath)
+            g.getEdge(e.getIndex()).addAttribute("ui.color", 1); // 1 = green, 0 = black (see fill-color in stylesheet.css)
+    }
+
+    public void resetColorEdgeOfGraph(Graph g) {
+        for(Edge e: g.getEachEdge())
+            e.addAttribute("ui.color", 0); // 0 = black (see fill-color in stylesheet.css)
     }
 
 }

@@ -1,14 +1,12 @@
 package wasteManagement;
 
-import MyGraph.*;
+import myGraph.*;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.xml.sax.SAXException;
 
-import javax.security.sasl.SaslServer;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
 
 public class Main {
@@ -32,21 +30,24 @@ public class Main {
         List<Double> distsToStation = myGraph.getDistsToNode(wasteStation_);
 
         double alfa = 0.5, beta = 0.5;
-        List<MyNode> path = myGraph.findPath_AStar(central_, wasteStation_, truckCap, Waste.GLASS, distsToStation, alfa, beta);
+        List<MyNode> path_astar = myGraph.findPath_AStar(central_, wasteStation_, truckCap, Waste.GLASS, distsToStation, alfa, beta);
         System.out.println("A*");
-        myGraph.printPath(path);
+        myGraph.printPath(path_astar);
         System.out.println("\n");
 
         System.out.println("dfs");
-        path = myGraph.findPath_dfs(central_, wasteStation_);
-        myGraph.printPath(path);
+        List<MyNode> path_dfs = myGraph.findPath_dfs(central_, wasteStation_);
+        myGraph.printPath(path_dfs);
         System.out.println("\n");
 
         System.out.println("bfs");
-        path = myGraph.findPath_bfs(central_, wasteStation_);
-        myGraph.printPath(path);
+        List<MyNode> path_bfs = myGraph.findPath_bfs(central_, wasteStation_);
+        myGraph.printPath(path_bfs);
         System.out.println("\n");
 
+        List<MyEdge> edgesOfPath = myGraph.getEdgesOfPath(path_astar);
+        myGraph.printEdgesOfGraph(graph, edgesOfPath);
+        //myGraph.resetColorEdgeOfGraph(graph);
         cg.display();
     }
 

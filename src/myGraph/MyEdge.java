@@ -1,4 +1,4 @@
-package MyGraph;
+package myGraph;
 
 public class MyEdge {
 
@@ -6,11 +6,13 @@ public class MyEdge {
     private final MyNode to;
 
     private final double weight;
+    private final int index;
 
-    public MyEdge(MyNode from, MyNode to, double weight) {
+    public MyEdge(MyNode from, MyNode to, double weight, int index) {
         this.from = from;
         this.to = to;
         this.weight = weight;
+        this.index = index;
     }
 
     public double getWeight() {
@@ -24,5 +26,7 @@ public class MyEdge {
     public MyNode getNodeTo() {
         return to;
     }
+
+    public int getIndex() {return index;}
 
 }

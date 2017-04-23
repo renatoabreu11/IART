@@ -1,4 +1,4 @@
-package MyGraph;
+package myGraph;
 
 import wasteManagement.Waste;
 

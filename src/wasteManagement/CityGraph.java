@@ -70,6 +70,11 @@ public class CityGraph implements ViewerListener {
     }
 
     public void display(){
+
+        for (Node n: graph) {
+            n.addAttribute("ui.label", n.getId());
+        }
+
         System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
         graph.addAttribute("ui.quality");
         graph.addAttribute("ui.antialias");
