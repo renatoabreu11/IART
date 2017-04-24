@@ -29,13 +29,13 @@ public class Container {
     public void addResidue(String type, Double value){
         Waste residue;
         switch (type){
-            case "plastic":
+            case "Plastic":
                 residue = Waste.PLASTIC; break;
-            case "paper":
+            case "Paper":
                 residue = Waste.PAPER; break;
-            case "glass":
+            case "Glass":
                 residue = Waste.GLASS; break;
-            case "household":
+            case "Household":
                 residue = HOUSEHOLD; break;
             default: residue = HOUSEHOLD; break;
         }
@@ -69,31 +69,59 @@ public class Container {
         System.out.println();
     }
 
-    public ArrayList<String> getContainerInfo(){
-        ArrayList<String> ret = new ArrayList<>();
-        ret.add(location.getId());
-        ret.add("0"); ret.add("0"); ret.add("0"); ret.add("0");
+    public ArrayList<Double> getContainerInfo(){
+        ArrayList<Double> ret = new ArrayList<>();
+        ret.add(Double.parseDouble(location.getId()));
+        ret.add(0.0); ret.add(0.0); ret.add(0.0); ret.add(0.0);
 
         for(int i = 0; i < residues.size(); i++){
             Map.Entry<Waste, Double> entry = residues.get(i);
             Waste key = entry.getKey();
-            Object value = entry.getValue();
+            Double value = entry.getValue();
             switch (key){
                 case HOUSEHOLD:
-                    ret.set(1, value.toString());
+                    ret.set(1, value);
                     break;
                 case PAPER:
-                    ret.set(2, value.toString());
+                    ret.set(2, value);
                     break;
                 case PLASTIC:
-                    ret.set(3, value.toString());
+                    ret.set(3, value);
                     break;
                 case GLASS:
-                    ret.set(4, value.toString());
+                    ret.set(4, value);
                     break;
             }
         }
 
         return ret;
+    }
+
+    public double updateResidue(String type, double newValue) {
+        Waste residue;
+        switch (type){
+            case "Plastic":
+                residue = Waste.PLASTIC; break;
+            case "Paper":
+                residue = Waste.PAPER; break;
+            case "Glass":
+                residue = Waste.GLASS; break;
+            case "Household":
+                residue = HOUSEHOLD; break;
+            default: return 0;
+        }
+
+        for(int i = 0; i < residues.size(); i++){
+            Map.Entry<Waste, Double> entry = residues.get(i);
+            Object key = entry.getKey();
+            double value = entry.getValue();
+            if(key.equals(residue)){
+                entry.setValue(newValue);
+                return newValue - value;
+            }
+        }
+
+        addResidue(type, newValue);
+        return newValue;
     }
 }

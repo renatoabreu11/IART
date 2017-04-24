@@ -6,18 +6,7 @@ public class Truck {
     private int load;
 
     public Truck(String residueType, int maxCapacity){
-        switch (residueType){
-            case "Plastic":
-                residue = Waste.PLASTIC; break;
-            case "Paper":
-                residue = Waste.PAPER; break;
-            case "Glass":
-                residue = Waste.GLASS; break;
-            case "Household":
-                residue = Waste.HOUSEHOLD; break;
-            default: residue = Waste.HOUSEHOLD; break;
-        }
-
+        residue = Waste.toEnum(residueType);
         this.maxCapacity = maxCapacity;
         this.load = 0;
     }

@@ -6,7 +6,7 @@ import java.awt.*;
 public class MainWindow extends JFrame{
     private MainOptions mainOptions;
     private WasteOptions wasteOptions;
-    private WasteManagement wasteManagement;
+    private Management management;
     private Statistics statistics;
     private JPanel contentPane;
 
@@ -48,15 +48,15 @@ public class MainWindow extends JFrame{
         wasteOptions = new WasteOptions();
         wasteOptions.setVisible(true);
 
-        wasteManagement = new WasteManagement(this);
-        wasteManagement.setVisible(true);
+        management = new Management(this);
+        management.setVisible(true);
 
-        statistics = new Statistics();
+        statistics = new Statistics(management);
         statistics.setVisible(true);
 
         contentPane.add(mainOptions.getPane(), "Main Options");
         contentPane.add(wasteOptions.getPane(), "Waste Options");
-        contentPane.add(wasteManagement.getPane(), "Waste Management");
+        contentPane.add(management.getPane(), "Waste Management");
         contentPane.add(statistics.getPane(), "Statistics");
 
         addListeners();
@@ -72,7 +72,7 @@ public class MainWindow extends JFrame{
 
         wasteOptions.getBackButton().addActionListener(e -> showLayout("Main Options"));
 
-        wasteManagement.getBackButton().addActionListener(e -> showLayout("Main Options"));
+        management.getBackButton().addActionListener(e -> showLayout("Main Options"));
 
         statistics.getBackButton().addActionListener(e -> showLayout("Waste Management"));
     }

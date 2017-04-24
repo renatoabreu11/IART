@@ -89,6 +89,7 @@
           <component id="b7bd7" class="javax.swing.JTable" binding="nodes">
             <constraints/>
             <properties>
+              <autoCreateRowSorter value="true"/>
               <dragEnabled value="false"/>
               <dropMode value="USE_SELECTION"/>
             </properties>
