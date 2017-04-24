@@ -9,12 +9,15 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Management {
     private MainWindow parent;
     private JPanel pane;
     private JButton backButton;
-    private JButton startAnalysisButton;
+    private JButton analysisButton;
+    private JButton endShiftButton;
+    private JButton wasteCollectionButton;
 
     private CityGraph cg = null;
     private WasteManagement wasteManagement = null;
@@ -22,19 +25,19 @@ public class Management {
     public Management(MainWindow mainWindow) {
         this.parent = mainWindow;
         addListeners();
+
+        cg = new CityGraph("graph1");
+
+        wasteManagement = null;
+        try {
+            wasteManagement = new wasteManagement.WasteManagement("station1", cg.getGraph());
+        } catch (IOException | SAXException | ParserConfigurationException e1) {
+            e1.printStackTrace();
+        }
     }
 
     private void addListeners() {
-        startAnalysisButton.addActionListener((ActionEvent e) -> {
-            cg = new CityGraph("graph1");
-
-            wasteManagement = null;
-            try {
-                wasteManagement = new wasteManagement.WasteManagement("station1", cg.getGraph());
-            } catch (IOException | SAXException | ParserConfigurationException e1) {
-                e1.printStackTrace();
-            }
-
+        analysisButton.addActionListener((ActionEvent e) -> {
             assert wasteManagement != null;
             ArrayList<String> generalInfo = wasteManagement.getGeneralInfo();
             ArrayList<String> trucksInfo = wasteManagement.getTrucksInfo();
@@ -46,6 +49,15 @@ public class Management {
             s.setResidueInfo(residueInfo);
             s.setNodesInfo(containersInfo);
             this.parent.showLayout("Statistics");
+        });
+
+        endShiftButton.addActionListener((ActionEvent e) -> {
+            wasteManagement.emptyTrucks();
+            wasteManagement.refillContainers();
+        });
+
+        wasteCollectionButton.addActionListener((ActionEvent e) -> {
+
         });
     }
 

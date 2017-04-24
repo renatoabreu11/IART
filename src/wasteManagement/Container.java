@@ -22,23 +22,11 @@ public class Container {
             Map.Entry thisEntry = (Map.Entry) entries.next();
             Object key = thisEntry.getKey();
             Object value = thisEntry.getValue();
-            addResidue(key.toString(), (double)value);
+            addResidue(Waste.toEnum(key.toString()), (double)value);
         }
     }
 
-    public void addResidue(String type, Double value){
-        Waste residue;
-        switch (type){
-            case "Plastic":
-                residue = Waste.PLASTIC; break;
-            case "Paper":
-                residue = Waste.PAPER; break;
-            case "Glass":
-                residue = Waste.GLASS; break;
-            case "Household":
-                residue = HOUSEHOLD; break;
-            default: residue = HOUSEHOLD; break;
-        }
+    public void addResidue(Waste residue, Double value){
         residues.add(new AbstractMap.SimpleEntry<>(residue, value));
     }
 
@@ -97,20 +85,21 @@ public class Container {
         return ret;
     }
 
-    public double updateResidue(String type, double newValue) {
-        Waste residue;
-        switch (type){
-            case "Plastic":
-                residue = Waste.PLASTIC; break;
-            case "Paper":
-                residue = Waste.PAPER; break;
-            case "Glass":
-                residue = Waste.GLASS; break;
-            case "Household":
-                residue = HOUSEHOLD; break;
-            default: return 0;
+    public void updateResidue(Waste residue, double newValue) {
+        for(int i = 0; i < residues.size(); i++){
+            Map.Entry<Waste, Double> entry = residues.get(i);
+            Waste key = entry.getKey();
+            double value = entry.getValue();
+            if(key.equals(residue)){
+                entry.setValue(newValue + value);
+                return;
+            }
         }
 
+        addResidue(residue, newValue);
+    }
+
+    public double setResidue(Waste residue, double newValue) {
         for(int i = 0; i < residues.size(); i++){
             Map.Entry<Waste, Double> entry = residues.get(i);
             Object key = entry.getKey();
@@ -121,7 +110,7 @@ public class Container {
             }
         }
 
-        addResidue(type, newValue);
+        addResidue(residue, newValue);
         return newValue;
     }
 }

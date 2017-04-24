@@ -14,12 +14,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Objects;
-
-import static jdk.nashorn.internal.objects.NativeMath.round;
+import java.util.*;
 
 public class WasteManagement {
 
@@ -205,6 +200,7 @@ public class WasteManagement {
     public ArrayList<ArrayList<Double>> getContainersInfo(){
         ArrayList<ArrayList<Double>> ret = new ArrayList<>();
         for(Container c : containers){
+            c.printContainerDetails();
             ArrayList<Double> containerInfo = c.getContainerInfo();
             ret.add(containerInfo);
         }
@@ -214,7 +210,7 @@ public class WasteManagement {
     public void updateContainer(String id, double value, String residue){
         for(Container c : containers){
             if(c.getLocation().getId().equals(id)){
-                double diff = c.updateResidue(residue, value);
+                double diff = c.setResidue(Waste.toEnum(residue), value);
                 for (Map.Entry<Waste, Double> entry : residueBuildup) {
                     Waste key = entry.getKey();
                     double oldValue = entry.getValue();
@@ -225,6 +221,39 @@ public class WasteManagement {
                 }
                 return;
             }
+        }
+    }
+
+    public void emptyTrucks() {
+        for(Truck t : trucks){
+            t.setLoad(0);
+        }
+    }
+
+    public void refillContainers() {
+        Random rand = new Random();
+        rand.setSeed(System.currentTimeMillis());
+        String[] residues = new String[]{"Household", "Paper", "Plastic", "Glass"};
+        for(Container c : containers){
+            for (int i=0; i<4; i++)
+            {
+                int r = rand.nextInt(100);
+                c.updateResidue(Waste.toEnum(residues[i]), r);
+            }
+        }
+
+        updateResidueBuildup();
+    }
+
+    private void updateResidueBuildup() {
+        for(int i = 0; i < residueBuildup.size(); i++) {
+            Map.Entry<Waste, Double> entry = residueBuildup.get(i);
+            entry.setValue(0.0);
+        }
+
+        for (Container c : containers) {
+            ArrayList<Map.Entry<Waste, Double>> residues = c.getResidues();
+            addResiduesToBuildup(residues);
         }
     }
 }

@@ -6,6 +6,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Statistics implements TableModelListener {
     private JTextArea info;
