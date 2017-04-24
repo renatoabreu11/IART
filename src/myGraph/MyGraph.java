@@ -60,10 +60,10 @@ public class MyGraph {
                 Map waste = node.getAttribute("waste");
                 if (waste == null)
                     System.out.print("dsfsf\n");
-                double paper = waste.containsKey("paper") ? (double)waste.get("paper"):0;
-                double plastic = waste.containsKey("plastic") ? (double)waste.get("plastic"):0;
-                double glass = waste.containsKey("glass") ? (double)waste.get("glass"):0;
-                double household = waste.containsKey("household") ? (double)waste.get("household"):0;
+                double paper = waste.containsKey("Paper") ? (double)waste.get("Paper"):0;
+                double plastic = waste.containsKey("Plastic") ? (double)waste.get("Plastic"):0;
+                double glass = waste.containsKey("Glass") ? (double)waste.get("Glass"):0;
+                double household = waste.containsKey("Household") ? (double)waste.get("Household"):0;
                 newNode = new MyNode(id, paper, plastic, glass, household);
             }
 
