@@ -28,6 +28,7 @@ public class MyGraph {
     public MyGraph(Graph g, WasteManagement management, Waste typeWaste, double alfa, double beta) {
 
         this.importGS(g);
+        System.out.println(this);
         Node central = management.getCentral();
         Node wasteStation = management.getWasteStation();
         MyNode central_ = this.getNode(central.getIndex());
@@ -59,10 +60,10 @@ public class MyGraph {
                 Map waste = node.getAttribute("waste");
                 if (waste == null)
                     System.out.print("dsfsf\n");
-                double paper = waste.containsKey("paper") ? (double)waste.get("paper"):0;
-                double plastic = waste.containsKey("plastic") ? (double)waste.get("plastic"):0;
-                double glass = waste.containsKey("glass") ? (double)waste.get("glass"):0;
-                double household = waste.containsKey("household") ? (double)waste.get("household"):0;
+                double paper = waste.containsKey("Paper") ? (double)waste.get("Paper"):0;
+                double plastic = waste.containsKey("Plastic") ? (double)waste.get("Plastic"):0;
+                double glass = waste.containsKey("Glass") ? (double)waste.get("Glass"):0;
+                double household = waste.containsKey("Household") ? (double)waste.get("Household"):0;
                 newNode = new MyNode(id, paper, plastic, glass, household);
             }
 
@@ -83,6 +84,12 @@ public class MyGraph {
 
             this.addEdge(myFrom, myEdge);
             this.edgesCostSum += weight;
+
+            if (!edge.isDirected()) {
+                MyEdge myEdge1 = new MyEdge(myTo, myFrom, weight, edge.getIndex());
+                this.addEdge(myTo, myEdge1);
+                this.edgesCostSum += weight;
+            }
         }
 
     }
@@ -244,6 +251,7 @@ public class MyGraph {
             if (curr.equals(start))
                 done = true;
         }
+        path.addFirst(curr);
         return new MyPath(path, maxCapacityTruck, typeWaste);
     }
 
@@ -261,6 +269,7 @@ public class MyGraph {
                 done = true;
             }
         }
+        path.addFirst(curr.getNode());
         return new MyPath(path, maxCapacityTruck, typeWaste);
     }
 
@@ -354,8 +363,8 @@ public class MyGraph {
             e.addAttribute("ui.color", 0); // 0 = black (see fill-color in stylesheet.css)
     }
 
-    public List<MyPath> solve(int numTrucks) {
-        return new ArrayList<MyPath>();
+    public Waste getTypeWaste() {
+        return typeWaste;
     }
 
 }

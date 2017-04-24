@@ -27,10 +27,12 @@ public class CityGraph implements ViewerListener {
         readGraph(id);
     }
 
-    public void generateGraph(String type, int averageDegree){
+    public static Graph generateGraph(String id, String type, int averageDegree, int numNodes){
+
+        Graph g = new SingleGraph(id);
         if(!(type.equals("Random") || type.equals("Barabàsi-Albert") || type.equals("Dorogovtsev mendes"))){
             System.out.println("Invalid type of graph");
-            return;
+            return null;
         }
         Generator gen = null;
         switch(type){
@@ -45,11 +47,13 @@ public class CityGraph implements ViewerListener {
                 break;
         }
 
-        gen.addSink(graph);
+        gen.addSink(g);
         gen.begin();
-        for(int i=0; i<100; i++)
+        for(int i=0; i<numNodes; i++)
             gen.nextEvents();
         gen.end();
+
+        return g;
     }
 
     public void readGraph(String filename){
@@ -61,9 +65,9 @@ public class CityGraph implements ViewerListener {
         }
     }
 
-    public void saveGraph(){
+    public static void saveGraph(Graph g){
         try {
-            graph.write(new FileSinkDGS(), "data/" + graph.getId() + ".dgs");
+            g.write(new FileSinkDGS(), "data/" + g.getId() + ".dgs");
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -4,6 +4,7 @@ import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import wasteManagement.Waste;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -73,10 +74,10 @@ public class MyPath {
         return edges;
     }
 
-    public void printEdgesOfPath(Graph g) {
+    public void printEdgesOfPath(Graph g, Color color) {
         List<MyEdge> edgesOfPath = this.getEdgesOfPath();
         for (MyEdge e: edgesOfPath)
-            g.getEdge(e.getIndex()).addAttribute("ui.color", 1); // 1 = green, 0 = black (see fill-color in stylesheet.css)
+            g.getEdge(e.getIndex()).addAttribute("ui.color", color);
     }
 
     public void printPath() {
@@ -92,6 +93,7 @@ public class MyPath {
             }
         }
         System.out.println("Glass collected: " + sumWasteCollected);
+        System.out.println("Distance percorred: " + distPercorred);
     }
 
     public void updateWasteInNodes() {
