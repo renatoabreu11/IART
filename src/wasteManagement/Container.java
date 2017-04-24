@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
+import static wasteManagement.Waste.HOUSEHOLD;
+
 public class Container {
     private Node location;
     private ArrayList<Map.Entry<Waste, Double>> residues;
@@ -34,8 +36,8 @@ public class Container {
             case "glass":
                 residue = Waste.GLASS; break;
             case "household":
-                residue = Waste.HOUSEHOLD; break;
-            default: residue = Waste.HOUSEHOLD; break;
+                residue = HOUSEHOLD; break;
+            default: residue = HOUSEHOLD; break;
         }
         residues.add(new AbstractMap.SimpleEntry<>(residue, value));
     }
@@ -56,7 +58,7 @@ public class Container {
     }
 
     public void printContainerDetails() {
-        System.out.println("wasteManagement.Container location: MyNode " + location.getId() + ".");
+        System.out.println("Container location: MyNode " + location.getId() + ".");
         System.out.println("    Residues:");
         for(int i = 0; i < residues.size(); i++){
             Map.Entry<Waste, Double> entry = residues.get(i);
@@ -65,5 +67,33 @@ public class Container {
             System.out.println("        " + key + " -> " + value + "kg");
         }
         System.out.println();
+    }
+
+    public ArrayList<String> getContainerInfo(){
+        ArrayList<String> ret = new ArrayList<>();
+        ret.add(location.getId());
+        ret.add("0"); ret.add("0"); ret.add("0"); ret.add("0");
+
+        for(int i = 0; i < residues.size(); i++){
+            Map.Entry<Waste, Double> entry = residues.get(i);
+            Waste key = entry.getKey();
+            Object value = entry.getValue();
+            switch (key){
+                case HOUSEHOLD:
+                    ret.set(1, value.toString());
+                    break;
+                case PAPER:
+                    ret.set(2, value.toString());
+                    break;
+                case PLASTIC:
+                    ret.set(3, value.toString());
+                    break;
+                case GLASS:
+                    ret.set(4, value.toString());
+                    break;
+            }
+        }
+
+        return ret;
     }
 }

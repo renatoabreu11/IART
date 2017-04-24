@@ -1,6 +1,7 @@
 package gui;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 
 public class Statistics {
@@ -9,9 +10,11 @@ public class Statistics {
     private JButton backButton;
     private JTable nodes;
     private JPanel pane;
+    private JTextArea residueBuildup;
 
     public Statistics() {
         addListeners();
+        nodes.setAutoCreateRowSorter(true);
     }
 
     public JTextArea getInfo() {
@@ -73,5 +76,28 @@ public class Statistics {
         for(String i : info){
             this.trucks.append(i + "\n");
         }
+    }
+
+    public void setResidueInfo(ArrayList<String> info){
+        this.residueBuildup.setText("");
+        for(String i : info){
+            this.residueBuildup.append(i + "\n");
+        }
+    }
+
+    public void setNodesInfo(ArrayList<ArrayList<String>> info){
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Location");
+        model.addColumn("Household");
+        model.addColumn("Paper");
+        model.addColumn("Plastic");
+        model.addColumn("Glass");
+
+        for (ArrayList<String> nodeInfo : info) {
+            Object[] o = nodeInfo.toArray();
+            model.addRow(o);
+        }
+        nodes.setModel(model);
+
     }
 }

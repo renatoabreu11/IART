@@ -34,9 +34,13 @@ public class WasteManagement{
             assert management != null;
             ArrayList<String> generalInfo = management.getGeneralInfo();
             ArrayList<String> trucksInfo = management.getTrucksInfo();
+            ArrayList<String> residueInfo = management.getResidueInfo();
+            ArrayList<ArrayList<String>> containersInfo = management.getContainersInfo();
             Statistics s = this.parent.getStatistics();
             s.setGeneralInfo(generalInfo);
             s.setTrucksInfo(trucksInfo);
+            s.setResidueInfo(residueInfo);
+            s.setNodesInfo(containersInfo);
             this.parent.showLayout("Statistics");
         });
     }
