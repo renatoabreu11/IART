@@ -29,7 +29,7 @@ public class MainWindow extends JFrame{
      */
     public MainWindow() {
         setTitle("Waste Management");
-        setSize(1024, 1024);
+        setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         contentPane = new JPanel(new CardLayout());

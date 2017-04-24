@@ -16,6 +16,7 @@ public class State {
     double spaceTruck;
     double distToStation;
     List<Double> distsWasteStation;
+    List<MyNode> nodesThatCollectWaste;
 
     State parent = null;
     Waste wasteType;
@@ -30,6 +31,7 @@ public class State {
         this.distToStation = distsWasteStation.get(node.getId());
         this.spaceTruck = spaceTruck;
         this.wasteSum = wasteSum;
+        this.nodesThatCollectWaste = new ArrayList<MyNode>();
     }
 
     public double getF(double alfa, double beta) {
@@ -56,13 +58,20 @@ public class State {
 
         List<MyEdge> edges = node.getAdjList();
         for (MyEdge edge: edges) {
+
             MyNode nodeTo = edge.getNodeTo();
-            double weiht = edge.getWeight();
-            double wasteSize = nodeTo.getWasteReq(wasteType);
-            double newEmptySpace = wasteSize >= emptySpace? 0:emptySpace-wasteSize;
-            double distToWasteStation = distsWasteStation.get(nodeTo.getId());
-            double newDistAtNow = weiht + distAtNow;
+
+            double newEmptySpace = emptySpace;
+            double newDistAtNow = edge.getWeight() + distAtNow;
+            if (!nodesThatCollectWaste.contains(nodeTo)) {
+                nodesThatCollectWaste.add(nodeTo);
+                double wasteSize = nodeTo.getWasteReq(wasteType);
+                newEmptySpace = wasteSize >= emptySpace? 0:emptySpace-wasteSize;
+            }
+
             State newState = new State(nodeTo, newDistAtNow, edgesCostSum, wasteSum, newEmptySpace, spaceTruck, distsWasteStation, wasteType);
+            newState.setNodesThatCollectWaste(nodesThatCollectWaste);
+
             adj.add(newState);
         }
 
@@ -71,6 +80,10 @@ public class State {
 
     public void setParent(State parent) {
         this.parent = parent;
+    }
+
+    public void setNodesThatCollectWaste(List<MyNode> nodesThatCollectWaste) {
+        this.nodesThatCollectWaste = nodesThatCollectWaste;
     }
 
     public State getParent() {

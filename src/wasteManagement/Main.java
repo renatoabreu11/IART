@@ -13,9 +13,11 @@ public class Main {
 
     public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
 
-        CityGraph cg = new CityGraph("graph1");
+        /*Graph g = CityGraph.generateGraph("graph2", "Dorogovtsev mendes", -1, 30);
+        CityGraph.saveGraph(g);*/
+        CityGraph cg = new CityGraph("graph2");
 
-        WasteManagement management = new WasteManagement("station1", cg.getGraph());
+        WasteManagement management = new WasteManagement("station2", cg.getGraph());
         management.printManagementDetails();
         System.out.println();
 
@@ -27,7 +29,7 @@ public class Main {
         path_astar.printPath();
         System.out.println("\n");
 
-        System.out.println("dfs");
+        /*System.out.println("dfs");
         MyPath path_dfs = myGraph.findPath_dfs();
         path_dfs.printPath();
         System.out.println("\n");
@@ -35,10 +37,19 @@ public class Main {
         System.out.println("bfs");
         MyPath path_bfs = myGraph.findPath_bfs();
         path_bfs.printPath();
-        System.out.println("\n");
+        System.out.println("\n");*/
 
-        path_astar.printEdgesOfPath(graph);
+        //path_dfs.printEdgesOfPath(graph, 1);
         //myGraph.resetColorEdgeOfGraph(graph);
+
+        Solver solver = new Solver(myGraph, 7);
+        List<MyPath> paths = solver.solve();
+        System.out.println("Solver");
+        for (int i = 0; i < paths.size(); i++) {
+            MyPath path = paths.get(i);
+            path.printPath();
+            path.printEdgesOfPath(graph, Utils.colors[i]);
+        }
         cg.display();
     }
 
