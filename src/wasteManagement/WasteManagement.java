@@ -8,8 +8,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import wasteManagement.Container;
-import wasteManagement.Truck;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,6 +17,9 @@ import java.io.IOException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
+
+import static jdk.nashorn.internal.objects.NativeMath.round;
 
 public class WasteManagement {
 
@@ -178,7 +179,7 @@ public class WasteManagement {
         ArrayList<String> ret = new ArrayList<>();
         ret.add("Central location: Node " + central.getId());
         ret.add("Waste station location: Node " + wasteStation.getId());
-        ret.add("Central and waste station distance: " + distCentralStation + "km");
+        ret.add("Distance between central and waste station: " + distCentralStation + "km");
         return ret;
     }
 
@@ -188,5 +189,42 @@ public class WasteManagement {
             ret.add(t.getTruckDetails());
         }
         return ret;
+    }
+
+    public ArrayList<String> getResidueInfo(){
+        ArrayList<String> ret = new ArrayList<>();
+        for(int i = 0; i < residueBuildup.size(); i++) {
+            Map.Entry<Waste, Double> entry = residueBuildup.get(i);
+            Waste key = entry.getKey();
+            double value = entry.getValue();
+            ret.add(key + ": " + value + "kg.");
+        }
+        return ret;
+    }
+
+    public ArrayList<ArrayList<Double>> getContainersInfo(){
+        ArrayList<ArrayList<Double>> ret = new ArrayList<>();
+        for(Container c : containers){
+            ArrayList<Double> containerInfo = c.getContainerInfo();
+            ret.add(containerInfo);
+        }
+        return ret;
+    }
+
+    public void updateContainer(String id, double value, String residue){
+        for(Container c : containers){
+            if(c.getLocation().getId().equals(id)){
+                double diff = c.updateResidue(residue, value);
+                for (Map.Entry<Waste, Double> entry : residueBuildup) {
+                    Waste key = entry.getKey();
+                    double oldValue = entry.getValue();
+                    if (Objects.equals(Waste.toEnum(residue), key)) {
+                        entry.setValue(oldValue + diff);
+                        return;
+                    }
+                }
+                return;
+            }
+        }
     }
 }

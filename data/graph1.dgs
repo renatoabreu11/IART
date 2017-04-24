@@ -2,23 +2,23 @@ DGS004
 null 0 0
 an "0"
 an "1"
-cn "1"  "waste":["plastic":5.0]
+cn "1"  "waste":["Plastic":5.0]
 an "2"
-cn "2"  "waste":["paper":5.0]
+cn "2"  "waste":["Paper":5.0]
 an "3"
-cn "3"  "waste":["paper":5.0, "plastic":2.0, "glass":4.0, "household":2.0]
+cn "3"  "waste":["Paper":5.2, "Plastic":2.4, "Glass":4.0, "Household":2.0]
 an "4"
-cn "4"  "waste":["household":7.0]
+cn "4"  "waste":["Household":7.0]
 an "5"
 an "6"
-cn "6"  "waste":["glass":4.0]
+cn "6"  "waste":["Glass":4.0]
 an "7"
-cn "7"  "waste":["glass":4.0, "household":2.0]
+cn "7"  "waste":["Glass":4.0, "Household":2.0]
 an "8"
-cn "8"  "waste":["paper":5.0, "plastic":2.0, "household":2.0]
+cn "8"  "waste":["Paper":5.0, "Plastic":2.0, "Household":2.0]
 an "9"
 an "10"
-cn "10"  "waste":["glass":4.0, "household":2.0]
+cn "10"  "waste":["Glass":4.0, "Household":2.0]
 an "11"
 an "12"
 an "13"

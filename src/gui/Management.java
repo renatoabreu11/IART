@@ -2,6 +2,7 @@ package gui;
 
 import org.xml.sax.SAXException;
 import wasteManagement.CityGraph;
+import wasteManagement.WasteManagement;
 
 import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
@@ -9,34 +10,41 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class WasteManagement{
+public class Management {
     private MainWindow parent;
     private JPanel pane;
     private JButton backButton;
     private JButton startAnalysisButton;
 
-    public WasteManagement(MainWindow mainWindow) {
+    private CityGraph cg = null;
+    private WasteManagement wasteManagement = null;
+
+    public Management(MainWindow mainWindow) {
         this.parent = mainWindow;
         addListeners();
     }
 
     private void addListeners() {
         startAnalysisButton.addActionListener((ActionEvent e) -> {
-            CityGraph cg = new CityGraph("graph1");
+            cg = new CityGraph("graph1");
 
-            wasteManagement.WasteManagement management = null;
+            wasteManagement = null;
             try {
-                management = new wasteManagement.WasteManagement("station1", cg.getGraph());
+                wasteManagement = new wasteManagement.WasteManagement("station1", cg.getGraph());
             } catch (IOException | SAXException | ParserConfigurationException e1) {
                 e1.printStackTrace();
             }
 
-            assert management != null;
-            ArrayList<String> generalInfo = management.getGeneralInfo();
-            ArrayList<String> trucksInfo = management.getTrucksInfo();
+            assert wasteManagement != null;
+            ArrayList<String> generalInfo = wasteManagement.getGeneralInfo();
+            ArrayList<String> trucksInfo = wasteManagement.getTrucksInfo();
+            ArrayList<String> residueInfo = wasteManagement.getResidueInfo();
+            ArrayList<ArrayList<Double>> containersInfo = wasteManagement.getContainersInfo();
             Statistics s = this.parent.getStatistics();
             s.setGeneralInfo(generalInfo);
             s.setTrucksInfo(trucksInfo);
+            s.setResidueInfo(residueInfo);
+            s.setNodesInfo(containersInfo);
             this.parent.showLayout("Statistics");
         });
     }
@@ -59,5 +67,9 @@ public class WasteManagement{
 
     public void setBackButton(JButton backButton) {
         this.backButton = backButton;
+    }
+
+    public WasteManagement getWasteManagement(){
+        return wasteManagement;
     }
 }
