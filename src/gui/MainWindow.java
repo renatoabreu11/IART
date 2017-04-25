@@ -45,11 +45,11 @@ public class MainWindow extends JFrame{
         mainOptions = new MainOptions();
         mainOptions.setVisible(true);
 
-        wasteOptions = new WasteOptions();
-        wasteOptions.setVisible(true);
-
         management = new Management(this);
         management.setVisible(true);
+
+        wasteOptions = new WasteOptions(management);
+        wasteOptions.setVisible(true);
 
         statistics = new Statistics(management);
         statistics.setVisible(true);
