@@ -8,6 +8,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import scala.Int;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -24,6 +25,7 @@ public class WasteManagement {
     private Node central;
     private Node wasteStation;
     private double distCentralStation;
+    private String stationFile;
 
     public WasteManagement(String filename, Graph graph) throws IOException, SAXException, ParserConfigurationException {
         trucks = new ArrayList<>();
@@ -35,7 +37,8 @@ public class WasteManagement {
         residueBuildup.add(new AbstractMap.SimpleEntry<>(Waste.PLASTIC, 0.0));
         residueBuildup.add(new AbstractMap.SimpleEntry<>(Waste.GLASS, 0.0));
 
-        parseDocument("data/" + filename + ".xml", graph);
+        stationFile = filename;
+        parseDocument("data/" + filename, graph);
     }
 
     private void parseDocument(String s, Graph graph) throws ParserConfigurationException, IOException, SAXException {
@@ -254,6 +257,62 @@ public class WasteManagement {
         for (Container c : containers) {
             ArrayList<Map.Entry<Waste, Double>> residues = c.getResidues();
             addResiduesToBuildup(residues);
+        }
+    }
+
+    public String getStationFile() {
+        return stationFile;
+    }
+
+    public void setStationFile(String stationFile) {
+        this.stationFile = stationFile;
+    }
+
+    public void update(Graph graph) {
+        containers = new ArrayList<>();
+
+        residueBuildup = new ArrayList<>();
+        residueBuildup.add(new AbstractMap.SimpleEntry<>(Waste.HOUSEHOLD, 0.0));
+        residueBuildup.add(new AbstractMap.SimpleEntry<>(Waste.PAPER, 0.0));
+        residueBuildup.add(new AbstractMap.SimpleEntry<>(Waste.PLASTIC, 0.0));
+        residueBuildup.add(new AbstractMap.SimpleEntry<>(Waste.GLASS, 0.0));
+
+        Random r = new Random();
+        r.setSeed(System.currentTimeMillis());
+        int numberOfNodes = graph.getNodeCount();
+        String centralId = central.getId();
+        if(Integer.parseInt(centralId) > numberOfNodes){
+            int val = r.nextInt(numberOfNodes) - 1;
+            central = graph.getNode(val);
+        }else{
+            central = graph.getNode(centralId);
+        }
+
+        String stationId = wasteStation.getId();
+        if(Integer.parseInt(stationId) > numberOfNodes){
+            int val = r.nextInt(numberOfNodes) - 1;
+            wasteStation = graph.getNode(val);
+        }else{
+            wasteStation = graph.getNode(stationId);
+        }
+
+        centralId = central.getId();
+        stationId = wasteStation.getId();
+        AStar astar = new AStar(graph);
+        astar.setCosts(new AStar.DefaultCosts());
+        astar.compute(centralId, stationId);
+        Path path = astar.getShortestPath();
+
+        distCentralStation = path.getPathWeight("weight");
+
+        for (Node node : graph) {
+            if(node.hasAttribute("waste")){
+                Container container = new Container(node);
+                ArrayList<Map.Entry<Waste, Double>> residues = container.getResidues();
+                System.out.println("");
+                addResiduesToBuildup(residues);
+                containers.add(container);
+            }
         }
     }
 }

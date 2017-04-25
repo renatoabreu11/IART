@@ -21,10 +21,12 @@ import java.util.Map;
 public class CityGraph implements ViewerListener {
     private Graph graph;
     protected boolean loop = true;
+    private String graphFile;
 
     public CityGraph(String id){
         graph = new SingleGraph(id);
         readGraph(id);
+        graphFile = id;
     }
 
     public static Graph generateGraph(String id, String type, int averageDegree, int numNodes){
@@ -58,7 +60,7 @@ public class CityGraph implements ViewerListener {
 
     public void readGraph(String filename){
         try {
-            graph.read("data/"+filename+".dgs");
+            graph.read("data/"+filename);
         } catch(Exception e) {
             e.printStackTrace();
             System.exit(1);
@@ -131,4 +133,11 @@ public class CityGraph implements ViewerListener {
         System.out.println("Button released on node "+id);
     }
 
+    public String getGraphFile() {
+        return graphFile;
+    }
+
+    public void setGraphFile(String graphFile) {
+        this.graphFile = graphFile;
+    }
 }

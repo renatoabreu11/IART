@@ -1,15 +1,10 @@
 package gui;
 
-import org.xml.sax.SAXException;
-import wasteManagement.CityGraph;
 import wasteManagement.WasteManagement;
 
 import javax.swing.*;
-import javax.xml.parsers.ParserConfigurationException;
 import java.awt.event.ActionEvent;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Management {
     private MainWindow parent;
@@ -19,30 +14,17 @@ public class Management {
     private JButton endShiftButton;
     private JButton wasteCollectionButton;
 
-    private CityGraph cg = null;
-    private WasteManagement wasteManagement = null;
-
     public Management(MainWindow mainWindow) {
         this.parent = mainWindow;
         addListeners();
-
-        cg = new CityGraph("graph1");
-
-        wasteManagement = null;
-        try {
-            wasteManagement = new wasteManagement.WasteManagement("station1", cg.getGraph());
-        } catch (IOException | SAXException | ParserConfigurationException e1) {
-            e1.printStackTrace();
-        }
     }
 
     private void addListeners() {
         analysisButton.addActionListener((ActionEvent e) -> {
-            assert wasteManagement != null;
-            ArrayList<String> generalInfo = wasteManagement.getGeneralInfo();
-            ArrayList<String> trucksInfo = wasteManagement.getTrucksInfo();
-            ArrayList<String> residueInfo = wasteManagement.getResidueInfo();
-            ArrayList<ArrayList<Double>> containersInfo = wasteManagement.getContainersInfo();
+            ArrayList<String> generalInfo = parent.getWasteManagement().getGeneralInfo();
+            ArrayList<String> trucksInfo = parent.getWasteManagement().getTrucksInfo();
+            ArrayList<String> residueInfo = parent.getWasteManagement().getResidueInfo();
+            ArrayList<ArrayList<Double>> containersInfo = parent.getWasteManagement().getContainersInfo();
             Statistics s = this.parent.getStatistics();
             s.setGeneralInfo(generalInfo);
             s.setTrucksInfo(trucksInfo);
@@ -52,8 +34,8 @@ public class Management {
         });
 
         endShiftButton.addActionListener((ActionEvent e) -> {
-            wasteManagement.emptyTrucks();
-            wasteManagement.refillContainers();
+            parent.getWasteManagement().emptyTrucks();
+            parent.getWasteManagement().refillContainers();
         });
 
         wasteCollectionButton.addActionListener((ActionEvent e) -> {
@@ -79,9 +61,5 @@ public class Management {
 
     public void setBackButton(JButton backButton) {
         this.backButton = backButton;
-    }
-
-    public WasteManagement getWasteManagement(){
-        return wasteManagement;
     }
 }

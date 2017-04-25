@@ -1,7 +1,13 @@
 package gui;
 
+import org.xml.sax.SAXException;
+import wasteManagement.CityGraph;
+import wasteManagement.WasteManagement;
+
 import javax.swing.*;
+import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
+import java.io.IOException;
 
 public class MainWindow extends JFrame{
     private MainOptions mainOptions;
@@ -9,6 +15,9 @@ public class MainWindow extends JFrame{
     private Management management;
     private Statistics statistics;
     private JPanel contentPane;
+
+    private CityGraph cg = null;
+    private WasteManagement wasteManagement = null;
 
     /**
      * Launch the application.
@@ -45,13 +54,13 @@ public class MainWindow extends JFrame{
         mainOptions = new MainOptions();
         mainOptions.setVisible(true);
 
-        wasteOptions = new WasteOptions();
-        wasteOptions.setVisible(true);
-
         management = new Management(this);
         management.setVisible(true);
 
-        statistics = new Statistics(management);
+        wasteOptions = new WasteOptions(this);
+        wasteOptions.setVisible(true);
+
+        statistics = new Statistics(this);
         statistics.setVisible(true);
 
         contentPane.add(mainOptions.getPane(), "Main Options");
@@ -84,5 +93,35 @@ public class MainWindow extends JFrame{
 
     public Statistics getStatistics(){
         return statistics;
+    }
+
+    public void initWasteManagement(String graph, String station){
+        cg = new CityGraph(graph);
+
+        try {
+            wasteManagement = new WasteManagement(station, cg.getGraph());
+        } catch (IOException | SAXException | ParserConfigurationException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    public WasteManagement getWasteManagement(){
+        return wasteManagement;
+    }
+
+    public CityGraph getCityGraph() {
+        return cg;
+    }
+
+    public void setWasteManagement(WasteManagement wasteManagement) {
+        this.wasteManagement = wasteManagement;
+    }
+
+    public void setCityGraph(CityGraph cityGraph) {
+        this.cg = cityGraph;
+    }
+
+    public void updateWasteManagement() {
+        wasteManagement.update(this.cg.getGraph());
     }
 }

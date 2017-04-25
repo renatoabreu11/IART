@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<station>
+    <central>31</central>
+    <wasteStation>20</wasteStation>
+    <truck>
+        <category>Paper</category>
+        <capacity>100</capacity>
+    </truck>
+    <truck>
+        <category>Glass</category>
+        <capacity>100</capacity>
+    </truck>
+    <truck>
+        <category>Household</category>
+        <capacity>100</capacity>
+    </truck>
+    <truck>
+        <category>Plastic</category>
+        <capacity>100</capacity>
+    </truck>
+</station>
