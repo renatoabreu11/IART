@@ -35,6 +35,9 @@
         <properties>
           <editable value="false"/>
         </properties>
+        <clientProperties>
+          <caretAspectRatio class="java.lang.Float" value="0.04"/>
+        </clientProperties>
       </component>
       <component id="3696a" class="javax.swing.JTextArea" binding="info">
         <constraints>
@@ -45,6 +48,9 @@
         <properties>
           <editable value="false"/>
         </properties>
+        <clientProperties>
+          <caretAspectRatio class="java.lang.Float" value="0.04"/>
+        </clientProperties>
       </component>
       <component id="4fdf6" class="javax.swing.JButton" binding="backButton" default-binding="true">
         <constraints>
@@ -75,6 +81,9 @@
         <properties>
           <text value=""/>
         </properties>
+        <clientProperties>
+          <caretAspectRatio class="java.lang.Float" value="0.04"/>
+        </clientProperties>
       </component>
       <scrollpane id="e5fbf">
         <constraints>

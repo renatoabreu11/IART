@@ -14,6 +14,7 @@ public class MyPath {
 
     List<MyNode> path;
     List<Double> wasteCollectedInEachNode;
+
     double sumWasteCollected;
     double distPercorred;
     Waste typeWaste;
@@ -24,6 +25,14 @@ public class MyPath {
         this.typeWaste = typeWaste;
         this.setWasteCollectedInEachNodeAndSumWasteCollected(capacityTruck);
         this.setDistPercorred();
+    }
+
+    public double getDistPercorred() {
+        return distPercorred;
+    }
+
+    public double getSumWasteCollected() {
+        return sumWasteCollected;
     }
 
     private void setWasteCollectedInEachNodeAndSumWasteCollected(double capacityTruck) {
@@ -57,6 +66,10 @@ public class MyPath {
         List<MyEdge> edges = this.getEdgesOfPath();
         for (MyEdge e: edges)
             distPercorred += e.getWeight();
+    }
+
+    public List<MyNode> getNodesOfPath() {
+        return path;
     }
 
     public List<MyEdge> getEdgesOfPath() {

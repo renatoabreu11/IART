@@ -28,7 +28,6 @@ public class MyGraph {
     public MyGraph(Graph g, WasteManagement management, Waste typeWaste, double alfa, double beta) {
 
         this.importGS(g);
-        System.out.println(this);
         Node central = management.getCentral();
         Node wasteStation = management.getWasteStation();
         MyNode central_ = this.getNode(central.getIndex());
@@ -93,6 +92,12 @@ public class MyGraph {
         }
 
     }
+
+    public double getMaxCapacityTruck() {return maxCapacityTruck;}
+
+    public MyNode getTo() {return to;}
+
+    public MyNode getFrom() {return from;}
 
     public MyNode getNode(int id) {
         return nodes.get(id);
@@ -192,11 +197,14 @@ public class MyGraph {
     }
 
     public final MyPath findPath_dfs() {
+        return this.findPath_dfs(from, to);
+    }
 
+    public final MyPath findPath_dfs(MyNode fromNode, MyNode toNode) {
         this.unvisitNodes();
         Stack<MyNode> s = new Stack<MyNode>();
-        s.push(from);
-        from.setVisited(true);
+        s.push(fromNode);
+        fromNode.setVisited(true);
         while (!s.isEmpty()) {
             MyNode u = s.pop();
             List<MyEdge> adjList = u.getAdjList();
@@ -205,8 +213,8 @@ public class MyGraph {
                     continue;
                 v.getNodeTo().setParent(u);
                 v.getNodeTo().setVisited(true);
-                if (v.getNodeTo().getId() == to.getId()) {
-                    return this.calcPath(from, to);
+                if (v.getNodeTo().getId() == toNode.getId()) {
+                    return this.calcPath(fromNode, toNode);
                 }
                 s.push(v.getNodeTo());
             }
@@ -216,11 +224,14 @@ public class MyGraph {
     }
 
     public final MyPath findPath_bfs() {
+        return this.findPath_bfs(from, to);
+    }
 
+    public final MyPath findPath_bfs(MyNode fromNode, MyNode toNode) {
         this.unvisitNodes();
         Queue<MyNode> q = new LinkedList<MyNode>();
-        q.add(from);
-        from.setVisited(true);
+        q.add(fromNode);
+        fromNode.setVisited(true);
         while (!q.isEmpty()) {
             MyNode u = q.remove();
             List<MyEdge> adjList = u.getAdjList();
@@ -229,13 +240,12 @@ public class MyGraph {
                     continue;
                 v.getNodeTo().setParent(u);
                 v.getNodeTo().setVisited(true);
-                if (v.getNodeTo().getId() == to.getId()) {
-                    return this.calcPath(from, to);
+                if (v.getNodeTo().getId() == toNode.getId()) {
+                    return this.calcPath(fromNode, toNode);
                 }
                 q.add(v.getNodeTo());
             }
         }
-
         return null;
     }
 
@@ -349,6 +359,27 @@ public class MyGraph {
         for (MyNode node: nodes)
             sum += node.getWasteReq(wasteType);
         return sum;
+    }
+
+    public List<MyNode> getNodesWithWaste() {
+        List<MyNode> nodesWithWaste = new ArrayList<MyNode>();
+
+        for (MyNode node: nodes)
+            if (node.getWasteReq(typeWaste) > 0)
+                nodesWithWaste.add(node);
+
+        Collections.sort(nodesWithWaste,new Comparator<MyNode>(){
+            @Override
+            public int compare(final MyNode lhs,MyNode rhs) {
+                if (lhs.getWasteReq(typeWaste) >= rhs.getWasteReq(typeWaste))
+                    return -1;
+                else
+                    return 1;
+            }
+        });
+
+        return nodesWithWaste;
+
     }
 
     private void unvisitNodes() {
