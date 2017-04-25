@@ -15,10 +15,10 @@ public class Statistics implements TableModelListener {
     private JTable nodes;
     private JPanel pane;
     private JTextArea residueBuildup;
-    private Management parent;
+    private MainWindow parent;
 
-    public Statistics(Management m) {
-        this.parent = m;
+    public Statistics(MainWindow mainWindow) {
+        this.parent = mainWindow;
         addListeners();
         nodes.setAutoCreateRowSorter(true);
     }
