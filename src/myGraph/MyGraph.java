@@ -27,6 +27,7 @@ public class MyGraph {
 
     public MyGraph(Graph g, WasteManagement management, Waste typeWaste, double alfa, double beta) {
 
+        this.typeWaste = typeWaste;
         this.importGS(g);
         Node central = management.getCentral();
         Node wasteStation = management.getWasteStation();
@@ -34,7 +35,6 @@ public class MyGraph {
         MyNode wasteStation_ = this.getNode(wasteStation.getIndex());
         maxCapacityTruck = management.getTrucks().get(0).getMaxCapacity();
         distsWasteStation = this.getDistsToNode(wasteStation_);
-        this.typeWaste = typeWaste;
         this.alfa = alfa;
         this.beta = beta;
         this.from = central_;
@@ -164,7 +164,6 @@ public class MyGraph {
 
         State current = null;
         while (!openList.isEmpty()) {
-
             current = getLowestF(openList);
             closedList.add(current);
             openList.remove(current);

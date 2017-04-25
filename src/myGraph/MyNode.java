@@ -3,6 +3,7 @@ package myGraph;
 import wasteManagement.Waste;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MyNode implements Comparable {
 
@@ -64,6 +65,15 @@ public class MyNode implements Comparable {
                 return plastic;
         }
         return 0;
+    }
+
+
+    public double getWasteNeighboringNodes(List<MyNode> nodesThatCollectWaste, Waste typeWaste) {
+        double ans = 0;
+        for (MyEdge v: adjList)
+            if (!nodesThatCollectWaste.contains(v.getNodeTo()))
+                ans += v.getNodeTo().getWasteReq(typeWaste);
+        return ans;
     }
 
     public void updateWaste(Waste typeWaste, double wasteCollected) {

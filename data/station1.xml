@@ -4,18 +4,18 @@
     <wasteStation>15</wasteStation>
     <truck>
         <category>Paper</category>
-        <capacity>2500</capacity>
+        <capacity>100</capacity>
     </truck>
     <truck>
         <category>Glass</category>
-        <capacity>2500</capacity>
+        <capacity>100</capacity>
     </truck>
     <truck>
         <category>Household</category>
-        <capacity>2500</capacity>
+        <capacity>100</capacity>
     </truck>
     <truck>
         <category>Plastic</category>
-        <capacity>2500</capacity>
+        <capacity>100</capacity>
     </truck>
 </station>
