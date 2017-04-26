@@ -4,6 +4,7 @@ package myGraph;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
+import wasteManagement.Container;
 import wasteManagement.Waste;
 import wasteManagement.WasteManagement;
 
@@ -28,7 +29,7 @@ public class MyGraph {
     public MyGraph(Graph g, WasteManagement management, Waste typeWaste, double alfa, double beta) {
 
         this.typeWaste = typeWaste;
-        this.importGS(g);
+        this.importGS(g, management);
         Node central = management.getCentral();
         Node wasteStation = management.getWasteStation();
         MyNode central_ = this.getNode(central.getIndex());
@@ -42,30 +43,14 @@ public class MyGraph {
 
     }
 
-    public void importGS(Graph graph) {
+    public void importGS(Graph graph, WasteManagement management) {
 
         nodes = new ArrayList<MyNode>();
 
         // get all nodes
         for (int i = 0; i < graph.getNodeCount(); i++) {
             Node node = graph.getNode(i);
-            int id = node.getIndex();
-
-            MyNode newNode = null;
-            if (!node.hasAttribute("waste")) {
-                newNode = new MyNode(id, 0, 0, 0, 0);
-            }
-            else {
-                Map waste = node.getAttribute("waste");
-                if (waste == null)
-                    System.out.print("dsfsf\n");
-                double paper = waste.containsKey("Paper") ? (double)waste.get("Paper"):0;
-                double plastic = waste.containsKey("Plastic") ? (double)waste.get("Plastic"):0;
-                double glass = waste.containsKey("Glass") ? (double)waste.get("Glass"):0;
-                double household = waste.containsKey("Household") ? (double)waste.get("Household"):0;
-                newNode = new MyNode(id, paper, plastic, glass, household);
-            }
-
+            MyNode newNode = new MyNode(node.getIndex(), 0, 0, 0, 0);
             this.addNode(newNode);
         }
 
@@ -91,6 +76,18 @@ public class MyGraph {
             }
         }
 
+        // add waste to nodes
+        ArrayList<Container> containers = management.getContainers();
+        for (Container container : containers) {
+            Node node = container.getLocation();
+            double household = container.getWasteOfAType(Waste.HOUSEHOLD);
+            double plastic = container.getWasteOfAType(Waste.PLASTIC);
+            double glass = container.getWasteOfAType(Waste.GLASS);
+            double paper = container.getWasteOfAType(Waste.PAPER);
+            MyNode myNode = this.getNode(node.getIndex());
+            myNode.setWaste(paper, plastic, glass, household);
+        }
+
     }
 
     public double getMaxCapacityTruck() {return maxCapacityTruck;}
@@ -100,7 +97,10 @@ public class MyGraph {
     public MyNode getFrom() {return from;}
 
     public MyNode getNode(int id) {
-        return nodes.get(id);
+        for (MyNode node: nodes)
+            if (node.getId() == id)
+                return node;
+        return null;
     }
 
     public double getEdgesCostSum() {return edgesCostSum;}

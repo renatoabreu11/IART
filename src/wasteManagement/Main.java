@@ -14,8 +14,8 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        CityGraph cg = new CityGraph("graph3.dgs");
-        WasteManagement management = new WasteManagement("station3.xml", cg.getGraph());
+        CityGraph cg = new CityGraph("graph2.dgs");
+        WasteManagement management = new WasteManagement("station2.xml", cg.getGraph());
         management.printManagementDetails();
         Graph graph = cg.getGraph();
 

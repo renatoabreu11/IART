@@ -62,27 +62,23 @@ public class Container {
         ret.add(Double.parseDouble(location.getId()));
         ret.add(0.0); ret.add(0.0); ret.add(0.0); ret.add(0.0);
 
+        ret.set(1, this.getWasteOfAType(Waste.HOUSEHOLD));
+        ret.set(2, this.getWasteOfAType(Waste.PAPER));
+        ret.set(3, this.getWasteOfAType(Waste.PLASTIC));
+        ret.set(4, this.getWasteOfAType(Waste.GLASS));
+
+        return ret;
+    }
+
+    public double getWasteOfAType(Waste wasteType) {
         for(int i = 0; i < residues.size(); i++){
             Map.Entry<Waste, Double> entry = residues.get(i);
             Waste key = entry.getKey();
             Double value = entry.getValue();
-            switch (key){
-                case HOUSEHOLD:
-                    ret.set(1, value);
-                    break;
-                case PAPER:
-                    ret.set(2, value);
-                    break;
-                case PLASTIC:
-                    ret.set(3, value);
-                    break;
-                case GLASS:
-                    ret.set(4, value);
-                    break;
-            }
+            if (key == wasteType)
+                return value;
         }
-
-        return ret;
+        return 0;
     }
 
     public void updateResidue(Waste residue, double newValue) {

@@ -21,10 +21,7 @@ public class MyNode implements Comparable {
 
     public MyNode(int id, double paper, double plastic, double glass, double household) {
         this.id = id;
-        this.paper = paper;
-        this.plastic = plastic;
-        this.glass = glass;
-        this.household = household;
+        this.setWaste(paper, plastic, glass, household);
     }
 
     public void addEdge(MyEdge edge) {
@@ -67,6 +64,12 @@ public class MyNode implements Comparable {
         return 0;
     }
 
+    public void setWaste(double paper, double plastic, double glass, double household) {
+        this.paper = paper;
+        this.plastic = plastic;
+        this.glass = glass;
+        this.household = household;
+    }
 
     public double getWasteNeighboringNodes(List<MyNode> nodesThatCollectWaste, Waste typeWaste) {
         double ans = 0;
