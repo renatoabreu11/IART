@@ -14,28 +14,21 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        CityGraph cg = new CityGraph("graph2.dgs");
-        WasteManagement management = new WasteManagement("station2.xml", cg.getGraph());
+        CityGraph cg = new CityGraph("graph1.dgs");
+        WasteManagement management = new WasteManagement("station1.xml", cg.getGraph());
         management.printManagementDetails();
         Graph graph = cg.getGraph();
 
-        // IMP: each solver needs a new instance of graph
-        MyGraph myGraph = new MyGraph(graph, management, Waste.GLASS, 0.2, 0.8);
-        Solver solver = new Solver(myGraph, 2);
+        Solver solver = new Solver(graph, management, Waste.GLASS, 0.2, 0.8, 2);
         solver.solve("A*");
         solver.printInfoAboutSolution();
         List<MyPath> paths = solver.getSolution();
         paths.get(0).printEdgesOfPath(graph, java.awt.Color.blue);
-        for (MyPath path: paths)
-            path.printPath();
+        paths.get(0).printPath();
 
-        myGraph = new MyGraph(graph, management, Waste.GLASS, 0.5, 0.5);
-        solver = new Solver(myGraph, 1);
         solver.solve("dfs");
         solver.printInfoAboutSolution();
 
-        myGraph = new MyGraph(graph, management, Waste.GLASS, 0.5, 0.5);
-        solver = new Solver(myGraph, 1);
         solver.solve("bfs");
         solver.printInfoAboutSolution();
 

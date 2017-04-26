@@ -8,7 +8,9 @@ import wasteManagement.Container;
 import wasteManagement.Waste;
 import wasteManagement.WasteManagement;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class MyGraph {
 
@@ -26,10 +28,10 @@ public class MyGraph {
 
     public MyGraph() {}
 
-    public MyGraph(Graph g, WasteManagement management, Waste typeWaste, double alfa, double beta) {
+    public MyGraph(Graph gs, WasteManagement management, Waste typeWaste, double alfa, double beta) {
 
         this.typeWaste = typeWaste;
-        this.importGS(g, management);
+        this.importGS(gs, management);
         Node central = management.getCentral();
         Node wasteStation = management.getWasteStation();
         MyNode central_ = this.getNode(central.getIndex());
@@ -43,21 +45,21 @@ public class MyGraph {
 
     }
 
-    public void importGS(Graph graph, WasteManagement management) {
+    public void importGS(Graph graphStream, WasteManagement management) {
 
         nodes = new ArrayList<MyNode>();
 
         // get all nodes
-        for (int i = 0; i < graph.getNodeCount(); i++) {
-            Node node = graph.getNode(i);
+        for (int i = 0; i < graphStream.getNodeCount(); i++) {
+            Node node = graphStream.getNode(i);
             MyNode newNode = new MyNode(node.getIndex(), 0, 0, 0, 0);
             this.addNode(newNode);
         }
 
         // add edges to nodes
-        for (int i = 0; i < graph.getEdgeCount(); i++) {
+        for (int i = 0; i < graphStream.getEdgeCount(); i++) {
 
-            Edge edge = graph.getEdge(i);
+            Edge edge = graphStream.getEdge(i);
             Node from = edge.getSourceNode();
             Node to = edge.getTargetNode();
             double weight = edge.hasAttribute("weight") ? (double)edge.getAttribute("weight"):0;
@@ -76,7 +78,11 @@ public class MyGraph {
             }
         }
 
-        // add waste to nodes
+        this.readWasteFromManagement(management);
+
+    }
+
+    public void readWasteFromManagement(WasteManagement management) {
         ArrayList<Container> containers = management.getContainers();
         for (Container container : containers) {
             Node node = container.getLocation();
@@ -87,7 +93,6 @@ public class MyGraph {
             MyNode myNode = this.getNode(node.getIndex());
             myNode.setWaste(paper, plastic, glass, household);
         }
-
     }
 
     public double getMaxCapacityTruck() {return maxCapacityTruck;}
@@ -390,7 +395,7 @@ public class MyGraph {
 
     public void resetColorEdgeOfGraph(Graph g) {
         for(Edge e: g.getEachEdge())
-            e.addAttribute("ui.color", 0); // 0 = black (see fill-color in stylesheet.css)
+            e.addAttribute("ui.color", Color.black);
     }
 
     public Waste getTypeWaste() {

@@ -1,5 +1,9 @@
 package myGraph;
 
+import org.graphstream.graph.Graph;
+import wasteManagement.Waste;
+import wasteManagement.WasteManagement;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +11,7 @@ public class Solver {
 
     private int numTrucks;
     private MyGraph graph;
+    private WasteManagement management;
 
     private List<MyPath> solution = null;
     private String typeSolution = null;
@@ -15,14 +20,22 @@ public class Solver {
     private int numTrucksUsed;
 
     /**
-     * Each solver, needs a new instance of graph.
-     * i.e. if a solver1 used graph1, a solver2 must use other new instance of graph (graph2, for instance).
-     * @param graph new instance of graph
-     * @param numTrucks number of trucks available
+     * Contructor of Solver.
+     * alfa + beta = 1 must be guaranteed.
+     *
+     * @param gs graph of GraphStreamLibray
+     * @param management store the waste in nodes
+     * @param typeWaste waste to collect
+     * @param alfa value of importance given to distance percorred, between 0 and 1.
+     * @param beta value of importance given to waste collected, between 0 and 1.
+     * @param numTrucks maximum number of trucks that solver will use to find a solution-
      */
-    public Solver(MyGraph graph, int numTrucks) {
-        this.graph = graph;
+    public Solver(Graph gs, WasteManagement management, Waste typeWaste, double alfa, double beta, int numTrucks) throws Exception {
+        if (1 - alfa - beta > 0.01)
+            throw new Exception("Error: alfa + beta = 1 must be guaranteed.");
+        this.graph = new MyGraph(gs, management, typeWaste, alfa, beta);
         this.numTrucks = numTrucks;
+        this.management = management;
     }
 
     public List<MyPath> getSolution() {
@@ -50,7 +63,7 @@ public class Solver {
     }
 
     /**
-     * Solve the instance of problem (graph + trucks available)
+     * Solve the instance of problem.
      * @param algorithm A*, dfs or bfs
      * @return paths found
      * @throws Exception invalid algorithm
@@ -69,6 +82,7 @@ public class Solver {
             throw new Exception("Error: invalid algorithm. Algorithm must be \"A*\", \"dfs\" or \"bfs\"");
 
         this.setInfoOfSolution();
+        this.graph.readWasteFromManagement(management); // reset waste
         return solution;
     }
 
