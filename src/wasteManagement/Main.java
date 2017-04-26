@@ -1,5 +1,6 @@
 package wasteManagement;
 
+import javafx.scene.paint.Color;
 import myGraph.*;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
@@ -13,17 +14,18 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        CityGraph cg = new CityGraph("graph2");
-        WasteManagement management = new WasteManagement("station2", cg.getGraph());
+        CityGraph cg = new CityGraph("graph3.dgs");
+        WasteManagement management = new WasteManagement("station3.xml", cg.getGraph());
         management.printManagementDetails();
         Graph graph = cg.getGraph();
 
         // IMP: each solver needs a new instance of graph
-        MyGraph myGraph = new MyGraph(graph, management, Waste.GLASS, 0.1, 0.9);
+        MyGraph myGraph = new MyGraph(graph, management, Waste.GLASS, 0.2, 0.8);
         Solver solver = new Solver(myGraph, 2);
         solver.solve("A*");
         solver.printInfoAboutSolution();
         List<MyPath> paths = solver.getSolution();
+        paths.get(0).printEdgesOfPath(graph, java.awt.Color.blue);
         for (MyPath path: paths)
             path.printPath();
 

@@ -174,7 +174,7 @@ public class MyGraph {
             List<State> adjList = current.getAdjList();
             for (int i = 0; i < adjList.size(); i++) {
                 State newState = adjList.get(i);
-                if (!openList.contains(newState)) {
+                if (!openList.contains(newState) && !closedList.contains(newState)) {
                     newState.setParent(current);
                     openList.add(newState);
                 }

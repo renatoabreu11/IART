@@ -112,7 +112,7 @@ public class State {
         if (object != null && object instanceof State) {
             sameSame = (this.getIdOfNode() == ((State) object).getIdOfNode() &&
                         this.getEmptySpace() == ((State) object).getEmptySpace() &&
-                        this.getDistAtNow() == ((State) object).getDistAtNow());
+                        this.getDistAtNow() >= ((State) object).getDistAtNow());
         }
 
         return sameSame;
