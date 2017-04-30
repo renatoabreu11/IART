@@ -6,7 +6,6 @@ import wasteManagement.Waste;
 import wasteManagement.WasteManagement;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 
 public class WasteRecovery {
@@ -36,7 +35,17 @@ public class WasteRecovery {
     }
 
     private void addListeners() {
+        runAstarButton.addActionListener(actionEvent -> {
 
+        });
+
+        runDfsButton.addActionListener(actionEvent -> {
+
+        });
+
+        runBfsButton.addActionListener(actionEvent -> {
+
+        });
     }
 
     public JPanel getPane() {
@@ -63,12 +72,15 @@ public class WasteRecovery {
         // recolher todo o lixo possivel -> wasteType default. aceitar lista de string com os camioes disponiveis.
         astarSolver = new Solver(graph, wasteManagement, Waste.GLASS, alfaValue, betaValue, 2);
         astarSolver.solve("A*");
+        astarInfo.setText(astarSolver.getInfo());
 
         // alfa e beta são desnecessários aqui
         dfsSolver = new Solver(graph, wasteManagement, Waste.GLASS, alfaValue, betaValue, 2);
         dfsSolver.solve("dfs");
+        dfsInfo.setText(dfsSolver.getInfo());
 
         bfsSolver = new Solver(graph, wasteManagement, Waste.GLASS, alfaValue, betaValue, 2);
         bfsSolver.solve("bfs");
+        bfsInfo.setText(bfsSolver.getInfo());
     }
 }

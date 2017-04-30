@@ -178,4 +178,18 @@ public class Solver {
         return paths;
     }
 
+    public String getInfo() {
+        StringBuilder generalInfo = new StringBuilder("Sum of total waste: "
+                + sumWasteSol +
+                "\nTotal distance traveled: "
+                + distPercorredSol
+                + "\nNumber of trucks used: "
+                + numTrucksUsed + "\n\n");
+
+        ArrayList<String> residueBuildup = management.getResidueInfo();
+        for (String s : residueBuildup) {
+            generalInfo.append("\n").append(s);
+        }
+        return generalInfo.toString();
+    }
 }
