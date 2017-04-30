@@ -192,4 +192,20 @@ public class WasteOptions implements ChangeListener {
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
     }
+
+    public JSpinner getBetaValue() {
+        return betaValue;
+    }
+
+    public JSpinner getAlfaValue() {
+        return alfaValue;
+    }
+
+    public JComboBox<String> getWasteCollection() {
+        return wasteCollection;
+    }
+
+    public JList<String> getTruckSelection() {
+        return truckSelection;
+    }
 }

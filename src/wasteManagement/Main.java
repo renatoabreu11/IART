@@ -1,13 +1,7 @@
 package wasteManagement;
 
-import javafx.scene.paint.Color;
 import myGraph.*;
 import org.graphstream.graph.Graph;
-import org.graphstream.graph.Node;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
 import java.util.List;
 
 public class Main {

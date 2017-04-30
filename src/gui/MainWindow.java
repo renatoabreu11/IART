@@ -2,12 +2,14 @@ package gui;
 
 import org.xml.sax.SAXException;
 import wasteManagement.CityGraph;
+import wasteManagement.Waste;
 import wasteManagement.WasteManagement;
 
 import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class MainWindow extends JFrame{
     private MainOptions mainOptions;
@@ -130,5 +132,17 @@ public class MainWindow extends JFrame{
 
     public void updateWasteManagement() {
         wasteManagement.update(this.cg.getGraph());
+    }
+
+    public void initWasteRecovery() {
+        String wasteType = (String)wasteOptions.getWasteCollection().getSelectedItem();
+        double alfaValue = (double)wasteOptions.getAlfaValue().getValue();
+        double betaValue = (double)wasteOptions.getBetaValue().getValue();
+        ArrayList trucks = (ArrayList) wasteOptions.getTruckSelection().getSelectedValuesList();
+        try {
+            this.wasteRecovery.initSolvers(cg.getGraph(), wasteManagement, wasteType, alfaValue, betaValue, trucks);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

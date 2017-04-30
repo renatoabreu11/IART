@@ -1,7 +1,5 @@
 package gui;
 
-import wasteManagement.WasteManagement;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -38,7 +36,10 @@ public class Management {
             parent.getWasteManagement().refillContainers();
         });
 
-        wasteCollectionButton.addActionListener((ActionEvent e) -> this.parent.showLayout("Waste Recovery"));
+        wasteCollectionButton.addActionListener((ActionEvent e) -> {
+            this.parent.initWasteRecovery();
+            this.parent.showLayout("Waste Recovery");
+        });
     }
 
     public JPanel getPane() {
