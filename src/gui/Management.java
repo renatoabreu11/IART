@@ -38,9 +38,7 @@ public class Management {
             parent.getWasteManagement().refillContainers();
         });
 
-        wasteCollectionButton.addActionListener((ActionEvent e) -> {
-
-        });
+        wasteCollectionButton.addActionListener((ActionEvent e) -> this.parent.showLayout("Waste Recovery"));
     }
 
     public JPanel getPane() {

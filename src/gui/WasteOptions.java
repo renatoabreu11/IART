@@ -6,14 +6,18 @@ import wasteManagement.Truck;
 import wasteManagement.WasteManagement;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-public class WasteOptions{
+public class WasteOptions implements ChangeListener {
     private JPanel pane;
     private JSpinner betaValue;
     private JSpinner alfaValue;
@@ -72,8 +76,16 @@ public class WasteOptions{
                         0, //min
                         1, //max
                         0.1);
+
+        SpinnerModel model1 =
+                new SpinnerNumberModel(0.5, //initial value
+                        0, //min
+                        1, //max
+                        0.1);
         alfaValue.setModel(model);
-        betaValue.setModel(model);
+        betaValue.setModel(model1);
+        alfaValue.addChangeListener(this);
+        betaValue.addChangeListener(this);
         addListeners();
     }
 
@@ -132,7 +144,6 @@ public class WasteOptions{
         this.pane.setVisible(b);
     }
 
-
     public JButton getBackButton() {
         return backButton;
     }
@@ -155,5 +166,30 @@ public class WasteOptions{
 
     public void setStationSelection(JComboBox<String> stationSelection) {
         this.stationSelection = stationSelection;
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        JSpinner spinner = (JSpinner) e.getSource();
+        double value = (double)spinner.getValue();
+        if(spinner == alfaValue){
+            double oldValue = (double)betaValue.getValue();
+            double diff = round(1 - (value + oldValue), 2);
+            double newValue = round(oldValue + diff, 2);
+            betaValue.setValue(newValue);
+        }else{
+            double oldValue = (double)alfaValue.getValue();
+            double diff = round(1 - (value + oldValue), 2);
+            double newValue = round(oldValue + diff, 2);
+            alfaValue.setValue(newValue);
+        }
+    }
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }

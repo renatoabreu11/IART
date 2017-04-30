@@ -14,6 +14,7 @@ public class MainWindow extends JFrame{
     private WasteOptions wasteOptions;
     private Management management;
     private Statistics statistics;
+    private WasteRecovery wasteRecovery;
     private JPanel contentPane;
 
     private CityGraph cg = null;
@@ -63,10 +64,14 @@ public class MainWindow extends JFrame{
         statistics = new Statistics(this);
         statistics.setVisible(true);
 
+        wasteRecovery = new WasteRecovery(this);
+        wasteRecovery.setVisible(true);
+
         contentPane.add(mainOptions.getPane(), "Main Options");
         contentPane.add(wasteOptions.getPane(), "Waste Options");
         contentPane.add(management.getPane(), "Waste Management");
         contentPane.add(statistics.getPane(), "Statistics");
+        contentPane.add(wasteRecovery.getPane(), "Waste Recovery");
 
         addListeners();
 
@@ -84,6 +89,8 @@ public class MainWindow extends JFrame{
         management.getBackButton().addActionListener(e -> showLayout("Main Options"));
 
         statistics.getBackButton().addActionListener(e -> showLayout("Waste Management"));
+
+        wasteRecovery.getBackButton().addActionListener(e -> showLayout("Waste Management"));
     }
 
     public void showLayout(String layout){
