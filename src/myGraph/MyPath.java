@@ -2,6 +2,7 @@ package myGraph;
 
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
+import org.graphstream.ui.graphicGraph.GraphicGraph;
 import wasteManagement.Waste;
 
 import java.awt.*;
@@ -88,6 +89,12 @@ public class MyPath {
     }
 
     public void printEdgesOfPath(Graph g, Color color) {
+        List<MyEdge> edgesOfPath = this.getEdgesOfPath();
+        for (MyEdge e: edgesOfPath)
+            g.getEdge(e.getIndex()).addAttribute("ui.color", color);
+    }
+
+    public void printEdgesOfPath(GraphicGraph g, Color color) {
         List<MyEdge> edgesOfPath = this.getEdgesOfPath();
         for (MyEdge e: edgesOfPath)
             g.getEdge(e.getIndex()).addAttribute("ui.color", color);
