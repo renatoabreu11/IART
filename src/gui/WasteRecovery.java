@@ -1,8 +1,10 @@
 package gui;
 
+import myGraph.MyGraph;
 import myGraph.MyPath;
 import myGraph.Solver;
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
 import org.graphstream.ui.graphicGraph.GraphicEdge;
 import org.graphstream.ui.graphicGraph.GraphicGraph;
 import org.graphstream.ui.swingViewer.ViewPanel;
@@ -73,32 +75,48 @@ public class WasteRecovery {
     }
 
     public void initSolvers(Graph graph, WasteManagement wasteManagement, String wasteType, double alfaValue, double betaValue, ArrayList trucks) throws Exception {
+
         // recolher todo o lixo possivel -> wasteType default. aceitar lista de string com os camioes disponiveis.
-        astarSolver = new Solver(graph, wasteManagement, Waste.GLASS, alfaValue, betaValue, 2);
+        astarSolver = new Solver(graph, wasteManagement, Waste.toEnum(wasteType), alfaValue, betaValue, 2);
         astarSolver.solve("A*");
         astarInfo.setText(astarSolver.getInfo());
 
         // alfa e beta são desnecessários aqui
-        dfsSolver = new Solver(graph, wasteManagement, Waste.GLASS, alfaValue, betaValue, 2);
+        dfsSolver = new Solver(graph, wasteManagement, Waste.toEnum(wasteType), alfaValue, betaValue, 2);
         dfsSolver.solve("dfs");
         dfsInfo.setText(dfsSolver.getInfo());
 
-        bfsSolver = new Solver(graph, wasteManagement, Waste.GLASS, alfaValue, betaValue, 2);
+        bfsSolver = new Solver(graph, wasteManagement, Waste.toEnum(wasteType), alfaValue, betaValue, 2);
         bfsSolver.solve("bfs");
         bfsInfo.setText(bfsSolver.getInfo());
 
+        // label nodes with ids
+        for (Node n: graph)
+            n.addAttribute("ui.label", Integer.toString(n.getIndex()));
 
-        // PROBLEMA: o grafo não atualiza!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // print nodes with waste
+        MyGraph g = astarSolver.getGraph();
+        g.printNodes(graph, g.getNodesWithACertainWaste(Waste.toEnum(wasteType)));
+
+        // print path
         List<MyPath> sol = astarSolver.getSolution();
-        sol.get(0).printEdgesOfPath(parent.getCityGraph().getGraph(), Color.red);
-       // viewPanel1.display(viewer.getGraphicGraph(), true);
-        viewPanel1.doLayout();
+        sol.get(0).printEdgesOfPath(graph, Color.red);
+
     }
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
-        viewer = parent.getCityGraph().getGraph().display();
-        viewer.enableAutoLayout();
-        viewPanel1 =  viewer.addDefaultView(true);
+        Graph graph = parent.getCityGraph().getGraph();
+        graph.setAutoCreate(true);
+        graph.setAutoCreate(true);
+        graph.setStrict(false);
+        System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
+        graph.addAttribute("ui.quality");
+        graph.addAttribute("ui.antialias");
+        graph.addAttribute("ui.stylesheet", "url(data/stylesheet.css)");
+
+        Viewer viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
+        //viewer.enableAutoLayout();
+        viewPanel1 = viewer.addDefaultView(true);   // false indicates "no JFrame".
     }
 }

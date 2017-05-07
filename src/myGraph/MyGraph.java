@@ -386,6 +386,16 @@ public class MyGraph {
 
     }
 
+    public List<MyNode> getNodesWithACertainWaste(Waste wasteType) {
+        List<MyNode> nodesWithWaste = new ArrayList<MyNode>();
+
+        for (MyNode node: nodes)
+            if (node.getWasteReq(typeWaste) > 0)
+                nodesWithWaste.add(node);
+
+        return nodesWithWaste;
+    }
+
     private void unvisitNodes() {
         for (MyNode node: nodes) {
             node.setVisited(false);
@@ -396,6 +406,13 @@ public class MyGraph {
     public void resetColorEdgeOfGraph(Graph g) {
         for(Edge e: g.getEachEdge())
             e.addAttribute("ui.color", Color.black);
+    }
+
+    public void printNodes(Graph g, List<MyNode> nodesToPrint) {
+        for (MyNode n: nodesToPrint) {
+            Node n_= g.getNode(n.getId());
+            n_.setAttribute("ui.class", "marked");
+        }
     }
 
     public Waste getTypeWaste() {

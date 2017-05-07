@@ -59,7 +59,7 @@ public class Container {
 
     public ArrayList<Double> getContainerInfo(){
         ArrayList<Double> ret = new ArrayList<>();
-        ret.add(Double.parseDouble(location.getId()));
+        ret.add((double)location.getIndex());
         ret.add(0.0); ret.add(0.0); ret.add(0.0); ret.add(0.0);
 
         ret.set(1, this.getWasteOfAType(Waste.HOUSEHOLD));

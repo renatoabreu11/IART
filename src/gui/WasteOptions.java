@@ -47,7 +47,6 @@ public class WasteOptions implements ChangeListener {
         String station = (String) stationSelection.getSelectedItem();
         this.parent.initWasteManagement(graph, station);
 
-        wasteCollection.addItem("Default");
         wasteCollection.addItem("Household");
         wasteCollection.addItem("Paper");
         wasteCollection.addItem("Glass");

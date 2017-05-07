@@ -1,5 +1,6 @@
 package myGraph;
 
+import org.graphstream.graph.Edge;
 import wasteManagement.Waste;
 
 import java.util.ArrayList;
@@ -118,5 +119,17 @@ public class MyNode implements Comparable {
             return 1;
         else
             return 0;
+    }
+
+    @Override
+    public String toString() {
+        String s = "";
+        s += id + "\n";
+        s += "AdjList: ";
+        for (MyEdge e: adjList) {
+            s += e.getNodeTo().getId() + ", ";
+        }
+        s += "\n";
+        return s;
     }
 }

@@ -16,3 +16,6 @@ edge {
 node:clicked {
     fill-color: red;
 }
+node.marked {
+    fill-color: red;
+}

@@ -1,24 +1,35 @@
 package wasteManagement;
 
 import myGraph.*;
+import org.graphstream.algorithm.generator.Generator;
+import org.graphstream.algorithm.generator.GridGenerator;
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
+import org.graphstream.graph.implementations.SingleGraph;
+import org.graphstream.ui.view.Viewer;
+
+import java.awt.*;
+import java.util.Iterator;
 import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        CityGraph cg = new CityGraph("graph1.dgs");
-        WasteManagement management = new WasteManagement("station1.xml", cg.getGraph());
+        CityGraph cg = new CityGraph("gridGraph.dgs");
+        WasteManagement management = new WasteManagement("station4.xml", cg.getGraph());
         management.printManagementDetails();
         Graph graph = cg.getGraph();
+        /*graph.setAutoCreate(true);
+        graph.setStrict(false);
+        graph.display();
+        graph.addAttribute("ui.stylesheet", "url(data/stylesheet.css)");*/
 
-        Solver solver = new Solver(graph, management, Waste.GLASS, 0.2, 0.8, 2);
+
+        Solver solver = new Solver(graph, management, Waste.GLASS, 0.1, 0.9, 10);
         solver.solve("A*");
         solver.printInfoAboutSolution();
         List<MyPath> paths = solver.getSolution();
-        paths.get(0).printEdgesOfPath(graph, java.awt.Color.blue);
-        paths.get(0).printPath();
 
         solver.solve("dfs");
         solver.printInfoAboutSolution();
@@ -26,7 +37,24 @@ public class Main {
         solver.solve("bfs");
         solver.printInfoAboutSolution();
 
+        // printing nodes and edges
+        MyGraph g = solver.getGraph();
+        g.printNodes(cg.getGraph(), g.getNodesWithACertainWaste(Waste.GLASS));
+
         cg.display();
+
+        for (int i = 0; i < paths.size(); i++) {
+            MyPath p = paths.get(i);
+            p.printEdgesOfPath(graph, Utils.colors[i]);
+            p.printPath();
+            sleep();
+        }
+
+    }
+
+
+    protected static void sleep() {
+        try { Thread.sleep(2000); } catch (Exception e) {}
     }
 
 }

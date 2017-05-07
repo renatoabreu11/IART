@@ -62,6 +62,8 @@ public class Solver {
         return numTrucksUsed;
     }
 
+    public MyGraph getGraph() {return graph;}
+
     /**
      * Solve the instance of problem.
      * @param algorithm A*, dfs or bfs
@@ -152,6 +154,10 @@ public class Solver {
         MyNode to = graph.getTo();
 
         for (int i = 0; i < numTrucks && i < nodesWithWaste.size(); i++) {
+
+            if (graph.getTotalWasteOfAType(graph.getTypeWaste()) <= 0) {
+                break;
+            }
 
             MyNode nodeWithWaste = nodesWithWaste.get(i);
             MyPath path1 = null, path2 = null;

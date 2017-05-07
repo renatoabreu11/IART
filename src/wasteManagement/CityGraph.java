@@ -78,7 +78,7 @@ public class CityGraph implements ViewerListener {
     public void display(){
 
         for (Node n: graph) {
-            n.addAttribute("ui.label", n.getId());
+            n.addAttribute("ui.label", Integer.toString(n.getIndex()));
         }
 
         System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
@@ -87,12 +87,6 @@ public class CityGraph implements ViewerListener {
         setStyleSheet("stylesheet");
         Viewer viewer = graph.display();
 
-        ViewerPipe fromViewer = viewer.newViewerPipe();
-        fromViewer.addViewerListener(this);
-        fromViewer.addSink(graph);
-        while(loop) {
-            fromViewer.pump();
-        }
     }
 
     public void setStyleSheet(String file){
