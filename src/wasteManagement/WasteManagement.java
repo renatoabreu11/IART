@@ -25,6 +25,7 @@ public class WasteManagement {
     private Node central;
     private Node wasteStation;
     private double distCentralStation;
+    private double containerCap;
     private String stationFile;
 
     public WasteManagement(String filename, Graph graph) throws IOException, SAXException, ParserConfigurationException {
@@ -49,15 +50,17 @@ public class WasteManagement {
 
         doc.getDocumentElement().normalize();
 
-        String centralId = doc.getElementsByTagName("central").item(0).getTextContent();
+        int centralId = Integer.parseInt(doc.getElementsByTagName("central").item(0).getTextContent());
         central = graph.getNode(centralId);
 
-        String stationId = doc.getElementsByTagName("wasteStation").item(0).getTextContent();
+        int stationId = Integer.parseInt(doc.getElementsByTagName("wasteStation").item(0).getTextContent());
         wasteStation = graph.getNode(stationId);
+
+        containerCap = Double.parseDouble(doc.getElementsByTagName("containerCap").item(0).getTextContent());
 
         AStar astar = new AStar(graph);
         astar.setCosts(new AStar.DefaultCosts());
-        astar.compute(centralId, stationId);
+        astar.compute(central.getId(), wasteStation.getId());
         Path path = astar.getShortestPath();
 
         distCentralStation = path.getPathWeight("weight");
@@ -123,6 +126,10 @@ public class WasteManagement {
 
     public void setContainers(ArrayList<Container> containers) {
         this.containers = containers;
+    }
+
+    public double getContainerCap() {
+        return containerCap;
     }
 
     public void printManagementDetails(){

@@ -20,11 +20,6 @@ public class Main {
         WasteManagement management = new WasteManagement("station4.xml", cg.getGraph());
         management.printManagementDetails();
         Graph graph = cg.getGraph();
-        /*graph.setAutoCreate(true);
-        graph.setStrict(false);
-        graph.display();
-        graph.addAttribute("ui.stylesheet", "url(data/stylesheet.css)");*/
-
 
         Solver solver = new Solver(graph, management, Waste.GLASS, 0.1, 0.9, 10);
         solver.solve("A*");
@@ -48,6 +43,11 @@ public class Main {
             p.printEdgesOfPath(graph, Utils.colors[i]);
             p.printPath();
             sleep();
+        }
+
+        g.setWasteProximityFactor();
+        for (MyNode node: g.getNodes()) {
+            System.out.println("id: " + node.getId() + ", wasteProximity: " + node.getWasteProximity());
         }
 
     }

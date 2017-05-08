@@ -20,6 +20,8 @@ public class MyNode implements Comparable {
     private boolean visited = false;
     private MyNode parent = null;
 
+    private double wasteProximity = 0;
+
     public MyNode(int id, double paper, double plastic, double glass, double household) {
         this.id = id;
         this.setWaste(paper, plastic, glass, household);
@@ -49,6 +51,14 @@ public class MyNode implements Comparable {
 
     public double getPlastic() {
         return plastic;
+    }
+
+    public double getWasteProximity() {
+        return wasteProximity;
+    }
+
+    public void setWasteProximity(double wasteProximity) {
+        this.wasteProximity = wasteProximity;
     }
 
     public double getWasteReq(Waste typeWaste) {

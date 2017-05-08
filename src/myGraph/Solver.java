@@ -18,6 +18,8 @@ public class Solver {
     private double sumWasteSol;
     private double distPercorredSol;
     private int numTrucksUsed;
+    private double capTruck;
+    private double containerCap;
 
     /**
      * Contructor of Solver.
@@ -36,6 +38,8 @@ public class Solver {
         this.graph = new MyGraph(gs, management, typeWaste, alfa, beta);
         this.numTrucks = numTrucks;
         this.management = management;
+        this.capTruck = management.getTrucks().get(0).getMaxCapacity();
+        this.containerCap = management.getContainerCap();
     }
 
     public List<MyPath> getSolution() {
@@ -118,7 +122,8 @@ public class Solver {
         List<MyPath> paths = new ArrayList<MyPath>();
         for (int i = 0; i < numTrucks; i++) {
             MyPath path = graph.findPath_AStar();
-            if (graph.getTotalWasteOfAType(graph.getTypeWaste()) <= 0) {
+
+            if (!graph.isNecessaryCollectWaste(containerCap)) {
                 break;
             }
             else {

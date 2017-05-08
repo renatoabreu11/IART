@@ -86,6 +86,7 @@ public class CityGraph implements ViewerListener {
         graph.addAttribute("ui.antialias");
         setStyleSheet("stylesheet");
         Viewer viewer = graph.display();
+        viewer.disableAutoLayout();
 
     }
 
