@@ -5,34 +5,36 @@ import myGraph.MyPath;
 import myGraph.Solver;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
-import org.graphstream.ui.graphicGraph.GraphicEdge;
-import org.graphstream.ui.graphicGraph.GraphicGraph;
 import org.graphstream.ui.swingViewer.ViewPanel;
-import org.graphstream.ui.view.View;
 import org.graphstream.ui.view.Viewer;
 import wasteManagement.Waste;
 import wasteManagement.WasteManagement;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
 public class WasteRecovery {
     private JPanel pane;
     private JButton backButton;
-    private JButton setBtn;
-    private JButton runBtn;
+    private JButton prevTruckBtn;
+    private JButton nextTruckBtn;
     private JTextArea astarInfo;
     private JTextArea dfsInfo;
     private JTextArea bfsInfo;
     private ViewPanel viewPanel1;
-    private JComboBox comboBox1;
+    private JComboBox algorithmComboVal;
+    private JLabel truckNoLbl;
+    private JLabel truckNoVal;
     private MainWindow parent;
 
     private Solver astarSolver = null;
     private Solver dfsSolver = null;
     private Solver bfsSolver = null;
+    private Solver currSolver = null;
 
     Viewer viewer;
 
@@ -42,16 +44,33 @@ public class WasteRecovery {
     }
 
     private void addListeners() {
-        runBtn.addActionListener(actionEvent -> {
-            System.out.println("oi");
-            List<MyPath> sol = astarSolver.getSolution();
-            sol.get(0).printEdgesOfPath(parent.getCityGraph().getGraph(), Color.red);
-            //viewPanel1.display(viewer.getGraphicGraph(), true);
-            viewPanel1.repaint();
-        });
-        setBtn.addActionListener(actionEvent -> {
+        nextTruckBtn.addActionListener(actionEvent -> {
+            int currTruck = Integer.parseInt(truckNoVal.getText()) - 1;
+            printNewPath(currTruck+1);
 
+            prevTruckBtn.setEnabled(true);
+            if (currSolver.getPath(currTruck+2) == null)
+                nextTruckBtn.setEnabled(false);
+            truckNoVal.setText(Integer.toString(currTruck+2));
         });
+        prevTruckBtn.addActionListener(actionEvent -> {
+            int currTruck = Integer.parseInt(truckNoVal.getText()) - 1;
+            printNewPath(currTruck-1);
+
+            nextTruckBtn.setEnabled(true);
+            if (currTruck - 1 == 0)
+                prevTruckBtn.setEnabled(false);
+            truckNoVal.setText(Integer.toString(currTruck));
+        });
+    }
+
+    public void printNewPath(int pathNo) {
+        Graph graph = parent.getCityGraph().getGraph();
+        MyGraph myGraph = currSolver.getGraph();
+
+        myGraph.resetColorEdgeOfGraph(graph);
+        MyPath nextPath = currSolver.getPath(pathNo);
+        nextPath.printEdgesOfPath(graph, Color.red);
     }
 
     public JPanel getPane() {
@@ -75,8 +94,45 @@ public class WasteRecovery {
     }
 
     public void initSolvers(Graph graph, WasteManagement wasteManagement, String wasteType, double alfaValue, double betaValue, ArrayList trucks) throws Exception {
+        setGraphPanel(graph);
+        setSolvers(graph, wasteManagement, wasteType, alfaValue, betaValue, trucks);
+        setCurrSolver();
 
-        // recolher todo o lixo possivel -> wasteType default. aceitar lista de string com os camioes disponiveis.
+        if (currSolver.foundPaths()) {
+            truckNoVal.setText("1");
+            prevTruckBtn.setEnabled(false);
+            nextTruckBtn.setEnabled(true);
+            MyPath pathToPrint = currSolver.getPath(0);
+            pathToPrint.printEdgesOfPath(graph, Color.red);
+        }
+        else {
+            truckNoVal.setText("No trucks were used");
+            prevTruckBtn.setEnabled(false);
+            nextTruckBtn.setEnabled(false);
+        }
+
+        MyGraph g = currSolver.getGraph();
+        // label nodes with ids
+        for (Node n: graph)
+            n.addAttribute("ui.label", Integer.toString(n.getIndex()));
+        // print nodes with waste
+        g.printNodes(graph, g.getNodesWithACertainWaste(Waste.toEnum(wasteType)));
+
+    }
+
+    private Solver setCurrSolver() {
+        String algorithmOption = algorithmComboVal.getSelectedItem().toString();
+
+        if (algorithmOption.equals("A*"))
+            currSolver = astarSolver;
+        else if (algorithmOption.equals("DFS"))
+            currSolver = dfsSolver;
+        else if (algorithmOption.equals("BFS"))
+            currSolver = bfsSolver;
+        return null;
+    }
+
+    private void setSolvers(Graph graph, WasteManagement wasteManagement, String wasteType, double alfaValue, double betaValue, ArrayList trucks) throws Exception {
         astarSolver = new Solver(graph, wasteManagement, Waste.toEnum(wasteType), alfaValue, betaValue, 2);
         astarSolver.solve("A*");
         astarInfo.setText(astarSolver.getInfo());
@@ -89,34 +145,23 @@ public class WasteRecovery {
         bfsSolver = new Solver(graph, wasteManagement, Waste.toEnum(wasteType), alfaValue, betaValue, 2);
         bfsSolver.solve("bfs");
         bfsInfo.setText(bfsSolver.getInfo());
-
-        // label nodes with ids
-        for (Node n: graph)
-            n.addAttribute("ui.label", Integer.toString(n.getIndex()));
-
-        // print nodes with waste
-        MyGraph g = astarSolver.getGraph();
-        g.printNodes(graph, g.getNodesWithACertainWaste(Waste.toEnum(wasteType)));
-
-        // print path
-        List<MyPath> sol = astarSolver.getSolution();
-        sol.get(0).printEdgesOfPath(graph, Color.red);
-
     }
 
     private void createUIComponents() {
-        // TODO: place custom component creation code here
         Graph graph = parent.getCityGraph().getGraph();
-        graph.setAutoCreate(true);
+        setGraphPanel(graph);
+    }
+
+    private void setGraphPanel(Graph graph) {
         graph.setAutoCreate(true);
         graph.setStrict(false);
+
         System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
         graph.addAttribute("ui.quality");
         graph.addAttribute("ui.antialias");
         graph.addAttribute("ui.stylesheet", "url(data/stylesheet.css)");
 
         Viewer viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
-        //viewer.enableAutoLayout();
-        viewPanel1 = viewer.addDefaultView(true);   // false indicates "no JFrame".
+        viewPanel1 = viewer.addDefaultView(true);
     }
 }

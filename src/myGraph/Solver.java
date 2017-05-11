@@ -46,6 +46,18 @@ public class Solver {
         return solution;
     }
 
+    public MyPath getPath(int index) {
+        if (solution == null || index >= solution.size() || index < 0)
+            return null;
+        return solution.get(index);
+    }
+
+    public int getNumPaths() {
+        if (solution == null)
+            return 0;
+        return solution.size();
+    }
+
     public String getTypeSolution() {
         return typeSolution;
     }
@@ -121,8 +133,8 @@ public class Solver {
     private List<MyPath> solveByAStar() {
         List<MyPath> paths = new ArrayList<MyPath>();
         for (int i = 0; i < numTrucks; i++) {
-            MyPath path = graph.findPath_AStar();
 
+            MyPath path = graph.findPath_AStar();
             if (!graph.isNecessaryCollectWaste(containerCap)) {
                 break;
             }
@@ -132,6 +144,12 @@ public class Solver {
             }
         }
         return paths;
+    }
+
+    public boolean foundPaths() {
+        if (solution.size() > 0)
+            return true;
+        return false;
     }
 
     private List<MyPath> solveByDfs() {

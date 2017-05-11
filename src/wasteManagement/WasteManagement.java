@@ -284,11 +284,12 @@ public class WasteManagement {
         residueBuildup.add(new AbstractMap.SimpleEntry<>(Waste.PLASTIC, 0.0));
         residueBuildup.add(new AbstractMap.SimpleEntry<>(Waste.GLASS, 0.0));
 
+        /*
         Random r = new Random();
         r.setSeed(System.currentTimeMillis());
         int numberOfNodes = graph.getNodeCount();
-        String centralId = central.getId();
-        if(Integer.parseInt(centralId) > numberOfNodes){
+        int centralId = central.getIndex();
+        if(centralId > numberOfNodes){
             int val = r.nextInt(numberOfNodes) - 1;
             central = graph.getNode(val);
         }else{
@@ -310,7 +311,7 @@ public class WasteManagement {
         astar.compute(centralId, stationId);
         Path path = astar.getShortestPath();
 
-        distCentralStation = path.getPathWeight("weight");
+        distCentralStation = path.getPathWeight("weight");*/
 
         for (Node node : graph) {
             if(node.hasAttribute("waste")){
