@@ -24,8 +24,8 @@ public class WasteRecovery {
     private JTextArea bfsInfo;
     private ViewPanel graphPanel;
     private JComboBox algorithmComboVal;
-    private JLabel truckNoLbl;
-    private JLabel truckNoVal;
+    private JLabel numberOfTrucks;
+    private JComboBox<String> truckNoVal;
     private MainWindow parent;
 
     private Solver astarSolver = null;
@@ -41,24 +41,26 @@ public class WasteRecovery {
     }
 
     private void addListeners() {
-        nextTruckBtn.addActionListener(actionEvent -> {
-            int currTruck = Integer.parseInt(truckNoVal.getText()) - 1;
-            printNewPath(currTruck+1);
+        truckNoVal.addActionListener(actionEvent -> {
+            int currTruck = Integer.parseInt(truckNoVal.getSelectedItem().toString()) - 1;
+            printNewPath(currTruck);
 
-            prevTruckBtn.setEnabled(true);
-            if (currSolver.getPath(currTruck+2) == null)
+            if(currTruck != 0){
+                prevTruckBtn.setEnabled(true);
+            } else prevTruckBtn.setEnabled(false);
+            if (currSolver.getPath(currTruck+1) == null)
                 nextTruckBtn.setEnabled(false);
-            truckNoVal.setText(Integer.toString(currTruck+2));
+            else nextTruckBtn.setEnabled(true);
+        });
+
+        nextTruckBtn.addActionListener(actionEvent -> {
+            int currTruck = Integer.parseInt(truckNoVal.getSelectedItem().toString()) - 1;
+            updateCurrTruck(currTruck, 2);
         });
 
         prevTruckBtn.addActionListener(actionEvent -> {
-            int currTruck = Integer.parseInt(truckNoVal.getText()) - 1;
-            printNewPath(currTruck-1);
-
-            nextTruckBtn.setEnabled(true);
-            if (currTruck - 1 == 0)
-                prevTruckBtn.setEnabled(false);
-            truckNoVal.setText(Integer.toString(currTruck));
+            int currTruck = Integer.parseInt(truckNoVal.getSelectedItem().toString()) - 1;
+            updateCurrTruck(currTruck, 0);
         });
 
         algorithmComboVal.addActionListener (actionEvent -> {
@@ -68,6 +70,17 @@ public class WasteRecovery {
             if (currSolver.foundPaths())
                 printNewPath(0);
         });
+    }
+
+    public void updateCurrTruck(int currTruck, int value){
+        if(currTruck != 0){
+            prevTruckBtn.setEnabled(true);
+        } else prevTruckBtn.setEnabled(false);
+        if (currSolver.getPath(currTruck+1) == null)
+            nextTruckBtn.setEnabled(false);
+        else nextTruckBtn.setEnabled(true);
+        truckNoVal.setSelectedItem(Integer.toString(currTruck + value));
+        printNewPath(currTruck);
     }
 
     public void printNewPath(int pathNo) {
@@ -123,12 +136,17 @@ public class WasteRecovery {
         Graph graph = parent.getCityGraph().getGraph();
 
         if (currSolver.foundPaths()) {
-            truckNoVal.setText("1");
+            numberOfTrucks.setText(currSolver.getNumTrucksUsed() + " trucks were used in the waste recovery.");
             prevTruckBtn.setEnabled(false);
             nextTruckBtn.setEnabled(true);
+
+            truckNoVal.removeAllItems();
+            for(int i = 0; i < currSolver.getNumTrucksUsed(); i++){
+                truckNoVal.addItem(Integer.toString(i + 1));
+            }
         }
         else {
-            truckNoVal.setText("No trucks were used: no containers with half full.");
+            numberOfTrucks.setText("No trucks were used: Low number of residues in all containers.");
             prevTruckBtn.setEnabled(false);
             nextTruckBtn.setEnabled(false);
         }
