@@ -32,6 +32,7 @@ public class MainOptions{
                     frame = frame.getParent();
                 while (!(frame instanceof JFrame));
                 ((JFrame) frame).dispose();
+                System.exit(0);
             }
         });
     }

@@ -182,8 +182,8 @@ public class WasteManagement {
 
     public ArrayList<String> getGeneralInfo(){
         ArrayList<String> ret = new ArrayList<>();
-        ret.add("Central location: Node " + central.getId());
-        ret.add("Waste station location: Node " + wasteStation.getId());
+        ret.add("Central location: Node " + central.getInDegree());
+        ret.add("Waste station location: Node " + wasteStation.getIndex());
         ret.add("Distance between central and waste station: " + distCentralStation + "km");
         return ret;
     }

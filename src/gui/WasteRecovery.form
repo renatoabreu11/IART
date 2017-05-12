@@ -8,7 +8,7 @@
     <properties/>
     <border type="none"/>
     <children>
-      <component id="53bfc" class="org.graphstream.ui.swingViewer.ViewPanel" binding="viewPanel1" custom-create="true" default-binding="true">
+      <component id="53bfc" class="org.graphstream.ui.swingViewer.ViewPanel" binding="graphPanel" custom-create="true" default-binding="true">
         <constraints>
           <grid row="1" column="3" row-span="4" col-span="2" vsize-policy="7" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="700" height="700"/>

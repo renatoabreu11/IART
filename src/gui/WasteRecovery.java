@@ -12,10 +12,7 @@ import wasteManagement.WasteManagement;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.List;
 
 public class WasteRecovery {
     private JPanel pane;
@@ -25,7 +22,7 @@ public class WasteRecovery {
     private JTextArea astarInfo;
     private JTextArea dfsInfo;
     private JTextArea bfsInfo;
-    private ViewPanel viewPanel1;
+    private ViewPanel graphPanel;
     private JComboBox algorithmComboVal;
     private JLabel truckNoLbl;
     private JLabel truckNoVal;
@@ -53,6 +50,7 @@ public class WasteRecovery {
                 nextTruckBtn.setEnabled(false);
             truckNoVal.setText(Integer.toString(currTruck+2));
         });
+
         prevTruckBtn.addActionListener(actionEvent -> {
             int currTruck = Integer.parseInt(truckNoVal.getText()) - 1;
             printNewPath(currTruck-1);
@@ -61,6 +59,14 @@ public class WasteRecovery {
             if (currTruck - 1 == 0)
                 prevTruckBtn.setEnabled(false);
             truckNoVal.setText(Integer.toString(currTruck));
+        });
+
+        algorithmComboVal.addActionListener (actionEvent -> {
+            setCurrSolver();
+            showCurrSolverInfo();
+
+            if (currSolver.foundPaths())
+                printNewPath(0);
         });
     }
 
@@ -95,29 +101,37 @@ public class WasteRecovery {
 
     public void initSolvers(Graph graph, WasteManagement wasteManagement, String wasteType, double alfaValue, double betaValue, ArrayList trucks) throws Exception {
         setGraphPanel(graph);
+
         setSolvers(graph, wasteManagement, wasteType, alfaValue, betaValue, trucks);
         setCurrSolver();
-
-        if (currSolver.foundPaths()) {
-            truckNoVal.setText("1");
-            prevTruckBtn.setEnabled(false);
-            nextTruckBtn.setEnabled(true);
-            MyPath pathToPrint = currSolver.getPath(0);
-            pathToPrint.printEdgesOfPath(graph, Color.red);
-        }
-        else {
-            truckNoVal.setText("No trucks were used");
-            prevTruckBtn.setEnabled(false);
-            nextTruckBtn.setEnabled(false);
-        }
+        showCurrSolverInfo();
 
         MyGraph g = currSolver.getGraph();
         // label nodes with ids
         for (Node n: graph)
             n.addAttribute("ui.label", Integer.toString(n.getIndex()));
+
         // print nodes with waste
         g.printNodes(graph, g.getNodesWithACertainWaste(Waste.toEnum(wasteType)));
 
+        // print initial path
+        if (currSolver.foundPaths())
+            printNewPath(0);
+    }
+
+    private void showCurrSolverInfo() {
+        Graph graph = parent.getCityGraph().getGraph();
+
+        if (currSolver.foundPaths()) {
+            truckNoVal.setText("1");
+            prevTruckBtn.setEnabled(false);
+            nextTruckBtn.setEnabled(true);
+        }
+        else {
+            truckNoVal.setText("No trucks were used: no containers with half full.");
+            prevTruckBtn.setEnabled(false);
+            nextTruckBtn.setEnabled(false);
+        }
     }
 
     private Solver setCurrSolver() {
@@ -152,7 +166,7 @@ public class WasteRecovery {
         setGraphPanel(graph);
     }
 
-    private void setGraphPanel(Graph graph) {
+    public void setGraphPanel(Graph graph) {
         graph.setAutoCreate(true);
         graph.setStrict(false);
 
@@ -161,7 +175,7 @@ public class WasteRecovery {
         graph.addAttribute("ui.antialias");
         graph.addAttribute("ui.stylesheet", "url(data/stylesheet.css)");
 
-        Viewer viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
-        viewPanel1 = viewer.addDefaultView(true);
+        viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
+        graphPanel = viewer.addDefaultView(false);
     }
 }

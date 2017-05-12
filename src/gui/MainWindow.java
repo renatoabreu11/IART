@@ -134,6 +134,10 @@ public class MainWindow extends JFrame{
         wasteManagement.update(this.cg.getGraph());
     }
 
+    public void updateGraphPanel() {
+        this.wasteRecovery.setGraphPanel(this.cg.getGraph());
+    }
+
     public void initWasteRecovery() {
         String wasteType = (String)wasteOptions.getWasteCollection().getSelectedItem();
         double alfaValue = (double)wasteOptions.getAlfaValue().getValue();

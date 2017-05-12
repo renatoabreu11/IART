@@ -126,6 +126,7 @@ public class WasteOptions implements ChangeListener {
             if(!graphFile.equals(curr_graph)){
                 this.parent.setCityGraph(new CityGraph(graphFile));
                 this.parent.updateWasteManagement();
+                this.parent.updateGraphPanel();
             }
         });
 
