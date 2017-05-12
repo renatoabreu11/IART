@@ -21,7 +21,7 @@ public class Main {
         management.printManagementDetails();
         Graph graph = cg.getGraph();
 
-        Solver solver = new Solver(graph, management, Waste.GLASS, 0.1, 0.9, 10);
+        Solver solver = new Solver(graph, management, Waste.GLASS, 1, 0, 10);
         solver.solve("A*");
         solver.printInfoAboutSolution();
         List<MyPath> paths = solver.getSolution();
@@ -42,7 +42,7 @@ public class Main {
             MyPath p = paths.get(i);
             p.printEdgesOfPath(graph, Utils.colors[i]);
             p.printPath();
-            sleep();
+            break;
         }
 
         g.setWasteProximityFactor();

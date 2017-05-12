@@ -28,11 +28,11 @@ public class MyPath {
         this.setDistPercorred();
     }
 
-    public double getDistPercorred() {
+    double getDistPercorred() {
         return distPercorred;
     }
 
-    public double getSumWasteCollected() {
+    double getSumWasteCollected() {
         return sumWasteCollected;
     }
 
@@ -47,16 +47,16 @@ public class MyPath {
                 double wasteInNode = node.getWasteReq(typeWaste);
 
                 if (sumWasteCollected + wasteInNode > capacityTruck) {
-                    wasteCollectedInEachNode.add(new Double(capacityTruck-sumWasteCollected));
+                    wasteCollectedInEachNode.add(capacityTruck - sumWasteCollected);
                     sumWasteCollected = capacityTruck;
                 }
                 else {
-                    wasteCollectedInEachNode.add(new Double(wasteInNode));
+                    wasteCollectedInEachNode.add(wasteInNode);
                     sumWasteCollected += wasteInNode;
                 }
             }
             else {
-                wasteCollectedInEachNode.add(new Double(0));
+                wasteCollectedInEachNode.add(0d);
             }
         }
 
@@ -69,11 +69,11 @@ public class MyPath {
             distPercorred += e.getWeight();
     }
 
-    public List<MyNode> getNodesOfPath() {
+    List<MyNode> getNodesOfPath() {
         return path;
     }
 
-    public List<MyEdge> getEdgesOfPath() {
+    private List<MyEdge> getEdgesOfPath() {
         List<MyEdge> edges = new ArrayList<MyEdge>();
         for (int i = 0; i < path.size()-1; i++) {
             MyNode u = path.get(i);

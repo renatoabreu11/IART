@@ -26,14 +26,18 @@ public class WasteRecovery {
     private JComboBox algorithmComboVal;
     private JLabel numberOfTrucks;
     private JComboBox<String> truckNoVal;
+    private JTextArea astarBetaZeroInfo;
     private MainWindow parent;
 
     private Solver astarSolver = null;
+    private Solver astarBetaZeroSolver = null;
     private Solver dfsSolver = null;
     private Solver bfsSolver = null;
     private Solver currSolver = null;
 
     Viewer viewer;
+
+    boolean algorithChange = false;
 
     public WasteRecovery(MainWindow mainWindow) {
         this.parent = mainWindow;
@@ -42,6 +46,9 @@ public class WasteRecovery {
 
     private void addListeners() {
         truckNoVal.addActionListener(actionEvent -> {
+            if (algorithChange)
+                return;
+
             int currTruck = Integer.parseInt(truckNoVal.getSelectedItem().toString()) - 1;
             printNewPath(currTruck);
 
@@ -140,10 +147,13 @@ public class WasteRecovery {
             prevTruckBtn.setEnabled(false);
             nextTruckBtn.setEnabled(true);
 
+            algorithChange = true;
             truckNoVal.removeAllItems();
             for(int i = 0; i < currSolver.getNumTrucksUsed(); i++){
                 truckNoVal.addItem(Integer.toString(i + 1));
             }
+            truckNoVal.setSelectedIndex(0);
+            algorithChange = false;
         }
         else {
             numberOfTrucks.setText("No trucks were used: Low number of residues in all containers.");
@@ -161,20 +171,25 @@ public class WasteRecovery {
             currSolver = dfsSolver;
         else if (algorithmOption.equals("BFS"))
             currSolver = bfsSolver;
+        else if (algorithmOption.equals("A* beta = 0"))
+            currSolver = astarBetaZeroSolver;
         return null;
     }
 
     private void setSolvers(Graph graph, WasteManagement wasteManagement, String wasteType, double alfaValue, double betaValue, ArrayList trucks) throws Exception {
-        astarSolver = new Solver(graph, wasteManagement, Waste.toEnum(wasteType), alfaValue, betaValue, 2);
+        astarSolver = new Solver(graph, wasteManagement, Waste.toEnum(wasteType), alfaValue, betaValue, 5);
         astarSolver.solve("A*");
         astarInfo.setText(astarSolver.getInfo());
 
-        // alfa e beta são desnecessários aqui
-        dfsSolver = new Solver(graph, wasteManagement, Waste.toEnum(wasteType), alfaValue, betaValue, 2);
+        astarBetaZeroSolver = new Solver(graph, wasteManagement, Waste.toEnum(wasteType), 1, 0, 5);
+        astarBetaZeroSolver.solve("A*");
+        astarBetaZeroInfo.setText(astarBetaZeroSolver.getInfo());
+
+        dfsSolver = new Solver(graph, wasteManagement, Waste.toEnum(wasteType), alfaValue, betaValue, 5);
         dfsSolver.solve("dfs");
         dfsInfo.setText(dfsSolver.getInfo());
 
-        bfsSolver = new Solver(graph, wasteManagement, Waste.toEnum(wasteType), alfaValue, betaValue, 2);
+        bfsSolver = new Solver(graph, wasteManagement, Waste.toEnum(wasteType), alfaValue, betaValue, 5);
         bfsSolver.solve("bfs");
         bfsInfo.setText(bfsSolver.getInfo());
     }
