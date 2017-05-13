@@ -87,7 +87,7 @@ public class WasteRecovery {
             nextTruckBtn.setEnabled(false);
         else nextTruckBtn.setEnabled(true);
         truckNoVal.setSelectedItem(Integer.toString(currTruck + value));
-        printNewPath(currTruck);
+        printNewPath(currTruck + value - 1);
     }
 
     public void printNewPath(int pathNo) {

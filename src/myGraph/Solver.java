@@ -120,6 +120,7 @@ public class Solver {
                 paths.add(path);
                 assert path != null;
                 path.updateWasteInNodes();
+                graph.setWasteProximityFactor();
             }
         }
         return paths;

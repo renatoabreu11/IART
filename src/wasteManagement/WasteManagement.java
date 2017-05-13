@@ -133,8 +133,8 @@ public class WasteManagement {
     }
 
     public void printManagementDetails(){
-        System.out.println("Central location: MyNode " + central.getId());
-        System.out.println("Waste station location: MyNode " + wasteStation.getId());
+        System.out.println("Central location: MyNode " + central.getIndex());
+        System.out.println("Waste station location: MyNode " + wasteStation.getIndex());
         System.out.println("Distance between central and waste station: " + distCentralStation);
 
         System.out.println("\nCompany trucks");

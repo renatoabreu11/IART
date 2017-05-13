@@ -16,12 +16,12 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        CityGraph cg = new CityGraph("gridGraph.dgs");
-        WasteManagement management = new WasteManagement("station4.xml", cg.getGraph());
+        CityGraph cg = new CityGraph("graph1.dgs");
+        WasteManagement management = new WasteManagement("station1.xml", cg.getGraph());
         management.printManagementDetails();
         Graph graph = cg.getGraph();
 
-        Solver solver = new Solver(graph, management, Waste.GLASS, 1, 0, 10);
+        Solver solver = new Solver(graph, management, Waste.GLASS, 0.5, 0.5, 10);
         solver.solve("A*");
         solver.printInfoAboutSolution();
         List<MyPath> paths = solver.getSolution();
@@ -42,7 +42,6 @@ public class Main {
             MyPath p = paths.get(i);
             p.printEdgesOfPath(graph, Utils.colors[i]);
             p.printPath();
-            break;
         }
 
         g.setWasteProximityFactor();
@@ -50,10 +49,12 @@ public class Main {
             System.out.println("id: " + node.getId() + ", wasteProximity: " + node.getWasteProximity());
         }
 
+
     }
 
     protected static void sleep() {
-        try { Thread.sleep(2000); } catch (Exception e) {}
+        try { Thread.sleep(2000); }
+        catch (Exception e) {System.out.println(e.getMessage());}
     }
 
 }
