@@ -18,7 +18,6 @@ public class Solver {
     private double sumWasteSol;
     private double distPercorredSol;
     private int numTrucksUsed;
-    private double capTruck;
     private double containerCap;
 
     /**
@@ -33,12 +32,11 @@ public class Solver {
      * @param numTrucks maximum number of trucks that solver will use to find a solution-
      */
     public Solver(Graph gs, WasteManagement management, Waste typeWaste, double alfa, double beta, int numTrucks) throws Exception {
-        if (1 - alfa - beta > 0.01)
+        if (Math.abs(1 - alfa - beta) > 0.01)
             throw new Exception("Error: alfa + beta = 1 must be guaranteed.");
         this.graph = new MyGraph(gs, management, typeWaste, alfa, beta);
         this.numTrucks = numTrucks;
         this.management = management;
-        this.capTruck = management.getTrucks().get(0).getMaxCapacity();
         this.containerCap = management.getContainerCap();
     }
 
@@ -52,28 +50,6 @@ public class Solver {
         return solution.get(index);
     }
 
-    public int getNumPaths() {
-        if (solution == null)
-            return 0;
-        return solution.size();
-    }
-
-    public String getTypeSolution() {
-        return typeSolution;
-    }
-
-    public int getNumTrucks() {
-        return numTrucks;
-    }
-
-    public double getSumWasteSol() {
-        return sumWasteSol;
-    }
-
-    public double getDistPercorredSol() {
-        return distPercorredSol;
-    }
-
     public int getNumTrucksUsed() {
         return numTrucksUsed;
     }
@@ -83,25 +59,28 @@ public class Solver {
     /**
      * Solve the instance of problem.
      * @param algorithm A*, dfs or bfs
-     * @return paths found
      * @throws Exception invalid algorithm
      */
-    public List<MyPath> solve(String algorithm) throws Exception {
+    public void solve(String algorithm) throws Exception {
 
         typeSolution = algorithm;
 
-        if (algorithm.equals("A*"))
-            solution = this.solveByAStar();
-        else if (algorithm.equals("dfs"))
-            solution = this.solveByDfs();
-        else if (algorithm.equals("bfs"))
-            solution = this.solveByBfs();
-        else
-            throw new Exception("Error: invalid algorithm. Algorithm must be \"A*\", \"dfs\" or \"bfs\"");
+        switch (algorithm) {
+            case "A*":
+                solution = this.solveByAStar();
+                break;
+            case "dfs":
+                solution = this.solveByDfs();
+                break;
+            case "bfs":
+                solution = this.solveByBfs();
+                break;
+            default:
+                throw new Exception("Error: invalid algorithm. Algorithm must be \"A*\", \"dfs\" or \"bfs\"");
+        }
 
         this.setInfoOfSolution();
         this.graph.readWasteFromManagement(management); // reset waste
-        return solution;
     }
 
     /**
@@ -123,15 +102,14 @@ public class Solver {
         sumWasteSol = 0;
         distPercorredSol = 0;
         numTrucksUsed = solution.size();
-        for (int i = 0; i < solution.size(); i++) {
-            MyPath path = solution.get(i);
+        for (MyPath path : solution) {
             sumWasteSol += path.getSumWasteCollected();
             distPercorredSol += path.getDistPercorred();
         }
     }
 
     private List<MyPath> solveByAStar() {
-        List<MyPath> paths = new ArrayList<MyPath>();
+        List<MyPath> paths = new ArrayList<>();
         for (int i = 0; i < numTrucks; i++) {
 
             MyPath path = graph.findPath_AStar();
@@ -140,6 +118,7 @@ public class Solver {
             }
             else {
                 paths.add(path);
+                assert path != null;
                 path.updateWasteInNodes();
             }
         }
@@ -147,63 +126,42 @@ public class Solver {
     }
 
     public boolean foundPaths() {
-        if (solution.size() > 0)
-            return true;
-        return false;
+        return solution.size() > 0;
     }
 
     private List<MyPath> solveByDfs() {
-        return this.greedyAuxSolver("dfs");
+        List<MyPath> paths = new ArrayList<>();
+
+        for (int i = 0; i < numTrucks; i++) {
+
+            MyPath path = graph.findPath_dfs();
+            if (!graph.isNecessaryCollectWaste(containerCap)) {
+                break;
+            }
+            else {
+                paths.add(path);
+                assert path != null;
+                path.updateWasteInNodes();
+            }
+        }
+        return paths;
     }
 
     private List<MyPath> solveByBfs() {
-        return this.greedyAuxSolver("bfs");
-    }
+        List<MyPath> paths = new ArrayList<>();
 
-    /**
-     * Get the nodes with waste (greedy).
-     * For each node computes the path:
-     * from -> ... -> nodeWithWaste -> ... -> to, using bfs or dfs
-     * from = station, to central.
-     *
-     * @param algorithm bfs or dfs
-     * @return paths
-     */
-    private List<MyPath> greedyAuxSolver(String algorithm) {
+        for (int i = 0; i < numTrucks; i++) {
 
-        List<MyPath> paths = new ArrayList<MyPath>();
-        List<MyNode> nodesWithWaste = graph.getNodesWithWaste();
-        MyNode from = graph.getFrom();
-        MyNode to = graph.getTo();
-
-        for (int i = 0; i < numTrucks && i < nodesWithWaste.size(); i++) {
-
-            if (graph.getTotalWasteOfAType(graph.getTypeWaste()) <= 0) {
+            MyPath path = graph.findPath_bfs();
+            if (!graph.isNecessaryCollectWaste(containerCap)) {
                 break;
             }
-
-            MyNode nodeWithWaste = nodesWithWaste.get(i);
-            MyPath path1 = null, path2 = null;
-
-            if (algorithm.equals("bfs")) {
-                path1 = graph.findPath_bfs(from, nodeWithWaste);
-                path2 = graph.findPath_bfs(nodeWithWaste, to);
+            else {
+                paths.add(path);
+                assert path != null;
+                path.updateWasteInNodes();
             }
-            else if (algorithm.equals("dfs")) {
-                path1 = graph.findPath_dfs(from, nodeWithWaste);
-                path2 = graph.findPath_dfs(nodeWithWaste, to);
-            }
-
-            List<MyNode> path1Nodes = path1.getNodesOfPath();
-            List<MyNode> path2Nodes = path2.getNodesOfPath();
-            path1Nodes.remove(path1Nodes.size()-1);
-            path1Nodes.addAll(path2Nodes);
-
-            MyPath finalPath = new MyPath(path1Nodes, graph.getMaxCapacityTruck(), graph.getTypeWaste());
-            finalPath.updateWasteInNodes();
-            paths.add(finalPath);
         }
-
         return paths;
     }
 
