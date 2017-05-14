@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <station>
     <central>0</central>
-    <wasteStation>99</wasteStation>
+    <wasteStation>3</wasteStation>
     <containerCap>10</containerCap>
     <truck>
         <category>Paper</category>
@@ -9,7 +9,7 @@
     </truck>
     <truck>
         <category>Glass</category>
-        <capacity>40</capacity>
+        <capacity>100</capacity>
     </truck>
     <truck>
         <category>Household</category>

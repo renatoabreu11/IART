@@ -9,7 +9,6 @@ public class Management {
     private JPanel pane;
     private JButton backButton;
     private JButton analysisButton;
-    private JButton endShiftButton;
     private JButton wasteCollectionButton;
 
     public Management(MainWindow mainWindow) {
@@ -29,11 +28,6 @@ public class Management {
             s.setResidueInfo(residueInfo);
             s.setNodesInfo(containersInfo);
             this.parent.showLayout("Statistics");
-        });
-
-        endShiftButton.addActionListener((ActionEvent e) -> {
-            parent.getWasteManagement().emptyTrucks();
-            parent.getWasteManagement().refillContainers();
         });
 
         wasteCollectionButton.addActionListener((ActionEvent e) -> {
