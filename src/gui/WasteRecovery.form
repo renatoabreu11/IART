@@ -1,114 +1,114 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="gui.WasteRecovery">
-  <grid id="27dc6" binding="pane" layout-manager="GridLayoutManager" row-count="11" column-count="8" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-    <margin top="32" left="32" bottom="32" right="32"/>
+  <grid id="27dc6" binding="pane" layout-manager="GridLayoutManager" row-count="7" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="945" height="410"/>
+      <xy x="20" y="20" width="798" height="400"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
-      <component id="53bfc" class="org.graphstream.ui.swingViewer.ViewPanel" binding="graphPanel" custom-create="true" default-binding="true">
+      <grid id="c39c5" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
-          <grid row="4" column="0" row-span="4" col-span="8" vsize-policy="7" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+          <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="211" class="javax.swing.JTextArea" binding="pathAnalysis">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                <preferred-size width="200" height="50"/>
+              </grid>
+            </constraints>
+            <properties>
+              <text value=""/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <component id="5f825" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Waste Recovery Analysis"/>
+        </properties>
+      </component>
+      <component id="5297d" class="javax.swing.JTextArea" binding="bfsInfo">
+        <constraints>
+          <grid row="5" column="3" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="50"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="bc044" class="javax.swing.JTextArea" binding="astarInfo">
+        <constraints>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="50"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="2feba" class="javax.swing.JTextArea" binding="dfsInfo">
+        <constraints>
+          <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="50"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="40266" class="org.graphstream.ui.swingViewer.ViewPanel" binding="graphPanel" custom-create="true" default-binding="true">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="3" vsize-policy="7" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="700" height="700"/>
           </grid>
         </constraints>
         <properties/>
       </component>
-      <component id="20d18" class="javax.swing.JTextArea" binding="astarInfo">
+      <component id="2f235" class="javax.swing.JButton" binding="nextTruckButton" default-binding="true">
         <constraints>
-          <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <preferred-size width="200" height="50"/>
-          </grid>
+          <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value=""/>
+          <text value="Next Truck"/>
         </properties>
       </component>
-      <component id="88caa" class="javax.swing.JLabel">
+      <component id="f6243" class="javax.swing.JLabel">
         <constraints>
-          <grid row="8" column="4" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="DFS results"/>
+          <text value="Current Truck"/>
         </properties>
       </component>
-      <component id="2947e" class="javax.swing.JLabel">
+      <component id="cd573" class="javax.swing.JComboBox" binding="truckNoVal">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="8" vsize-policy="7" hsize-policy="7" anchor="0" fill="0" indent="0" use-parent-layout="false">
-            <preferred-size width="200" height="15"/>
-          </grid>
+          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="ed139" class="javax.swing.JLabel" binding="numberOfTrucks">
+        <constraints>
+          <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Waste recovery analysis"/>
+          <text value="Trucks"/>
         </properties>
       </component>
-      <component id="1976a" class="javax.swing.JTextArea" binding="dfsInfo">
+      <component id="c1342" class="javax.swing.JLabel">
         <constraints>
-          <grid row="9" column="4" row-span="1" col-span="2" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <preferred-size width="200" height="50"/>
-          </grid>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value=""/>
+          <text value="Algorithm Selection"/>
         </properties>
       </component>
-      <component id="f4112" class="javax.swing.JTextArea" binding="bfsInfo">
+      <component id="d1450" class="javax.swing.JComboBox" binding="algorithmComboVal">
         <constraints>
-          <grid row="9" column="6" row-span="1" col-span="2" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <preferred-size width="200" height="50"/>
-          </grid>
-        </constraints>
-        <properties>
-          <text value=""/>
-        </properties>
-      </component>
-      <component id="93283" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="8" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="BFS results"/>
-        </properties>
-      </component>
-      <component id="1e2eb" class="javax.swing.JButton" binding="backButton">
-        <constraints>
-          <grid row="10" column="4" row-span="1" col-span="3" vsize-policy="7" hsize-policy="7" anchor="0" fill="1" indent="0" use-parent-layout="false">
-            <minimum-size width="176" height="20"/>
-            <preferred-size width="316" height="15"/>
-            <maximum-size width="200" height="30"/>
-          </grid>
-        </constraints>
-        <properties>
-          <text value="Back"/>
-        </properties>
-      </component>
-      <component id="66f0e" class="javax.swing.JButton" binding="prevTruckBtn">
-        <constraints>
-          <grid row="1" column="7" row-span="2" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="200" height="15"/>
-          </grid>
-        </constraints>
-        <properties>
-          <text value="Previous truck"/>
-        </properties>
-      </component>
-      <component id="aaf1b" class="javax.swing.JButton" binding="nextTruckBtn">
-        <constraints>
-          <grid row="3" column="7" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="200" height="15"/>
-          </grid>
-        </constraints>
-        <properties>
-          <text value="Next truck"/>
-        </properties>
-      </component>
-      <component id="619c1" class="javax.swing.JComboBox" binding="algorithmComboVal">
-        <constraints>
-          <grid row="2" column="0" row-span="2" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="100" height="15"/>
-          </grid>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <model>
@@ -119,65 +119,61 @@
           </model>
         </properties>
       </component>
-      <component id="3dfc1" class="javax.swing.JLabel" binding="numberOfTrucks">
+      <component id="c5df6" class="javax.swing.JLabel">
         <constraints>
-          <grid row="1" column="4" row-span="2" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Trucks"/>
+          <text value="BFS results"/>
         </properties>
       </component>
-      <component id="6d457" class="javax.swing.JLabel">
+      <component id="7677e" class="javax.swing.JLabel">
         <constraints>
-          <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="7" hsize-policy="7" anchor="8" fill="0" indent="0" use-parent-layout="false">
-            <preferred-size width="100" height="15"/>
-          </grid>
+          <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Algorithm options"/>
+          <text value="DFS results"/>
         </properties>
       </component>
-      <component id="9b533" class="javax.swing.JTextArea" binding="astarBetaZeroInfo">
+      <component id="d38fd" class="javax.swing.JLabel">
         <constraints>
-          <grid row="9" column="1" row-span="1" col-span="3" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="50"/>
-          </grid>
+          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value=""/>
+          <text value="A*, w/ Beta = 0 results"/>
         </properties>
       </component>
-      <component id="e602b" class="javax.swing.JLabel">
+      <component id="bf5c3" class="javax.swing.JLabel">
         <constraints>
-          <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="A* Beta = 0 results"/>
-        </properties>
-      </component>
-      <component id="9eb2f" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="A* results"/>
         </properties>
       </component>
-      <component id="28c1e" class="javax.swing.JLabel">
+      <component id="e66" class="javax.swing.JButton" binding="previousTruckButton" default-binding="true">
         <constraints>
-          <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Current truck"/>
+          <text value="Previous Truck"/>
         </properties>
       </component>
-      <component id="7708" class="javax.swing.JComboBox" binding="truckNoVal">
+      <component id="9f064" class="javax.swing.JButton" binding="backButton">
         <constraints>
-          <grid row="3" column="4" row-span="1" col-span="2" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="6" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <model/>
+          <text value="Back"/>
         </properties>
+      </component>
+      <component id="61be3" class="javax.swing.JTextArea" binding="astarBetaZeroInfo">
+        <constraints>
+          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="50"/>
+          </grid>
+        </constraints>
+        <properties/>
       </component>
     </children>
   </grid>

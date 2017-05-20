@@ -13,26 +13,27 @@ import wasteManagement.WasteManagement;
 import javax.swing.*;
 import java.awt.*;
 
-public class WasteRecovery{
+public class WasteRecovery {
     private JPanel pane;
-    private JButton backButton;
-    private JButton prevTruckBtn;
-    private JButton nextTruckBtn;
+    private ViewPanel graphPanel;
+    private JTextArea pathAnalysis;
+    private JTextArea bfsInfo;
     private JTextArea astarInfo;
     private JTextArea dfsInfo;
-    private JTextArea bfsInfo;
-    private ViewPanel graphPanel;
-    private JComboBox algorithmComboVal;
-    private JLabel numberOfTrucks;
     private JComboBox<String> truckNoVal;
+    private JComboBox algorithmComboVal;
+    private JButton backButton;
+    private JButton nextTruckButton;
+    private JButton previousTruckButton;
+    private JLabel numberOfTrucks;
     private JTextArea astarBetaZeroInfo;
-    private MainWindow parent;
 
     private Solver astarSolver = null;
     private Solver astarBetaZeroSolver = null;
     private Solver dfsSolver = null;
     private Solver bfsSolver = null;
     private Solver currSolver = null;
+    private MainWindow parent = null;
 
     Viewer viewer;
 
@@ -52,19 +53,19 @@ public class WasteRecovery{
             printNewPath(currTruck);
 
             if(currTruck != 0){
-                prevTruckBtn.setEnabled(true);
-            } else prevTruckBtn.setEnabled(false);
+                previousTruckButton.setEnabled(true);
+            } else previousTruckButton.setEnabled(false);
             if (currSolver.getPath(currTruck+1) == null)
-                nextTruckBtn.setEnabled(false);
-            else nextTruckBtn.setEnabled(true);
+                nextTruckButton.setEnabled(false);
+            else nextTruckButton.setEnabled(true);
         });
 
-        nextTruckBtn.addActionListener(actionEvent -> {
+        nextTruckButton.addActionListener(actionEvent -> {
             int currTruck = Integer.parseInt(truckNoVal.getSelectedItem().toString()) - 1;
             updateCurrTruck(currTruck, 2);
         });
 
-        prevTruckBtn.addActionListener(actionEvent -> {
+        previousTruckButton.addActionListener(actionEvent -> {
             int currTruck = Integer.parseInt(truckNoVal.getSelectedItem().toString()) - 1;
             updateCurrTruck(currTruck, 0);
         });
@@ -80,11 +81,11 @@ public class WasteRecovery{
 
     public void updateCurrTruck(int currTruck, int value){
         if(currTruck != 0){
-            prevTruckBtn.setEnabled(true);
-        } else prevTruckBtn.setEnabled(false);
+            previousTruckButton.setEnabled(true);
+        } else previousTruckButton.setEnabled(false);
         if (currSolver.getPath(currTruck+1) == null)
-            nextTruckBtn.setEnabled(false);
-        else nextTruckBtn.setEnabled(true);
+            nextTruckButton.setEnabled(false);
+        else nextTruckButton.setEnabled(true);
         truckNoVal.setSelectedItem(Integer.toString(currTruck + value));
         printNewPath(currTruck + value - 1);
     }
@@ -143,8 +144,8 @@ public class WasteRecovery{
 
         if (currSolver.foundPaths()) {
             numberOfTrucks.setText(currSolver.getNumTrucksUsed() + " trucks were used in the waste recovery.");
-            prevTruckBtn.setEnabled(false);
-            nextTruckBtn.setEnabled(true);
+            previousTruckButton.setEnabled(false);
+            nextTruckButton.setEnabled(true);
 
             algorithChange = true;
             truckNoVal.removeAllItems();
@@ -156,13 +157,13 @@ public class WasteRecovery{
         }
         else {
             numberOfTrucks.setText("No trucks were used: Low number of residues in all containers.");
-            prevTruckBtn.setEnabled(false);
-            nextTruckBtn.setEnabled(false);
+            previousTruckButton.setEnabled(false);
+            nextTruckButton.setEnabled(false);
         }
     }
 
     private Solver setCurrSolver() {
-        String algorithmOption = algorithmComboVal.getSelectedItem().toString();
+        String algorithmOption = (String) algorithmComboVal.getSelectedItem();
 
         if (algorithmOption.equals("A*"))
             currSolver = astarSolver;
@@ -210,4 +211,5 @@ public class WasteRecovery{
         viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
         graphPanel = viewer.addDefaultView(false);
     }
+
 }
