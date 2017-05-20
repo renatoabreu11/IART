@@ -134,7 +134,8 @@ public class MainWindow extends JFrame{
     }
 
     public void setGraph(String graph) {
-        this.graph = new SingleGraph(graph);
+        this.graph.clear();
+        //this.graph = new SingleGraph(graph);
         graphFile = graph;
         try {
             this.graph.read("data/"+graphFile);

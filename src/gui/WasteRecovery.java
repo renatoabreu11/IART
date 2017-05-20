@@ -94,8 +94,10 @@ public class WasteRecovery {
 
         myGraph.resetColorEdgeOfGraph(graph);
         MyPath nextPath = currSolver.getPath(pathNo);
-        nextPath.printEdgesOfPath(graph, Color.red);
-        pathAnalysis.setText(nextPath.getPathInfo());
+        if (nextPath != null) {
+            nextPath.printEdgesOfPath(graph, Color.red);
+            pathAnalysis.setText(nextPath.getPathInfo());
+        }
     }
 
     public JPanel getPane() {
@@ -119,8 +121,9 @@ public class WasteRecovery {
 
         MyGraph g = currSolver.getGraph();
         // label nodes with ids
-        for (Node n: graph)
+        for (Node n: graph) {
             n.addAttribute("ui.label", Integer.toString(n.getIndex()));
+        }
 
         // print nodes with waste
         g.printNodes(graph, g.getNodesWithACertainWaste(Waste.toEnum(wasteType)));
