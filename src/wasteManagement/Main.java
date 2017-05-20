@@ -1,8 +1,7 @@
 package wasteManagement;
 
 import myGraph.*;
-import org.graphstream.algorithm.generator.Generator;
-import org.graphstream.algorithm.generator.GridGenerator;
+import org.graphstream.algorithm.generator.*;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
@@ -16,10 +15,15 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        CityGraph cg = new CityGraph("graph1.dgs");
-        WasteManagement management = new WasteManagement("station1.xml", cg.getGraph());
+        Graph graph = new SingleGraph("graph1.dgs");
+        try {
+            graph.read("data/graph1.dgs");
+        } catch(Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+        WasteManagement management = new WasteManagement("station1.xml", graph);
         management.printManagementDetails();
-        Graph graph = cg.getGraph();
 
         Solver solver = new Solver(graph, management, Waste.GLASS, 0.5, 0.5, 10);
         solver.solve("A*");
@@ -34,9 +38,9 @@ public class Main {
 
         // printing nodes and edges
         MyGraph g = solver.getGraph();
-        g.printNodes(cg.getGraph(), g.getNodesWithACertainWaste(Waste.GLASS));
+        g.printNodes(graph, g.getNodesWithACertainWaste(Waste.GLASS));
 
-        cg.display();
+        graph.display();
 
         for (int i = 0; i < paths.size(); i++) {
             MyPath p = paths.get(i);
@@ -48,13 +52,34 @@ public class Main {
         for (MyNode node: g.getNodes()) {
             System.out.println("id: " + node.getId() + ", wasteProximity: " + node.getWasteProximity());
         }
-
-
     }
 
-    protected static void sleep() {
-        try { Thread.sleep(2000); }
-        catch (Exception e) {System.out.println(e.getMessage());}
-    }
+    public static Graph generateGraph(String id, String type, int averageDegree, int numNodes){
 
+        Graph g = new SingleGraph(id);
+        if(!(type.equals("Random") || type.equals("Barabàsi-Albert") || type.equals("Dorogovtsev mendes"))){
+            System.out.println("Invalid type of graph");
+            return null;
+        }
+        Generator gen = null;
+        switch(type){
+            case "Random":
+                gen = new RandomGenerator(averageDegree);
+                break;
+            case "Barabàsi-Albert":
+                gen = new BarabasiAlbertGenerator(averageDegree);
+                break;
+            case "Dorogovtsev mendes":
+                gen = new DorogovtsevMendesGenerator();
+                break;
+        }
+
+        gen.addSink(g);
+        gen.begin();
+        for(int i=0; i<numNodes; i++)
+            gen.nextEvents();
+        gen.end();
+
+        return g;
+    }
 }

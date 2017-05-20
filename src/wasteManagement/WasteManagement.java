@@ -222,7 +222,6 @@ public class WasteManagement {
             String index = Integer.toString(c.getLocation().getIndex());
             if(index.equals(id)){
                 double diff = c.setResidue(Waste.toEnum(residue), value);
-                System.out.println("Diff" + diff);
                 for (Map.Entry<Waste, Double> entry : residueBuildup) {
                     Waste key = entry.getKey();
                     double oldValue = entry.getValue();

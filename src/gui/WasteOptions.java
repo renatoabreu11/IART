@@ -1,7 +1,6 @@
 package gui;
 
 import org.xml.sax.SAXException;
-import wasteManagement.CityGraph;
 import wasteManagement.WasteManagement;
 
 import javax.swing.*;
@@ -82,7 +81,7 @@ public class WasteOptions implements ChangeListener {
             String curr_station = wasteManagement.getStationFile();
             if(!stationFile.equals(curr_station)){
                 try {
-                    parent.setWasteManagement(new WasteManagement(stationFile, parent.getCityGraph().getGraph()));
+                    parent.setWasteManagement(new WasteManagement(stationFile, parent.getGraph()));
                 } catch (IOException | SAXException | ParserConfigurationException e) {
                     e.printStackTrace();
                 }
@@ -91,9 +90,9 @@ public class WasteOptions implements ChangeListener {
 
         graphSelection.addActionListener(actionEvent -> {
             String graphFile = (String) graphSelection.getSelectedItem();
-            String curr_graph = parent.getCityGraph().getGraphFile();
+            String curr_graph = parent.getGraphFile();
             if(!graphFile.equals(curr_graph)){
-                this.parent.setCityGraph(new CityGraph(graphFile));
+                this.parent.setGraph(graphFile);
                 this.parent.updateWasteManagement();
                 this.parent.updateGraphPanel();
             }

@@ -1,17 +1,20 @@
 package gui;
 
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
+import org.graphstream.graph.implementations.SingleGraph;
+import org.graphstream.ui.view.ViewerListener;
 import org.xml.sax.SAXException;
-import wasteManagement.CityGraph;
-import wasteManagement.Waste;
 import wasteManagement.WasteManagement;
 
 import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 
-public class MainWindow extends JFrame{
+public class MainWindow extends JFrame implements ViewerListener{
     private MainOptions mainOptions;
     private WasteOptions wasteOptions;
     private Management management;
@@ -19,7 +22,8 @@ public class MainWindow extends JFrame{
     private WasteRecovery wasteRecovery;
     private JPanel contentPane;
 
-    private CityGraph cg = null;
+    private Graph graph;
+    private String graphFile;
     private WasteManagement wasteManagement = null;
 
     /**
@@ -105,10 +109,17 @@ public class MainWindow extends JFrame{
     }
 
     public void initWasteManagement(String graph, String station){
-        cg = new CityGraph(graph);
+        this.graph = new SingleGraph(graph);
+        graphFile = graph;
+        try {
+            this.graph.read("data/"+graphFile);
+        } catch(Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
 
         try {
-            wasteManagement = new WasteManagement(station, cg.getGraph());
+            wasteManagement = new WasteManagement(station, this.graph);
         } catch (IOException | SAXException | ParserConfigurationException e1) {
             e1.printStackTrace();
         }
@@ -118,24 +129,31 @@ public class MainWindow extends JFrame{
         return wasteManagement;
     }
 
-    public CityGraph getCityGraph() {
-        return cg;
+    public Graph getGraph() {
+        return graph;
     }
 
     public void setWasteManagement(WasteManagement wasteManagement) {
         this.wasteManagement = wasteManagement;
     }
 
-    public void setCityGraph(CityGraph cityGraph) {
-        this.cg = cityGraph;
+    public void setGraph(String graph) {
+        this.graph = new SingleGraph(graph);
+        graphFile = graph;
+        try {
+            this.graph.read("data/"+graphFile);
+        } catch(Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 
     public void updateWasteManagement() {
-        wasteManagement.update(this.cg.getGraph());
+        wasteManagement.update(this.graph);
     }
 
     public void updateGraphPanel() {
-        this.wasteRecovery.setGraphPanel(this.cg.getGraph());
+        this.wasteRecovery.setGraphPanel(this.graph);
     }
 
     public void initWasteRecovery() {
@@ -144,9 +162,40 @@ public class MainWindow extends JFrame{
         double betaValue = (double)wasteOptions.getBetaValue().getValue();
         int numTrucks = (int)wasteOptions.getMaxTrucks().getValue();
         try {
-            this.wasteRecovery.initSolvers(cg.getGraph(), wasteManagement, wasteType, alfaValue, betaValue, numTrucks);
+            this.wasteRecovery.initSolvers(this.graph, wasteManagement, wasteType, alfaValue, betaValue, numTrucks);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void viewClosed(String s) {
+
+    }
+
+    @Override
+    public void buttonPushed(String id) {
+        System.out.println("Button pushed on node "+id);
+        Node node = this.graph.getNode(id);
+        if(node.hasAttribute("waste")){
+            Map waste = node.getAttribute("waste");
+            Iterator entries = waste.entrySet().iterator();
+            while (entries.hasNext()) {
+                Map.Entry thisEntry = (Map.Entry) entries.next();
+                Object key = thisEntry.getKey();
+                Object value = thisEntry.getValue();
+                System.out.println("Type of residue: " + key +" -> " + value + " kg");
+            }
+        }
+
+    }
+
+    @Override
+    public void buttonReleased(String s) {
+
+    }
+
+    public String getGraphFile() {
+        return graphFile;
     }
 }

@@ -12,7 +12,6 @@ import wasteManagement.WasteManagement;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class WasteRecovery {
     private JPanel pane;
@@ -91,7 +90,7 @@ public class WasteRecovery {
     }
 
     public void printNewPath(int pathNo) {
-        Graph graph = parent.getCityGraph().getGraph();
+        Graph graph = parent.getGraph();
         MyGraph myGraph = currSolver.getGraph();
 
         myGraph.resetColorEdgeOfGraph(graph);
@@ -140,7 +139,7 @@ public class WasteRecovery {
     }
 
     private void showCurrSolverInfo() {
-        Graph graph = parent.getCityGraph().getGraph();
+        Graph graph = parent.getGraph();
 
         if (currSolver.foundPaths()) {
             numberOfTrucks.setText(currSolver.getNumTrucksUsed() + " trucks were used in the waste recovery.");
@@ -195,7 +194,7 @@ public class WasteRecovery {
     }
 
     private void createUIComponents() {
-        Graph graph = parent.getCityGraph().getGraph();
+        Graph graph = parent.getGraph();
         setGraphPanel(graph);
     }
 
