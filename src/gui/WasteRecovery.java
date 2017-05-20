@@ -210,7 +210,7 @@ public class WasteRecovery {
         graph.addAttribute("ui.antialias");
         graph.addAttribute("ui.stylesheet", "url(data/stylesheet.css)");
 
-        viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
+        viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
         graphPanel = viewer.addDefaultView(false);
     }
 
