@@ -142,9 +142,9 @@ public class MainWindow extends JFrame{
         String wasteType = (String)wasteOptions.getWasteCollection().getSelectedItem();
         double alfaValue = (double)wasteOptions.getAlfaValue().getValue();
         double betaValue = (double)wasteOptions.getBetaValue().getValue();
-        ArrayList trucks = (ArrayList) wasteOptions.getTruckSelection().getSelectedValuesList();
+        int numTrucks = (int)wasteOptions.getMaxTrucks().getValue();
         try {
-            this.wasteRecovery.initSolvers(cg.getGraph(), wasteManagement, wasteType, alfaValue, betaValue, trucks);
+            this.wasteRecovery.initSolvers(cg.getGraph(), wasteManagement, wasteType, alfaValue, betaValue, numTrucks);
         } catch (Exception e) {
             e.printStackTrace();
         }

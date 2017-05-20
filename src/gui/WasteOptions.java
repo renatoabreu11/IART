@@ -2,7 +2,6 @@ package gui;
 
 import org.xml.sax.SAXException;
 import wasteManagement.CityGraph;
-import wasteManagement.Truck;
 import wasteManagement.WasteManagement;
 
 import javax.swing.*;
@@ -14,7 +13,6 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class WasteOptions implements ChangeListener {
@@ -25,7 +23,7 @@ public class WasteOptions implements ChangeListener {
     private JComboBox<String> stationSelection;
     private JComboBox<String> wasteCollection;
     private JButton backButton;
-    private JList<String> truckSelection;
+    private JSpinner maxTrucks;
     private MainWindow parent;
 
     public WasteOptions(MainWindow mainWindow) {
@@ -52,24 +50,6 @@ public class WasteOptions implements ChangeListener {
         wasteCollection.addItem("Glass");
         wasteCollection.addItem("Plastic");
 
-        DefaultListModel<String> listModel = new DefaultListModel<>();
-        ArrayList<Truck> trucks = this.parent.getWasteManagement().getTrucks();
-        ArrayList<Integer> indexes = new ArrayList<>();
-        int i = 0;
-        for(Truck t : trucks){
-            listModel.addElement(t.getResidue().toString() + " truck; Maximum capacity: " + t.getMaxCapacity() + "kg");
-            indexes.add(i);
-            i++;
-        }
-        truckSelection.setModel(listModel);
-
-        int[] intIndex = new int[indexes.size()];
-        for(i = 0; i < indexes.size(); i++){
-            intIndex[i] = indexes.get(i);
-        }
-
-        truckSelection.setSelectedIndices(intIndex);
-
         SpinnerModel model =
                 new SpinnerNumberModel(0.5, //initial value
                         0, //min
@@ -81,6 +61,13 @@ public class WasteOptions implements ChangeListener {
                         0, //min
                         1, //max
                         0.1);
+
+        SpinnerModel model2 =
+                new SpinnerNumberModel(5, //initial value
+                        1, //min
+                        15, //max
+                        1);
+        maxTrucks.setModel(model2);
         alfaValue.setModel(model);
         betaValue.setModel(model1);
         alfaValue.addChangeListener(this);
@@ -99,24 +86,6 @@ public class WasteOptions implements ChangeListener {
                 } catch (IOException | SAXException | ParserConfigurationException e) {
                     e.printStackTrace();
                 }
-
-                DefaultListModel<String> listModel = new DefaultListModel<>();
-                ArrayList<Truck> trucks = this.parent.getWasteManagement().getTrucks();
-                ArrayList<Integer> indexes = new ArrayList<>();
-                int i = 0;
-                for(Truck t : trucks){
-                    listModel.addElement(t.getResidue().toString() + " truck; Maximum capacity: " + t.getMaxCapacity() + "kg");
-                    indexes.add(i);
-                    i++;
-                }
-                truckSelection.setModel(listModel);
-
-                int[] intIndex = new int[indexes.size()];
-                for(i = 0; i < indexes.size(); i++){
-                    intIndex[i] = indexes.get(i);
-                }
-
-                truckSelection.setSelectedIndices(intIndex);
             }
         });
 
@@ -205,7 +174,7 @@ public class WasteOptions implements ChangeListener {
         return wasteCollection;
     }
 
-    public JList<String> getTruckSelection() {
-        return truckSelection;
+    public JSpinner getMaxTrucks() {
+        return maxTrucks;
     }
 }

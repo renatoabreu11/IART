@@ -36,7 +36,7 @@ public class Truck {
     }
 
     public String getTruckDetails(){
-        return residue.toString() + " truck; Maximum capacity: " + maxCapacity + "kg; Current load: " + load+"kg.";
+        return residue.toString() + " truck; Maximum capacity: " + maxCapacity + "kg";
     }
 
     public void printTruckDetails() {

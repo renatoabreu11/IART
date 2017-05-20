@@ -14,11 +14,6 @@ public class MainOptions{
     public MainOptions() {
         addListeners();
 
-/*        try {
-            background = ImageIO.read(new File("Wallpaper.jpg"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
     }
 
     private void addListeners() {

@@ -129,7 +129,6 @@ public class Statistics implements TableModelListener {
         String columnName = model.getColumnName(column);
         double newValue = (Double) model.getValueAt(row, column);
         Object location = model.getValueAt(row, 0);
-        System.out.println(String.valueOf(location).split("\\.")[0] + " " + newValue + " " + columnName);
         this.parent.getWasteManagement().updateContainer(String.valueOf(location).split("\\.")[0], newValue, columnName);
         ArrayList<String> residueInfo = this.parent.getWasteManagement().getResidueInfo();
         setResidueInfo(residueInfo);

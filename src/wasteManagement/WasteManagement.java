@@ -219,8 +219,10 @@ public class WasteManagement {
 
     public void updateContainer(String id, double value, String residue){
         for(Container c : containers){
-            if(c.getLocation().getId().equals(id)){
+            String index = Integer.toString(c.getLocation().getIndex());
+            if(index.equals(id)){
                 double diff = c.setResidue(Waste.toEnum(residue), value);
+                System.out.println("Diff" + diff);
                 for (Map.Entry<Waste, Double> entry : residueBuildup) {
                     Waste key = entry.getKey();
                     double oldValue = entry.getValue();
@@ -232,27 +234,6 @@ public class WasteManagement {
                 return;
             }
         }
-    }
-
-    public void emptyTrucks() {
-        for(Truck t : trucks){
-            t.setLoad(0);
-        }
-    }
-
-    public void refillContainers() {
-        Random rand = new Random();
-        rand.setSeed(System.currentTimeMillis());
-        String[] residues = new String[]{"Household", "Paper", "Plastic", "Glass"};
-        for(Container c : containers){
-            for (int i=0; i<4; i++)
-            {
-                int r = rand.nextInt(100);
-                c.updateResidue(Waste.toEnum(residues[i]), r);
-            }
-        }
-
-        updateResidueBuildup();
     }
 
     private void updateResidueBuildup() {

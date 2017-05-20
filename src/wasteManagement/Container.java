@@ -37,6 +37,7 @@ public class Container {
     public void setResidues(ArrayList<Map.Entry<Waste, Double>> residues) {
         this.residues = residues;
     }
+
     public Node getLocation() {
         return location;
     }

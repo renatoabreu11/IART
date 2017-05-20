@@ -119,10 +119,10 @@ public class WasteRecovery {
         this.backButton = backButton;
     }
 
-    public void initSolvers(Graph graph, WasteManagement wasteManagement, String wasteType, double alfaValue, double betaValue, ArrayList trucks) throws Exception {
+    public void initSolvers(Graph graph, WasteManagement wasteManagement, String wasteType, double alfaValue, double betaValue, int numTrucks) throws Exception {
         setGraphPanel(graph);
 
-        setSolvers(graph, wasteManagement, wasteType, alfaValue, betaValue, trucks);
+        setSolvers(graph, wasteManagement, wasteType, alfaValue, betaValue, numTrucks);
         setCurrSolver();
         showCurrSolverInfo();
 
@@ -176,20 +176,20 @@ public class WasteRecovery {
         return null;
     }
 
-    private void setSolvers(Graph graph, WasteManagement wasteManagement, String wasteType, double alfaValue, double betaValue, ArrayList trucks) throws Exception {
-        astarSolver = new Solver(graph, wasteManagement, Waste.toEnum(wasteType), alfaValue, betaValue, 5);
+    private void setSolvers(Graph graph, WasteManagement wasteManagement, String wasteType, double alfaValue, double betaValue, int numTrucks) throws Exception {
+        astarSolver = new Solver(graph, wasteManagement, Waste.toEnum(wasteType), alfaValue, betaValue, numTrucks);
         astarSolver.solve("A*");
         astarInfo.setText(astarSolver.getInfo());
 
-        astarBetaZeroSolver = new Solver(graph, wasteManagement, Waste.toEnum(wasteType), 1, 0, 5);
+        astarBetaZeroSolver = new Solver(graph, wasteManagement, Waste.toEnum(wasteType), 1, 0, numTrucks);
         astarBetaZeroSolver.solve("A*");
         astarBetaZeroInfo.setText(astarBetaZeroSolver.getInfo());
 
-        dfsSolver = new Solver(graph, wasteManagement, Waste.toEnum(wasteType), alfaValue, betaValue, 5);
+        dfsSolver = new Solver(graph, wasteManagement, Waste.toEnum(wasteType), alfaValue, betaValue, numTrucks);
         dfsSolver.solve("dfs");
         dfsInfo.setText(dfsSolver.getInfo());
 
-        bfsSolver = new Solver(graph, wasteManagement, Waste.toEnum(wasteType), alfaValue, betaValue, 5);
+        bfsSolver = new Solver(graph, wasteManagement, Waste.toEnum(wasteType), alfaValue, betaValue, numTrucks);
         bfsSolver.solve("bfs");
         bfsInfo.setText(bfsSolver.getInfo());
     }
