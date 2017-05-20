@@ -86,7 +86,6 @@ public class MyPath {
                 else {
                     info += " -> ";
                 }
-
             }
             else {
                 info += "\n";

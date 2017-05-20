@@ -47,7 +47,7 @@ public class Container {
     }
 
     public void printContainerDetails() {
-        System.out.println("Container location: MyNode " + location.getId() + ".");
+        System.out.println("Container location: MyNode " + location.getIndex() + ".");
         System.out.println("    Residues:");
         for(int i = 0; i < residues.size(); i++){
             Map.Entry<Waste, Double> entry = residues.get(i);
