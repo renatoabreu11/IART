@@ -73,6 +73,28 @@ public class MyPath {
         return path;
     }
 
+    public String getPathInfo() {
+        String info = "Path info: idNode1(waste collected1) -> idNode2(waste collected2) -> ...\n\n";
+        for (int i = 0; i < path.size(); i++) {
+            int idNode = path.get(i).getId();
+            double waste = wasteCollectedInEachNode.get(i);
+            info += idNode + "(" + waste + ")";
+            if (i < path.size()-1) {
+                if (i % 4 == 0 && i != 0) {
+                    info += " -> \n-> ";
+                }
+                else {
+                    info += " -> ";
+                }
+
+            }
+            else {
+                info += "\n";
+            }
+        }
+        return info;
+    }
+
     private List<MyEdge> getEdgesOfPath() {
         List<MyEdge> edges = new ArrayList<MyEdge>();
         for (int i = 0; i < path.size()-1; i++) {

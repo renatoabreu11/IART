@@ -97,6 +97,7 @@ public class WasteRecovery {
         myGraph.resetColorEdgeOfGraph(graph);
         MyPath nextPath = currSolver.getPath(pathNo);
         nextPath.printEdgesOfPath(graph, Color.red);
+        pathAnalysis.setText(nextPath.getPathInfo());
     }
 
     public JPanel getPane() {
@@ -137,6 +138,7 @@ public class WasteRecovery {
         // print initial path
         if (currSolver.foundPaths())
             printNewPath(0);
+
     }
 
     private void showCurrSolverInfo() {
