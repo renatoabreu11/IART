@@ -6,7 +6,6 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Statistics implements TableModelListener {
     private JTextArea info;
@@ -17,81 +16,49 @@ public class Statistics implements TableModelListener {
     private JTextArea residueBuildup;
     private MainWindow parent;
 
-    public Statistics(MainWindow mainWindow) {
+    Statistics(MainWindow mainWindow) {
         this.parent = mainWindow;
         addListeners();
         nodes.setAutoCreateRowSorter(true);
     }
 
-    public JTextArea getInfo() {
-        return info;
-    }
-
-    public void setInfo(JTextArea info) {
-        this.info = info;
-    }
-
-    public JTextArea getTrucks() {
-        return trucks;
-    }
-
-    public void setTrucks(JTextArea trucks) {
-        this.trucks = trucks;
-    }
-
-    public JButton getBackButton() {
+    JButton getBackButton() {
         return backButton;
-    }
-
-    public void setBackButton(JButton backButton) {
-        this.backButton = backButton;
-    }
-
-    public JTable getNodes() {
-        return nodes;
-    }
-
-    public void setNodes(JTable nodes) {
-        this.nodes = nodes;
     }
 
     public JPanel getPane() {
         return pane;
     }
 
-    public void setPane(JPanel pane) {
-        this.pane = pane;
-    }
-
     private void addListeners() {
     }
 
-    public void setVisible(boolean b){
-        this.pane.setVisible(b);
+    void setVisible(){
+        this.pane.setVisible(true);
     }
 
-    public void setGeneralInfo(ArrayList<String> info){
+    void setGeneralInfo(ArrayList<String> info){
         this.info.setText("");
         for(String i : info){
             this.info.append(i + "\n");
         }
     }
 
-    public void setTrucksInfo(ArrayList<String> info){
+    void setTrucksInfo(ArrayList<String> info){
         this.trucks.setText("");
         for(String i : info){
             this.trucks.append(i + "\n");
         }
     }
 
-    public void setResidueInfo(ArrayList<String> info){
+    void setResidueInfo(ArrayList<String> info){
         this.residueBuildup.setText("");
         for(String i : info){
             this.residueBuildup.append(i + "\n");
         }
     }
 
-    public void setNodesInfo(ArrayList<ArrayList<Double>> info){
+    void setNodesInfo(ArrayList<ArrayList<Double>> info){
         DefaultTableModel model = new DefaultTableModel() {
 
             boolean[] canEdit = new boolean[]{

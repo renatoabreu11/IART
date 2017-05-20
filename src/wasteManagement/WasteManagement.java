@@ -8,7 +8,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import scala.Int;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -116,16 +115,8 @@ public class WasteManagement {
         return trucks;
     }
 
-    public void setTrucks(ArrayList<Truck> trucks) {
-        this.trucks = trucks;
-    }
-
     public ArrayList<Container> getContainers() {
         return containers;
-    }
-
-    public void setContainers(ArrayList<Container> containers) {
-        this.containers = containers;
     }
 
     public double getContainerCap() {
@@ -154,22 +145,6 @@ public class WasteManagement {
             double value = entry.getValue();
             System.out.println(key + ": " + value + "kg.");
         }
-    }
-
-    public double getDistCentralStation() {
-        return distCentralStation;
-    }
-
-    public void setDistCentralStation(double distCentralStation) {
-        this.distCentralStation = distCentralStation;
-    }
-
-    public ArrayList<Map.Entry<Waste, Double>> getResidueBuildup(){
-       return residueBuildup;
-    }
-
-    public void setResidueBuildup(ArrayList<Map.Entry<Waste, Double>> residueBuildup) {
-        this.residueBuildup = residueBuildup;
     }
 
     public Node getCentral() {
@@ -249,10 +224,6 @@ public class WasteManagement {
 
     public String getStationFile() {
         return stationFile;
-    }
-
-    public void setStationFile(String stationFile) {
-        this.stationFile = stationFile;
     }
 
     public void update(Graph graph) {

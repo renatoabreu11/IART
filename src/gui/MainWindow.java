@@ -1,9 +1,7 @@
 package gui;
 
 import org.graphstream.graph.Graph;
-import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
-import org.graphstream.ui.view.ViewerListener;
 import org.xml.sax.SAXException;
 import wasteManagement.WasteManagement;
 
@@ -11,8 +9,6 @@ import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.Map;
 
 public class MainWindow extends JFrame{
     private MainOptions mainOptions;
@@ -59,19 +55,19 @@ public class MainWindow extends JFrame{
      */
     private void initialize() {
         mainOptions = new MainOptions();
-        mainOptions.setVisible(true);
+        mainOptions.setVisible();
 
         management = new Management(this);
-        management.setVisible(true);
+        management.setVisible();
 
         wasteOptions = new WasteOptions(this);
         wasteOptions.setVisible(true);
 
         statistics = new Statistics(this);
-        statistics.setVisible(true);
+        statistics.setVisible();
 
         wasteRecovery = new WasteRecovery(this);
-        wasteRecovery.setVisible(true);
+        wasteRecovery.setVisible();
 
         contentPane.add(mainOptions.getPane(), "Main Options");
         contentPane.add(wasteOptions.getPane(), "Waste Options");

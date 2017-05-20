@@ -7,13 +7,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
-import static wasteManagement.Waste.HOUSEHOLD;
-
 public class Container {
     private Node location;
     private ArrayList<Map.Entry<Waste, Double>> residues;
 
-    public Container(Node n){
+    Container(Node n){
         residues = new ArrayList<>();
         location = n;
         Map waste = n.getAttribute("waste");
@@ -26,28 +24,20 @@ public class Container {
         }
     }
 
-    public void addResidue(Waste residue, Double value){
+    private void addResidue(Waste residue, Double value){
         residues.add(new AbstractMap.SimpleEntry<>(residue, value));
     }
 
-    public ArrayList<Map.Entry<Waste, Double>> getResidues() {
+    ArrayList<Map.Entry<Waste, Double>> getResidues() {
         return residues;
-    }
-
-    public void setResidues(ArrayList<Map.Entry<Waste, Double>> residues) {
-        this.residues = residues;
     }
 
     public Node getLocation() {
         return location;
     }
 
-    public void setLocation(Node location) {
-        this.location = location;
-    }
-
-    public void printContainerDetails() {
-        System.out.println("Container location: MyNode " + location.getIndex() + ".");
+    void printContainerDetails() {
+        System.out.println("Container location: MyNode " + location.getId() + ".");
         System.out.println("    Residues:");
         for(int i = 0; i < residues.size(); i++){
             Map.Entry<Waste, Double> entry = residues.get(i);
@@ -58,7 +48,7 @@ public class Container {
         System.out.println();
     }
 
-    public ArrayList<Double> getContainerInfo(){
+    ArrayList<Double> getContainerInfo(){
         ArrayList<Double> ret = new ArrayList<>();
         ret.add((double)location.getIndex());
         ret.add(0.0); ret.add(0.0); ret.add(0.0); ret.add(0.0);
@@ -82,21 +72,7 @@ public class Container {
         return 0;
     }
 
-    public void updateResidue(Waste residue, double newValue) {
-        for(int i = 0; i < residues.size(); i++){
-            Map.Entry<Waste, Double> entry = residues.get(i);
-            Waste key = entry.getKey();
-            double value = entry.getValue();
-            if(key.equals(residue)){
-                entry.setValue(newValue + value);
-                return;
-            }
-        }
-
-        addResidue(residue, newValue);
-    }
-
-    public double setResidue(Waste residue, double newValue) {
+    double setResidue(Waste residue, double newValue) {
         for(int i = 0; i < residues.size(); i++){
             Map.Entry<Waste, Double> entry = residues.get(i);
             Object key = entry.getKey();
