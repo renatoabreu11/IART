@@ -94,12 +94,6 @@ public class MyPath {
             g.getEdge(e.getIndex()).addAttribute("ui.color", color);
     }
 
-    public void printEdgesOfPath(GraphicGraph g, Color color) {
-        List<MyEdge> edgesOfPath = this.getEdgesOfPath();
-        for (MyEdge e: edgesOfPath)
-            g.getEdge(e.getIndex()).addAttribute("ui.color", color);
-    }
-
     public void printPath() {
         System.out.println("Number of nodes of path: " + path.size());
         for (int i = 0; i < path.size(); i++) {

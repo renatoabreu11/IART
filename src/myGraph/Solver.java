@@ -19,6 +19,7 @@ public class Solver {
     private double distPercorredSol;
     private int numTrucksUsed;
     private double containerCap;
+    private Waste typeWaste;
 
     /**
      * Contructor of Solver.
@@ -38,6 +39,7 @@ public class Solver {
         this.numTrucks = numTrucks;
         this.management = management;
         this.containerCap = management.getContainerCap();
+        this.typeWaste = typeWaste;
     }
 
     public List<MyPath> getSolution() {
@@ -167,12 +169,13 @@ public class Solver {
     }
 
     public String getInfo() {
-        StringBuilder generalInfo = new StringBuilder("Sum of total waste: "
+        StringBuilder generalInfo = new StringBuilder("Type of waste retrieved: " + typeWaste.toString() +
+                "\nSum of total waste: "
                 + sumWasteSol +
                 "\nTotal distance traveled: "
                 + distPercorredSol
                 + "\nNumber of trucks used: "
-                + numTrucksUsed + "\n\n");
+                + numTrucksUsed + "\n\nInitial residue buildup:");
 
         ArrayList<String> residueBuildup = management.getResidueInfo();
         for (String s : residueBuildup) {
