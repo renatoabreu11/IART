@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 
-public class MainWindow extends JFrame implements ViewerListener{
+public class MainWindow extends JFrame{
     private MainOptions mainOptions;
     private WasteOptions wasteOptions;
     private Management management;
@@ -166,33 +166,6 @@ public class MainWindow extends JFrame implements ViewerListener{
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void viewClosed(String s) {
-
-    }
-
-    @Override
-    public void buttonPushed(String id) {
-        System.out.println("Button pushed on node "+id);
-        Node node = this.graph.getNode(id);
-        if(node.hasAttribute("waste")){
-            Map waste = node.getAttribute("waste");
-            Iterator entries = waste.entrySet().iterator();
-            while (entries.hasNext()) {
-                Map.Entry thisEntry = (Map.Entry) entries.next();
-                Object key = thisEntry.getKey();
-                Object value = thisEntry.getValue();
-                System.out.println("Type of residue: " + key +" -> " + value + " kg");
-            }
-        }
-
-    }
-
-    @Override
-    public void buttonReleased(String s) {
-
     }
 
     public String getGraphFile() {

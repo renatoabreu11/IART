@@ -13,7 +13,7 @@ import wasteManagement.WasteManagement;
 import javax.swing.*;
 import java.awt.*;
 
-public class WasteRecovery {
+public class WasteRecovery{
     private JPanel pane;
     private JButton backButton;
     private JButton prevTruckBtn;
@@ -207,7 +207,7 @@ public class WasteRecovery {
         graph.addAttribute("ui.antialias");
         graph.addAttribute("ui.stylesheet", "url(data/stylesheet.css)");
 
-        viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
+        viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
         graphPanel = viewer.addDefaultView(false);
     }
 }
