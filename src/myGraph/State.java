@@ -37,9 +37,12 @@ public class State {
 
     double getF(double alfa, double beta) {
         double collected = spaceTruck - emptySpace;
-
         double g = alfa * distAtNow / edgesCostSum - beta * collected / spaceTruck;
         double h = alfa * distToStation / edgesCostSum - beta * node.getWasteProximity() / wasteSum;
+
+        if (wasteSum < 0.000001)
+            h = alfa * distToStation / edgesCostSum;
+
         return g + h;
     }
 

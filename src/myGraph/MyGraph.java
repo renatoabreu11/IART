@@ -146,7 +146,6 @@ public class MyGraph {
     }
 
     final MyPath findPath_AStar() {
-
         LinkedList<State> openList = new LinkedList<>();
         LinkedList<State> closedList = new LinkedList<>();
         double sumWaste = this.getTotalWasteOfAType(typeWaste);
@@ -155,7 +154,7 @@ public class MyGraph {
         openList.add(iniState);
 
         int counter = 0;
-        int maxAttempts = 5;
+        int maxAttempts = 3;
         List<State> finalStates = new ArrayList<>();
 
         State current;
@@ -169,7 +168,6 @@ public class MyGraph {
                 counter++;
                 if (counter >= maxAttempts)
                     break;
-
             }
 
             List<State> adjList = current.getAdjList();
@@ -196,6 +194,7 @@ public class MyGraph {
             if (node.getF(alfa, beta) < cheapest.getF(alfa, beta))
                 cheapest = list.get(i);
         }
+
         return cheapest;
     }
 
