@@ -40,19 +40,11 @@ public class Management {
         return pane;
     }
 
-    public void setPane(JPanel pane) {
-        this.pane = pane;
+    void setVisible(){
+        this.pane.setVisible(true);
     }
 
-    public void setVisible(boolean b){
-        this.pane.setVisible(b);
-    }
-
-    public JButton getBackButton() {
+    JButton getBackButton() {
         return backButton;
-    }
-
-    public void setBackButton(JButton backButton) {
-        this.backButton = backButton;
     }
 }

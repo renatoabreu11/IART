@@ -35,11 +35,9 @@ public class WasteRecovery {
     private Solver currSolver = null;
     private MainWindow parent = null;
 
-    Viewer viewer;
+    private boolean algorithChange = false;
 
-    boolean algorithChange = false;
-
-    public WasteRecovery(MainWindow mainWindow) {
+    WasteRecovery(MainWindow mainWindow) {
         this.parent = mainWindow;
         addListeners();
     }
@@ -79,7 +77,7 @@ public class WasteRecovery {
         });
     }
 
-    public void updateCurrTruck(int currTruck, int value){
+    private void updateCurrTruck(int currTruck, int value){
         if(currTruck != 0){
             previousTruckButton.setEnabled(true);
         } else previousTruckButton.setEnabled(false);
@@ -90,7 +88,7 @@ public class WasteRecovery {
         printNewPath(currTruck + value - 1);
     }
 
-    public void printNewPath(int pathNo) {
+    private void printNewPath(int pathNo) {
         Graph graph = parent.getGraph();
         MyGraph myGraph = currSolver.getGraph();
 
@@ -104,23 +102,15 @@ public class WasteRecovery {
         return pane;
     }
 
-    public void setPane(JPanel pane) {
-        this.pane = pane;
+    void setVisible() {
+        this.pane.setVisible(true);
     }
 
-    public void setVisible(boolean b) {
-        this.pane.setVisible(b);
-    }
-
-    public JButton getBackButton() {
+    JButton getBackButton() {
         return backButton;
     }
 
-    public void setBackButton(JButton backButton) {
-        this.backButton = backButton;
-    }
-
-    public void initSolvers(Graph graph, WasteManagement wasteManagement, String wasteType, double alfaValue, double betaValue, int numTrucks) throws Exception {
+    void initSolvers(Graph graph, WasteManagement wasteManagement, String wasteType, double alfaValue, double betaValue, int numTrucks) throws Exception {
         setGraphPanel(graph);
 
         setSolvers(graph, wasteManagement, wasteType, alfaValue, betaValue, numTrucks);
@@ -142,8 +132,6 @@ public class WasteRecovery {
     }
 
     private void showCurrSolverInfo() {
-        Graph graph = parent.getGraph();
-
         if (currSolver.foundPaths()) {
             numberOfTrucks.setText(currSolver.getNumTrucksUsed() + " trucks were used in the waste recovery.");
             previousTruckButton.setEnabled(false);
@@ -164,7 +152,7 @@ public class WasteRecovery {
         }
     }
 
-    private Solver setCurrSolver() {
+    private void setCurrSolver() {
         String algorithmOption = (String) algorithmComboVal.getSelectedItem();
 
         if (algorithmOption.equals("A*"))
@@ -175,7 +163,6 @@ public class WasteRecovery {
             currSolver = bfsSolver;
         else if (algorithmOption.equals("A* beta = 0"))
             currSolver = astarBetaZeroSolver;
-        return null;
     }
 
     private void setSolvers(Graph graph, WasteManagement wasteManagement, String wasteType, double alfaValue, double betaValue, int numTrucks) throws Exception {
@@ -201,7 +188,7 @@ public class WasteRecovery {
         setGraphPanel(graph);
     }
 
-    public void setGraphPanel(Graph graph) {
+    void setGraphPanel(Graph graph) {
         graph.setAutoCreate(true);
         graph.setStrict(false);
 
@@ -210,7 +197,7 @@ public class WasteRecovery {
         graph.addAttribute("ui.antialias");
         graph.addAttribute("ui.stylesheet", "url(data/stylesheet.css)");
 
-        viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
+        Viewer viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
         graphPanel = viewer.addDefaultView(false);
     }
 

@@ -2,18 +2,15 @@ package gui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class MainOptions{
     private JPanel pane;
-    private BufferedImage background;
     private JButton wasteRecoveryButton;
     private JButton exitButton;
     private JButton optionsButton;
 
-    public MainOptions() {
+    MainOptions() {
         addListeners();
-
     }
 
     private void addListeners() {
@@ -36,44 +33,16 @@ public class MainOptions{
         return pane;
     }
 
-    public void setPane(JPanel pane) {
-        this.pane = pane;
-    }
-
-    public BufferedImage getBackground() {
-        return background;
-    }
-
-    public void setBackground(BufferedImage background) {
-        this.background = background;
-    }
-
-    public JButton getWasteRecoveryButton() {
+    JButton getWasteRecoveryButton() {
         return wasteRecoveryButton;
     }
 
-    public void setWasteRecoveryButton(JButton wasteRecoveryButton) {
-        this.wasteRecoveryButton = wasteRecoveryButton;
-    }
-
-    public JButton getExitButton() {
-        return exitButton;
-    }
-
-    public void setExitButton(JButton exitButton) {
-        this.exitButton = exitButton;
-    }
-
-    public JButton getOptionsButton() {
+    JButton getOptionsButton() {
         return optionsButton;
     }
 
-    public void setOptionsButton(JButton optionsButton) {
-        this.optionsButton = optionsButton;
-    }
-
-    public void setVisible(boolean b){
-        this.pane.setVisible(b);
+    void setVisible(){
+        this.pane.setVisible(true);
     }
 
 }

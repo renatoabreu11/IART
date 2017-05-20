@@ -25,7 +25,7 @@ public class WasteOptions implements ChangeListener {
     private JSpinner maxTrucks;
     private MainWindow parent;
 
-    public WasteOptions(MainWindow mainWindow) {
+    WasteOptions(MainWindow mainWindow) {
         this.parent = mainWindow;
         File dirData = new File("data");
         FilenameFilter filter = (file, s) -> Pattern.matches(".+\\.dgs", s);
@@ -104,36 +104,12 @@ public class WasteOptions implements ChangeListener {
         return pane;
     }
 
-    public void setPane(JPanel pane) {
-        this.pane = pane;
-    }
-
-    public void setVisible(boolean b){
+    void setVisible(boolean b){
         this.pane.setVisible(b);
     }
 
-    public JButton getBackButton() {
+    JButton getBackButton() {
         return backButton;
-    }
-
-    public void setBackButton(JButton backButton) {
-        this.backButton = backButton;
-    }
-
-    public JComboBox<String> getGraphSelection() {
-        return graphSelection;
-    }
-
-    public void setGraphSelection(JComboBox<String> graphSelection) {
-        this.graphSelection = graphSelection;
-    }
-
-    public JComboBox<String> getStationSelection() {
-        return stationSelection;
-    }
-
-    public void setStationSelection(JComboBox<String> stationSelection) {
-        this.stationSelection = stationSelection;
     }
 
     @Override
@@ -142,38 +118,36 @@ public class WasteOptions implements ChangeListener {
         double value = (double)spinner.getValue();
         if(spinner == alfaValue){
             double oldValue = (double)betaValue.getValue();
-            double diff = round(1 - (value + oldValue), 2);
-            double newValue = round(oldValue + diff, 2);
+            double diff = round(1 - (value + oldValue));
+            double newValue = round(oldValue + diff);
             betaValue.setValue(newValue);
         }else{
             double oldValue = (double)alfaValue.getValue();
-            double diff = round(1 - (value + oldValue), 2);
-            double newValue = round(oldValue + diff, 2);
+            double diff = round(1 - (value + oldValue));
+            double newValue = round(oldValue + diff);
             alfaValue.setValue(newValue);
         }
     }
 
-    public static double round(double value, int places) {
-        if (places < 0) throw new IllegalArgumentException();
-
+    private static double round(double value) {
         BigDecimal bd = new BigDecimal(value);
-        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
         return bd.doubleValue();
     }
 
-    public JSpinner getBetaValue() {
+    JSpinner getBetaValue() {
         return betaValue;
     }
 
-    public JSpinner getAlfaValue() {
+    JSpinner getAlfaValue() {
         return alfaValue;
     }
 
-    public JComboBox<String> getWasteCollection() {
+    JComboBox<String> getWasteCollection() {
         return wasteCollection;
     }
 
-    public JSpinner getMaxTrucks() {
+    JSpinner getMaxTrucks() {
         return maxTrucks;
     }
 }
