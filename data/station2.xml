@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <station>
     <central>0</central>
-    <wasteStation>99</wasteStation>
+    <wasteStation>3</wasteStation>
     <containerCap>10</containerCap>
     <truck>
         <category>Paper</category>
-        <capacity>100</capacity>
+        <capacity>40</capacity>
     </truck>
     <truck>
         <category>Glass</category>
-        <capacity>100</capacity>
+        <capacity>40</capacity>
     </truck>
     <truck>
         <category>Household</category>
-        <capacity>100</capacity>
+        <capacity>40</capacity>
     </truck>
     <truck>
         <category>Plastic</category>
-        <capacity>100</capacity>
+        <capacity>40</capacity>
     </truck>
 </station>
